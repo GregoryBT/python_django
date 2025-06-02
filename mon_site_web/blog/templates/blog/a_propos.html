@@ -1,0 +1,221 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}À propos - Mon Blog Django{% endblock %}
+
+{% block content %}
+<!-- En-tête de la page -->
+<div class="mb-12 text-center">
+    <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">ℹ️ À propos de Mon Blog Django</h1>
+    <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+        Une plateforme moderne et élégante pour partager des idées, découvrir du contenu passionnant et construire une communauté de passionnés.
+    </p>
+</div>
+
+<!-- Statistiques principales -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white text-center">
+        <div class="text-4xl mb-2">📄</div>
+        <div class="text-3xl font-bold">{{ stats.total_articles }}</div>
+        <div class="text-blue-100">Article{{ stats.total_articles|pluralize }} publié{{ stats.total_articles|pluralize }}</div>
+    </div>
+    <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white text-center">
+        <div class="text-4xl mb-2">💬</div>
+        <div class="text-3xl font-bold">{{ stats.total_commentaires }}</div>
+        <div class="text-green-100">Commentaire{{ stats.total_commentaires|pluralize }}</div>
+    </div>
+    <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl p-6 text-white text-center">
+        <div class="text-4xl mb-2">🏷️</div>
+        <div class="text-3xl font-bold">{{ stats.total_categories }}</div>
+        <div class="text-purple-100">Catégorie{{ stats.total_categories|pluralize }}</div>
+    </div>
+    <div class="bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl p-6 text-white text-center">
+        <div class="text-4xl mb-2">👥</div>
+        <div class="text-3xl font-bold">{{ stats.total_auteurs }}</div>
+        <div class="text-orange-100">Auteur{{ stats.total_auteurs|pluralize }}</div>
+    </div>
+</div>
+
+<!-- Présentation du projet -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-12">
+    <!-- Mission -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            <span class="text-3xl mr-3">🎯</span>
+            Notre Mission
+        </h2>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+            Mon Blog Django a été créé pour offrir une plateforme simple et moderne où chacun peut partager ses connaissances, ses expériences et ses passions.
+        </p>
+        <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+            Nous croyons en la puissance du partage de connaissances et en la création d'une communauté bienveillante où les idées peuvent s'épanouir.
+        </p>
+    </div>
+
+    <!-- Valeurs -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            <span class="text-3xl mr-3">💎</span>
+            Nos Valeurs
+        </h2>
+        <ul class="space-y-3">
+            <li class="flex items-center text-gray-700 dark:text-gray-300">
+                <span class="text-green-500 mr-3">✅</span>
+                <span><strong>Simplicité</strong> - Interface claire et intuitive</span>
+            </li>
+            <li class="flex items-center text-gray-700 dark:text-gray-300">
+                <span class="text-green-500 mr-3">✅</span>
+                <span><strong>Qualité</strong> - Contenu soigné et pertinent</span>
+            </li>
+            <li class="flex items-center text-gray-700 dark:text-gray-300">
+                <span class="text-green-500 mr-3">✅</span>
+                <span><strong>Communauté</strong> - Échanges respectueux</span>
+            </li>
+            <li class="flex items-center text-gray-700 dark:text-gray-300">
+                <span class="text-green-500 mr-3">✅</span>
+                <span><strong>Innovation</strong> - Technologies modernes</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Technologies utilisées -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-12">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+        <span class="text-3xl mr-3">🛠️</span>
+        Technologies Utilisées
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div class="text-3xl mb-2">🐍</div>
+            <h3 class="font-semibold text-gray-900 dark:text-white">Django</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Framework web Python</p>
+        </div>
+        <div class="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div class="text-3xl mb-2">🎨</div>
+            <h3 class="font-semibold text-gray-900 dark:text-white">Tailwind CSS</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Framework CSS moderne</p>
+        </div>
+        <div class="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div class="text-3xl mb-2">🗃️</div>
+            <h3 class="font-semibold text-gray-900 dark:text-white">PostgreSQL</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Base de données</p>
+        </div>
+        <div class="text-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <div class="text-3xl mb-2">📱</div>
+            <h3 class="font-semibold text-gray-900 dark:text-white">Responsive</h3>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Design adaptatif</p>
+        </div>
+    </div>
+</div>
+
+<!-- Fonctionnalités -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-12">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+        <span class="text-3xl mr-3">⚡</span>
+        Fonctionnalités
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">📝 Gestion de contenu</h3>
+            <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+                <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>Création et édition d'articles</li>
+                <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>Organisation par catégories</li>
+                <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>Système de commentaires</li>
+                <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>Gestion des auteurs</li>
+            </ul>
+        </div>
+        <div>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">🎨 Interface utilisateur</h3>
+            <ul class="space-y-2 text-gray-700 dark:text-gray-300">
+                <li class="flex items-center"><span class="text-purple-500 mr-2">•</span>Mode sombre/clair</li>
+                <li class="flex items-center"><span class="text-purple-500 mr-2">•</span>Design responsive</li>
+                <li class="flex items-center"><span class="text-purple-500 mr-2">•</span>Navigation intuitive</li>
+                <li class="flex items-center"><span class="text-purple-500 mr-2">•</span>Support multilingue</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Contact et communauté -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+    <!-- Contact -->
+    <div class="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-8">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            <span class="text-3xl mr-3">📞</span>
+            Contactez-nous
+        </h2>
+        <div class="space-y-4">
+            <div class="flex items-center text-gray-700 dark:text-gray-300">
+                <span class="text-2xl mr-3">✉️</span>
+                <span>contact@monblog.com</span>
+            </div>
+            <div class="flex items-center text-gray-700 dark:text-gray-300">
+                <span class="text-2xl mr-3">📱</span>
+                <span>+33 1 23 45 67 89</span>
+            </div>
+            <div class="flex items-center text-gray-700 dark:text-gray-300">
+                <span class="text-2xl mr-3">📍</span>
+                <span>Paris, France</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rejoindre -->
+    <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-8">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            <span class="text-3xl mr-3">🚀</span>
+            Rejoignez-nous
+        </h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+            Devenez contributeur et partagez vos connaissances avec notre communauté grandissante.
+        </p>
+        <div class="space-y-3">
+            <a href="{% url 'ajouter_article' %}" 
+               class="block w-full text-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
+                ✍️ Écrire un article
+            </a>
+            <a href="{% url 'articles' %}" 
+               class="block w-full text-center bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium">
+                📄 Parcourir les articles
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Timeline / Historique -->
+<div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8">
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center">
+        <span class="text-3xl mr-3">📅</span>
+        Notre Histoire
+    </h2>
+    <div class="space-y-6">
+        <div class="flex items-start">
+            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                2024
+            </div>
+            <div>
+                <h3 class="font-semibold text-gray-900 dark:text-white">Lancement du projet</h3>
+                <p class="text-gray-600 dark:text-gray-400">Création de Mon Blog Django avec les fonctionnalités de base.</p>
+            </div>
+        </div>
+        <div class="flex items-start">
+            <div class="flex-shrink-0 w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                2025
+            </div>
+            <div>
+                <h3 class="font-semibold text-gray-900 dark:text-white">Amélioration continue</h3>
+                <p class="text-gray-600 dark:text-gray-400">Ajout du mode sombre, système de navigation avancé et optimisations.</p>
+            </div>
+        </div>
+        <div class="flex items-start">
+            <div class="flex-shrink-0 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
+                ∞
+            </div>
+            <div>
+                <h3 class="font-semibold text-gray-900 dark:text-white">L'avenir</h3>
+                <p class="text-gray-600 dark:text-gray-400">Nouvelles fonctionnalités et croissance de la communauté.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
