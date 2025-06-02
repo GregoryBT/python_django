@@ -17,7 +17,7 @@
                         <h2>📝 Ajouter un Nouvel Article</h2>
                     </div>
                     <div class="card-body">
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
 
                             <div class="mb-3">
@@ -42,6 +42,16 @@
                                 <div class="form-text">
                                     Vous pouvez gérer les catégories dans l'<a href="/admin/" target="_blank">interface
                                         d'administration</a>.
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="{{ form.image.id_for_label }}" class="form-label">
+                                    Image d'illustration (optionnel)
+                                </label>
+                                {{ form.image }}
+                                <div class="form-text">
+                                    Formats acceptés : JPG, PNG, GIF. Taille maximale recommandée : 2MB.
                                 </div>
                             </div>
 

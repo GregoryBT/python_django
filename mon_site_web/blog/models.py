@@ -20,6 +20,7 @@ class Article(models.Model):
     contenu = models.TextField()
     auteur = models.CharField(max_length=100)
     categorie = models.ForeignKey(Categorie, on_delete=models.SET_NULL, null=True, blank=True, related_name='articles')
+    image = models.ImageField(upload_to='articles/', null=True, blank=True, help_text='Image d\'illustration pour l\'article')
     date_creation = models.DateTimeField(default=timezone.now)
     nombre_vues = models.PositiveIntegerField(default=0)  # Compteur simple de vues
 

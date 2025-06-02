@@ -149,6 +149,14 @@
         {% for article in articles %}
         <article
             class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-200 dark:border-gray-700">
+            <!-- Image de l'article -->
+            {% if article.image %}
+            <div class="h-48 overflow-hidden">
+                <img src="{{ article.image.url }}" alt="{{ article.titre }}" 
+                     class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+            </div>
+            {% endif %}
+            
             <div class="p-6">
                 {% if article.categorie %}
                 <span class="inline-block px-3 py-1 text-xs font-semibold text-white rounded-full mb-4"
@@ -224,6 +232,14 @@
         {% for article in articles|slice:":6" %}
         <article
             class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-200 dark:border-gray-700">
+            <!-- Image de l'article -->
+            {% if article.image %}
+            <div class="h-48 overflow-hidden">
+                <img src="{{ article.image.url }}" alt="{{ article.titre }}" 
+                     class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+            </div>
+            {% endif %}
+            
             <div class="p-6">
                 {% if article.categorie %}
                 <span class="inline-block px-3 py-1 text-xs font-semibold text-white rounded-full mb-4"

@@ -20,6 +20,14 @@
 
 <!-- Article principal -->
 <article class="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+    <!-- Image de l'article -->
+    {% if article.image %}
+    <div class="h-64 md:h-96 overflow-hidden">
+        <img src="{{ article.image.url }}" alt="{{ article.titre }}" 
+             class="w-full h-full object-cover">
+    </div>
+    {% endif %}
+    
     <!-- En-tête de l'article -->
     <div class="p-8 border-b border-gray-200">
         {% if article.categorie %}
