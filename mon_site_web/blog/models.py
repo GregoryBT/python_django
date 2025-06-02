@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.text import slugify
 
 # Create your models here.
 class Categorie(models.Model):
@@ -15,14 +16,39 @@ class Categorie(models.Model):
         ordering = ['nom']
 
 
+class Tag(models.Model):
+    nom = models.CharField(max_length=50, unique=True)
+    slug = models.SlugField(max_length=50, unique=True, blank=True)
+    couleur = models.CharField(max_length=7, default='#6b7280', help_text='Couleur en format hexadécimal (ex: #6b7280)')
+    date_creation = models.DateTimeField(default=timezone.now)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.nom)
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.nom
+
+    class Meta:
+        ordering = ['nom']
+
+
 class Article(models.Model):
     titre = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, blank=True)  # Temporairement non-unique
     contenu = models.TextField()
     auteur = models.CharField(max_length=100)
     categorie = models.ForeignKey(Categorie, on_delete=models.SET_NULL, null=True, blank=True, related_name='articles')
+    tags = models.ManyToManyField(Tag, blank=True, related_name='articles')
     image = models.ImageField(upload_to='articles/', null=True, blank=True, help_text='Image d\'illustration pour l\'article')
     date_creation = models.DateTimeField(default=timezone.now)
     nombre_vues = models.PositiveIntegerField(default=0)  # Compteur simple de vues
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.titre)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.titre

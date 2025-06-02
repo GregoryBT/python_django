@@ -35,12 +35,12 @@
             <select
                 onchange="window.location.href='?sort=' + this.value + '{% if categorie_selectionnee %}&categorie={{ categorie_selectionnee }}{% endif %}'"
                 class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-300 text-sm rounded-md px-3 py-1 focus:ring-blue-500 focus:border-blue-500">
-                <option value="-date_creation" {% if sort_actuel=="-date_creation" %}selected{% endif %}>Plus récents
+                <option value="-date_creation" {% if sort_actuel == "-date_creation" %}selected{% endif %}>Plus récents
                 </option>
-                <option value="date_creation" {% if sort_actuel=="date_creation" %}selected{% endif %}>Plus anciens
+                <option value="date_creation" {% if sort_actuel == "date_creation" %}selected{% endif %}>Plus anciens
                 </option>
-                <option value="titre" {% if sort_actuel=="titre" %}selected{% endif %}>A-Z</option>
-                <option value="-titre" {% if sort_actuel=="-titre" %}selected{% endif %}>Z-A</option>
+                <option value="titre" {% if sort_actuel == "titre" %}selected{% endif %}>A-Z</option>
+                <option value="-titre" {% if sort_actuel == "-titre" %}selected{% endif %}>Z-A</option>
             </select>
         </div>
     </div>
@@ -76,26 +76,41 @@
         <!-- Image de l'article ou placeholder -->
         <div class="h-48 overflow-hidden">
             {% if article.image %}
-            <img src="{{ article.image.url }}" alt="{{ article.titre }}" 
-                 class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+            <img src="{{ article.image.url }}" alt="{{ article.titre }}"
+                class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
             {% else %}
-            <div class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
+            <div
+                class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
                 <div class="text-center text-gray-400 dark:text-gray-500">
                     <svg class="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path>
+                        <path fill-rule="evenodd"
+                            d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                            clip-rule="evenodd"></path>
                     </svg>
                     <span class="text-sm font-medium">📄 Article</span>
                 </div>
             </div>
             {% endif %}
         </div>
-        
+
         <div class="p-6">
             {% if article.categorie %}
             <span class="inline-block px-3 py-1 text-xs font-semibold text-white rounded-full mb-3"
                 style="background-color: {{ article.categorie.couleur }};">
                 {{ article.categorie.nom }}
             </span>
+            {% endif %}
+
+            <!-- Tags -->
+            {% if article.tags.all %}
+            <div class="mb-3">
+                {% for tag in article.tags.all %}
+                <span class="inline-block px-2 py-1 text-xs font-medium rounded-md mr-1 mb-1"
+                    style="background-color: {{ tag.couleur }}20; color: {{ tag.couleur }}; border: 1px solid {{ tag.couleur }};">
+                    🏷️ {{ tag.nom }}
+                </span>
+                {% endfor %}
+            </div>
             {% endif %}
 
             <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -112,13 +127,24 @@
             </div>
 
             <p class="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed">
-                {{ article.contenu|truncatewords:20 }}
+                {{ article.contenu|truncatechars:70 }}
             </p>
 
             <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                    💬 {{ article.commentaires.count }} commentaire{{ article.commentaires.count|pluralize }}
-                </span>
+                <div class="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                    <span class="flex items-center">
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                            <path fill-rule="evenodd"
+                                d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                        {{ article.nombre_vues }} vue{{ article.nombre_vues|pluralize }}
+                    </span>
+                    <span class="flex items-center">
+                        💬 {{ article.commentaires.count }} commentaire{{ article.commentaires.count|pluralize }}
+                    </span>
+                </div>
                 <a href="{% url 'detail_article' article.id %}"
                     class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium">
                     Lire la suite

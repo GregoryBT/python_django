@@ -66,7 +66,7 @@
         <div class="p-6">
             {% if categorie.description %}
             <p class="text-gray-600 dark:text-gray-400 mb-4 leading-relaxed">
-                {{ categorie.description|truncatewords:15 }}
+                {{ categorie.description|truncatechars:70 }}
             </p>
             {% else %}
             <p class="text-gray-500 dark:text-gray-500 mb-4 italic">

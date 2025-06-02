@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Article, Categorie, Commentaire
+from .models import Article, Categorie, Commentaire, Tag, VueArticle
 
 @admin.register(Categorie)
 class CategorieAdmin(admin.ModelAdmin):
@@ -33,3 +33,10 @@ class CommentaireAdmin(admin.ModelAdmin):
     def contenu_court(self, obj):
         return obj.contenu[:50] + '...' if len(obj.contenu) > 50 else obj.contenu
     contenu_court.short_description = 'Contenu'
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_display = ['nom', 'slug', 'couleur', 'date_creation']
+    list_filter = ['date_creation']
+    search_fields = ['nom']
+    prepopulated_fields = {'slug': ('nom',)}

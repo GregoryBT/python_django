@@ -56,6 +56,33 @@
                             </div>
 
                             <div class="mb-3">
+                                <label class="form-label">
+                                    Tags (optionnel)
+                                </label>
+                                <div class="border rounded p-3 bg-light">
+                                    {% for tag in form.tags.field.queryset %}
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" name="tags" value="{{ tag.id }}"
+                                            id="tag_{{ tag.id }}" {% if tag in form.instance.tags.all %}checked{% endif
+                                            %}>
+                                        <label class="form-check-label" for="tag_{{ tag.id }}"
+                                            style="color: {{ tag.couleur }};">
+                                            🏷️ {{ tag.nom }}
+                                        </label>
+                                    </div>
+                                    {% empty %}
+                                    <p class="text-muted mb-0">
+                                        Aucun tag disponible.
+                                        <a href="/admin/blog/tag/" target="_blank">Créer des tags</a>
+                                    </p>
+                                    {% endfor %}
+                                </div>
+                                <div class="form-text">
+                                    Sélectionnez un ou plusieurs tags pour classer votre article
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="{{ form.contenu.id_for_label }}" class="form-label">
                                     Contenu de l'article
                                 </label>

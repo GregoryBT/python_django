@@ -23,6 +23,36 @@ def home(request):
     # Calcul de la date d'il y a un mois
     un_mois_avant = timezone.now() - timedelta(days=30)
     
+    # Articles les plus populaires (top 5 par nombre de vues)
+    articles_populaires = Article.objects.all().order_by('-nombre_vues')[:5]
+    
+    # Activité récente (derniers articles et commentaires)
+    activite_recente = []
+    
+    # Derniers articles (3 plus récents)
+    derniers_articles = Article.objects.all().order_by('-date_creation')[:3]
+    for article in derniers_articles:
+        activite_recente.append({
+            'description': f'Nouvel article: "{article.titre}" par {article.auteur}',
+            'date': article.date_creation,
+            'icone': '📄',
+            'couleur': 'blue'
+        })
+    
+    # Derniers commentaires (3 plus récents)
+    derniers_commentaires = Commentaire.objects.all().order_by('-date_creation')[:3]
+    for commentaire in derniers_commentaires:
+        activite_recente.append({
+            'description': f'{commentaire.nom_auteur} a commenté "{commentaire.article.titre}"',
+            'date': commentaire.date_creation,
+            'icone': '💬',
+            'couleur': 'green'
+        })
+    
+    # Trier l'activité par date (plus récent en premier)
+    activite_recente.sort(key=lambda x: x['date'], reverse=True)
+    activite_recente = activite_recente[:6]  # Garder seulement les 6 plus récents
+    
     # Statistiques pour la page d'accueil
     stats = {
         'total_articles': Article.objects.count(),
@@ -30,6 +60,8 @@ def home(request):
         'lecteurs_ce_mois': sum(article.nombre_vues for article in Article.objects.all()),  # Toutes les vues, tous rafraîchissements inclus
         'total_commentaires': Commentaire.objects.count(),
         'total_categories': Categorie.objects.count(),
+        'articles_populaires': articles_populaires,
+        'activite_recente': activite_recente,
     }
     
     return render(request, 'blog/home.html', {
@@ -73,7 +105,7 @@ def detail_article(request, article_id):
     # Enregistrer la vue (pour des statistiques détaillées si nécessaire)
     VueArticle.objects.create(
         article=article,
-        ip_address=ip_address,
+        adresse_ip=ip_address,
         date_vue=timezone.now()
     )
     

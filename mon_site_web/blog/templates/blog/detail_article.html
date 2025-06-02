@@ -35,6 +35,19 @@
             {{ article.categorie.nom }}
         </span>
         {% endif %}
+
+        <!-- Tags -->
+        {% if article.tags.all %}
+        <div class="mb-4">
+            {% for tag in article.tags.all %}
+            <span class="inline-block px-3 py-1 text-sm font-medium rounded-lg mr-2 mb-2"
+                style="background-color: {{ tag.couleur }}20; color: {{ tag.couleur }}; border: 1px solid {{ tag.couleur }};">
+                🏷️ {{ tag.nom }}
+            </span>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ article.titre }}</h1>
         <div class="flex items-center text-gray-600">
             <div class="flex items-center mr-6">
