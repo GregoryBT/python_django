@@ -1,0 +1,289 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Modération - Blog Académique Universitaire{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <!-- En-tête de modération -->
+    <div class="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-xl p-8 mb-8">
+        <div class="flex items-center space-x-4">
+            <div class="w-12 h-12 bg-orange-600 rounded-lg flex items-center justify-center">
+                <span class="text-white text-2xl">🛡️</span>
+            </div>
+            <div>
+                <h1 class="text-3xl font-bold text-orange-900 dark:text-orange-100">
+                    Panneau de Modération
+                </h1>
+                <p class="text-orange-700 dark:text-orange-300">
+                    Gérez les commentaires et surveillez l'activité du blog
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistiques de modération -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white text-sm">⏳</span>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">En attente</p>
+                    <p class="text-2xl font-bold text-red-600 dark:text-red-400">{{ commentaires_en_attente.count }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white text-sm">✅</span>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Approuvés</p>
+                    <p class="text-2xl font-bold text-green-600 dark:text-green-400">{{ commentaires_approuves.count }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white text-sm">👥</span>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Utilisateurs actifs</p>
+                    <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ utilisateurs_actifs }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-purple-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white text-sm">📄</span>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Articles récents</p>
+                    <p class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ articles_recents.count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <!-- Commentaires en attente de modération -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
+                    <span>⏳</span>
+                    <span>Commentaires en attente ({{ commentaires_en_attente.count }})</span>
+                </h2>
+            </div>
+
+            {% if commentaires_en_attente %}
+            <div class="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
+                {% for commentaire in commentaires_en_attente %}
+                <div class="p-4">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            {% if commentaire.user_auteur %}
+                            <div
+                                class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                                {{
+                                commentaire.user_auteur.first_name|first|default:commentaire.user_auteur.username|first|upper
+                                }}
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">
+                                    {{ commentaire.user_auteur.get_full_name|default:commentaire.user_auteur.username }}
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">
+                                    {{ commentaire.user_auteur.profil.get_role_display }}
+                                </p>
+                            </div>
+                            {% else %}
+                            <div
+                                class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                                {{ commentaire.nom_auteur|first|upper }}
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">{{ commentaire.nom_auteur }}</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Visiteur</p>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                            {{ commentaire.date_creation|date:"d/m/Y H:i" }}
+                        </span>
+                    </div>
+
+                    <p class="text-gray-700 dark:text-gray-300 mb-3 text-sm">
+                        {{ commentaire.contenu|truncatewords:20 }}
+                    </p>
+
+                    <div class="flex items-center justify-between">
+                        <a href="{% url 'detail_article' commentaire.article.id %}"
+                            class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+                            📄 {{ commentaire.article.titre|truncatechars:30 }}
+                        </a>
+
+                        <div class="flex items-center space-x-2">
+                            <form method="post" action="{% url 'approuver_commentaire' commentaire.id %}"
+                                class="inline">
+                                {% csrf_token %}
+                                <button type="submit"
+                                    class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors duration-200">
+                                    ✅ Approuver
+                                </button>
+                            </form>
+
+                            <form method="post" action="{% url 'supprimer_commentaire' commentaire.id %}"
+                                class="inline">
+                                {% csrf_token %}
+                                <button type="submit"
+                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors duration-200"
+                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')">
+                                    🗑️ Supprimer
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="p-8 text-center">
+                <div
+                    class="w-16 h-16 mx-auto bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mb-4">
+                    <span class="text-2xl">✅</span>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    Tout est à jour !
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Aucun commentaire en attente de modération.
+                </p>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Articles récents -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
+                    <span>📄</span>
+                    <span>Articles récents</span>
+                </h2>
+            </div>
+
+            {% if articles_recents %}
+            <div class="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
+                {% for article in articles_recents %}
+                <div class="p-4">
+                    <div class="flex items-start justify-between mb-2">
+                        <h3 class="font-medium text-gray-900 dark:text-white text-sm">
+                            <a href="{% url 'detail_article' article.id %}"
+                                class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                                {{ article.titre|truncatechars:40 }}
+                            </a>
+                        </h3>
+                        {% if not article.est_publie %}
+                        <span
+                            class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-xs font-medium">
+                            Brouillon
+                        </span>
+                        {% endif %}
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                        <div class="flex items-center space-x-4">
+                            {% if article.user_auteur %}
+                            <span>👤 {{ article.user_auteur.get_full_name|default:article.user_auteur.username }}</span>
+                            {% else %}
+                            <span>👤 {{ article.auteur }}</span>
+                            {% endif %}
+                            <span>📅 {{ article.date_creation|date:"d/m/Y" }}</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <span>👁️ {{ article.nombre_vues }}</span>
+                            <span>💬 {{ article.commentaires.count }}</span>
+                        </div>
+                    </div>
+
+                    {% if article.categorie %}
+                    <div class="mt-2">
+                        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium"
+                            style="background-color: {{ article.categorie.couleur }}20; color: {{ article.categorie.couleur }};">
+                            🏷️ {{ article.categorie.nom }}
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="p-8 text-center">
+                <div
+                    class="w-16 h-16 mx-auto bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4">
+                    <span class="text-2xl">📄</span>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    Aucun article récent
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    Aucun nouvel article à afficher.
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Activité récente -->
+    {% if user.profil.est_admin %}
+    <div class="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
+                <span>📊</span>
+                <span>Tableau de bord administrateur</span>
+            </h2>
+        </div>
+
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ total_utilisateurs }}</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Utilisateurs inscrits</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-green-600 dark:text-green-400">{{ total_articles }}</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Articles publiés</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">{{ total_commentaires }}</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">Commentaires approuvés</div>
+                </div>
+            </div>
+
+            <div class="mt-6 flex items-center justify-center space-x-4">
+                <a href="/admin/" target="_blank"
+                    class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2">
+                    <span>🔧</span>
+                    <span>Administration Django</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,11 +1,127 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.db.models import Count, Max, Q
 from django.utils import timezone
 from datetime import datetime, timedelta
-from .models import Article, Commentaire, Categorie, VueArticle
-from .forms import ArticleForm, CommentaireForm
+from functools import wraps
+from .models import Article, Commentaire, Categorie, VueArticle, Profil
+from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm
+
+
+def role_required(roles):
+    """Décorateur pour vérifier les rôles des utilisateurs"""
+    def decorator(view_func):
+        @wraps(view_func)
+        def _wrapped_view(request, *args, **kwargs):
+            if not request.user.is_authenticated:
+                messages.error(request, 'Vous devez être connecté pour accéder à cette page.')
+                return redirect('connexion')
+            
+            if not hasattr(request.user, 'profil'):
+                messages.error(request, 'Profil utilisateur non trouvé.')
+                return redirect('home')
+            
+            if request.user.profil.role not in roles:
+                messages.error(request, 'Vous n\'avez pas les permissions nécessaires pour accéder à cette page.')
+                return redirect('home')
+            
+            return view_func(request, *args, **kwargs)
+        return _wrapped_view
+    return decorator
+
+
+def inscription(request):
+    """Vue d'inscription des utilisateurs"""
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        form = InscriptionForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Compte créé avec succès pour {username}! Vous pouvez maintenant vous connecter.')
+            return redirect('connexion')
+    else:
+        form = InscriptionForm()
+    
+    return render(request, 'blog/inscription.html', {'form': form})
+
+
+def connexion(request):
+    """Vue de connexion des utilisateurs"""
+    if request.user.is_authenticated:
+        return redirect('home')
+    
+    if request.method == 'POST':
+        form = ConnexionForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            # Mettre à jour la dernière connexion
+            if hasattr(user, 'profil'):
+                user.profil.derniere_connexion = timezone.now()
+                user.profil.save()
+            
+            messages.success(request, f'Bienvenue {user.first_name or user.username}!')
+            next_url = request.GET.get('next', 'home')
+            return redirect(next_url)
+    else:
+        form = ConnexionForm()
+    
+    return render(request, 'blog/connexion.html', {'form': form})
+
+
+def deconnexion(request):
+    """Vue de déconnexion"""
+    logout(request)
+    messages.info(request, 'Vous avez été déconnecté avec succès.')
+    return redirect('home')
+
+
+@login_required
+def profil(request):
+    """Vue du profil utilisateur"""
+    profil_user = request.user.profil
+    
+    if request.method == 'POST':
+        form = ProfilForm(request.POST, request.FILES, instance=profil_user, user=request.user)
+        if form.is_valid():
+            # Sauvegarder les informations du profil
+            profil_user = form.save()
+            
+            # Sauvegarder les informations de l'utilisateur
+            request.user.first_name = form.cleaned_data.get('first_name', '')
+            request.user.last_name = form.cleaned_data.get('last_name', '')
+            request.user.email = form.cleaned_data.get('email', '')
+            request.user.save()
+            
+            messages.success(request, 'Profil mis à jour avec succès!')
+            return redirect('profil')
+    else:
+        form = ProfilForm(instance=profil_user, user=request.user)
+    
+    # Statistiques de l'utilisateur
+    articles_utilisateur = Article.objects.filter(user_auteur=request.user)
+    commentaires_utilisateur = Commentaire.objects.filter(user_auteur=request.user)
+    
+    stats = {
+        'articles_publies': articles_utilisateur.filter(est_publie=True).count(),
+        'articles_brouillons': articles_utilisateur.filter(est_publie=False).count(),
+        'total_vues': sum(article.nombre_vues for article in articles_utilisateur),
+        'commentaires_ecrits': commentaires_utilisateur.count(),
+    }
+    
+    return render(request, 'blog/profil.html', {
+        'form': form,
+        'profil_user': profil_user,
+        'stats': stats,
+        'articles_recents': articles_utilisateur[:5]
+    })
 
 
 def home(request):
@@ -71,13 +187,21 @@ def home(request):
     })
 
 
+@role_required(['auteur', 'moderateur', 'admin'])
 def ajouter_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Article ajouté avec succès!')
-            return redirect('home')
+            article = form.save(commit=False)
+            article.user_auteur = request.user
+            article.save()
+            form.save_m2m()  # Pour sauvegarder les relations many-to-many (tags)
+            
+            if article.est_publie:
+                messages.success(request, 'Article publié avec succès!')
+            else:
+                messages.success(request, 'Article sauvegardé en brouillon!')
+            return redirect('detail_article', article_id=article.id)
     else:
         form = ArticleForm()
 
@@ -86,6 +210,11 @@ def ajouter_article(request):
 
 def detail_article(request, article_id):
     article = get_object_or_404(Article, id=article_id)
+    
+    # Vérifier si l'article est publié ou si l'utilisateur est l'auteur
+    if not article.est_publie and (not request.user.is_authenticated or article.user_auteur != request.user):
+        messages.error(request, 'Article non trouvé.')
+        return redirect('home')
     
     # Incrémenter le nombre de vues à chaque visite (tous rafraîchissements inclus)
     article.nombre_vues += 1
@@ -109,13 +238,19 @@ def detail_article(request, article_id):
         date_vue=timezone.now()
     )
     
-    commentaires = article.commentaires.all()
+    # Filtrer les commentaires approuvés
+    commentaires = article.commentaires.filter(est_approuve=True)
     
     if request.method == 'POST':
+        if not request.user.is_authenticated:
+            messages.error(request, 'Vous devez être connecté pour commenter.')
+            return redirect('connexion')
+        
         form = CommentaireForm(request.POST)
         if form.is_valid():
             commentaire = form.save(commit=False)
             commentaire.article = article
+            commentaire.user_auteur = request.user
             commentaire.save()
             messages.success(request, 'Commentaire ajouté avec succès!')
             return redirect('detail_article', article_id=article.id)
@@ -126,6 +261,28 @@ def detail_article(request, article_id):
         'article': article,
         'commentaires': commentaires,
         'form': form
+    })
+
+
+@login_required
+def mes_articles(request):
+    """Vue pour afficher les articles de l'utilisateur connecté"""
+    articles_list = Article.objects.filter(user_auteur=request.user).order_by('-date_creation')
+    
+    return render(request, 'blog/mes_articles.html', {
+        'articles': articles_list
+    })
+
+
+@role_required(['moderateur', 'admin'])
+def moderation(request):
+    """Vue de modération pour les modérateurs et admins"""
+    commentaires_en_attente = Commentaire.objects.filter(est_approuve=False)
+    articles_recents = Article.objects.all().order_by('-date_creation')[:10]
+    
+    return render(request, 'blog/moderation.html', {
+        'commentaires_en_attente': commentaires_en_attente,
+        'articles_recents': articles_recents
     })
 
 
