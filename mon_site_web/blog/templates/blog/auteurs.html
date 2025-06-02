@@ -24,8 +24,11 @@
         <div class="flex items-center justify-between">
             <div>
                 <div class="text-3xl font-bold">
-                    {% for auteur in auteurs %}{{ auteur.nb_articles }}{% if not forloop.last %} + {% endif %}{% empty
-                    %}0{% endfor %}
+                    {% for auteur in auteurs %}
+                    {{ auteur.nb_articles }}
+                    {% if not forloop.last %} + {% endif %}
+                    {% empty %}0
+                    {% endfor %}
                 </div>
                 <div class="text-green-100">Articles total</div>
             </div>

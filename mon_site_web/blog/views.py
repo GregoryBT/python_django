@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.db.models import Count, Max, Q
 from django.utils import timezone
 from datetime import datetime, timedelta
-from .models import Article, Commentaire, Categorie
+from .models import Article, Commentaire, Categorie, VueArticle
 from .forms import ArticleForm, CommentaireForm
 
 
@@ -27,7 +27,7 @@ def home(request):
     stats = {
         'total_articles': Article.objects.count(),
         'total_auteurs': Article.objects.values('auteur').distinct().count(),
-        'lecteurs_ce_mois': Article.objects.filter(date_creation__gte=un_mois_avant).count(),  # Approximation avec articles vus
+        'lecteurs_ce_mois': VueArticle.objects.filter(date_vue__gte=un_mois_avant).count(),  # Vraies lectures ce mois
         'total_commentaires': Commentaire.objects.count(),
         'total_categories': Categorie.objects.count(),
     }
@@ -55,6 +55,35 @@ def ajouter_article(request):
 def detail_article(request, article_id):
     article = get_object_or_404(Article, id=article_id)
     commentaires = article.commentaires.all()
+    
+    # Enregistrer la vue de l'article
+    def get_client_ip(request):
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+        return ip
+    
+    # Créer une nouvelle vue d'article
+    ip_address = get_client_ip(request)
+    user_agent = request.META.get('HTTP_USER_AGENT', '')
+    
+    # Éviter de compter plusieurs fois la même IP dans la même minute
+    derniere_vue = VueArticle.objects.filter(
+        article=article,
+        adresse_ip=ip_address,
+        date_vue__gte=timezone.now() - timedelta(minutes=1)
+    ).first()
+    
+    if not derniere_vue:
+        VueArticle.objects.create(
+            article=article,
+            adresse_ip=ip_address,
+            user_agent=user_agent
+        )
+        # Incrémenter aussi le compteur simple
+        article.incrementer_vues()
     
     if request.method == 'POST':
         form = CommentaireForm(request.POST)

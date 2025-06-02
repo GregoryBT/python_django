@@ -24,8 +24,10 @@
         <div class="flex items-center justify-between">
             <div>
                 <div class="text-3xl font-bold">
-                    {% for cat in categories %}{% if cat.nb_articles > 0 %}{{ cat.nb_articles }}{% if not forloop.last
-                    %} + {% endif %}{% endif %}{% empty %}0{% endfor %}
+                    {% for cat in categories %}
+                    {% if cat.nb_articles > 0 %}
+                    {{ cat.nb_articles }}
+                    {% if not forloop.last%} + {% endif %}{% endif %}{% empty %}0{% endfor %}
                 </div>
                 <div class="text-green-100">Articles total</div>
             </div>

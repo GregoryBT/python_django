@@ -87,8 +87,8 @@
             <div>
                 <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Auteurs actifs
                 </p>
-                <p class="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{{ stats.total_auteurs|default:0
-                    }}</p>
+                <p class="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{{stats.total_auteurs|default:0}}
+                </p>
                 <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Contributeurs uniques</p>
             </div>
             <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
@@ -104,8 +104,8 @@
             <div>
                 <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Lectures ce mois
                 </p>
-                <p class="text-3xl font-bold text-purple-600 dark:text-purple-400 mt-2">{{
-                    stats.lecteurs_ce_mois|default:0 }}</p>
+                <p class="text-3xl font-bold text-purple-600 dark:text-purple-400 mt-2">
+                    {{stats.lecteurs_ce_mois|default:0}}</p>
                 <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Nouveaux articles vus</p>
             </div>
             <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
@@ -120,8 +120,8 @@
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Commentaires</p>
-                <p class="text-3xl font-bold text-orange-600 dark:text-orange-400 mt-2">{{
-                    stats.total_commentaires|default:0 }}</p>
+                <p class="text-3xl font-bold text-orange-600 dark:text-orange-400 mt-2">
+                    {{stats.total_commentaires|default:0}}</p>
                 <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Total des interactions</p>
             </div>
             <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
