@@ -7,7 +7,8 @@
 <div class="mb-12 text-center">
     <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-4">ℹ️ À propos de Mon Blog Django</h1>
     <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-        Une plateforme moderne et élégante pour partager des idées, découvrir du contenu passionnant et construire une communauté de passionnés.
+        Une plateforme moderne et élégante pour partager des idées, découvrir du contenu passionnant et construire une
+        communauté de passionnés.
     </p>
 </div>
 
@@ -16,7 +17,8 @@
     <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white text-center">
         <div class="text-4xl mb-2">📄</div>
         <div class="text-3xl font-bold">{{ stats.total_articles }}</div>
-        <div class="text-blue-100">Article{{ stats.total_articles|pluralize }} publié{{ stats.total_articles|pluralize }}</div>
+        <div class="text-blue-100">Article{{ stats.total_articles|pluralize }} publié{{ stats.total_articles|pluralize
+            }}</div>
     </div>
     <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white text-center">
         <div class="text-4xl mb-2">💬</div>
@@ -44,10 +46,12 @@
             Notre Mission
         </h2>
         <p class="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
-            Mon Blog Django a été créé pour offrir une plateforme simple et moderne où chacun peut partager ses connaissances, ses expériences et ses passions.
+            Mon Blog Django a été créé pour offrir une plateforme simple et moderne où chacun peut partager ses
+            connaissances, ses expériences et ses passions.
         </p>
         <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
-            Nous croyons en la puissance du partage de connaissances et en la création d'une communauté bienveillante où les idées peuvent s'épanouir.
+            Nous croyons en la puissance du partage de connaissances et en la création d'une communauté bienveillante où
+            les idées peuvent s'épanouir.
         </p>
     </div>
 
@@ -118,7 +122,8 @@
         <div>
             <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">📝 Gestion de contenu</h3>
             <ul class="space-y-2 text-gray-700 dark:text-gray-300">
-                <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>Création et édition d'articles</li>
+                <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>Création et édition d'articles
+                </li>
                 <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>Organisation par catégories</li>
                 <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>Système de commentaires</li>
                 <li class="flex items-center"><span class="text-blue-500 mr-2">•</span>Gestion des auteurs</li>
@@ -161,7 +166,8 @@
     </div>
 
     <!-- Rejoindre -->
-    <div class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-8">
+    <div
+        class="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-xl p-8">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
             <span class="text-3xl mr-3">🚀</span>
             Rejoignez-nous
@@ -170,12 +176,12 @@
             Devenez contributeur et partagez vos connaissances avec notre communauté grandissante.
         </p>
         <div class="space-y-3">
-            <a href="{% url 'ajouter_article' %}" 
-               class="block w-full text-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
+            <a href="{% url 'ajouter_article' %}"
+                class="block w-full text-center bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
                 ✍️ Écrire un article
             </a>
-            <a href="{% url 'articles' %}" 
-               class="block w-full text-center bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium">
+            <a href="{% url 'articles' %}"
+                class="block w-full text-center bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium">
                 📄 Parcourir les articles
             </a>
         </div>
@@ -190,30 +196,36 @@
     </h2>
     <div class="space-y-6">
         <div class="flex items-start">
-            <div class="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
+            <div
+                class="flex-shrink-0 w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
                 2024
             </div>
             <div>
                 <h3 class="font-semibold text-gray-900 dark:text-white">Lancement du projet</h3>
-                <p class="text-gray-600 dark:text-gray-400">Création de Mon Blog Django avec les fonctionnalités de base.</p>
+                <p class="text-gray-600 dark:text-gray-400">Création de Mon Blog Django avec les fonctionnalités de
+                    base.</p>
             </div>
         </div>
         <div class="flex items-start">
-            <div class="flex-shrink-0 w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
+            <div
+                class="flex-shrink-0 w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
                 2025
             </div>
             <div>
                 <h3 class="font-semibold text-gray-900 dark:text-white">Amélioration continue</h3>
-                <p class="text-gray-600 dark:text-gray-400">Ajout du mode sombre, système de navigation avancé et optimisations.</p>
+                <p class="text-gray-600 dark:text-gray-400">Ajout du mode sombre, système de navigation avancé et
+                    optimisations.</p>
             </div>
         </div>
         <div class="flex items-start">
-            <div class="flex-shrink-0 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
+            <div
+                class="flex-shrink-0 w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold mr-4">
                 ∞
             </div>
             <div>
                 <h3 class="font-semibold text-gray-900 dark:text-white">L'avenir</h3>
-                <p class="text-gray-600 dark:text-gray-400">Nouvelles fonctionnalités et croissance de la communauté.</p>
+                <p class="text-gray-600 dark:text-gray-400">Nouvelles fonctionnalités et croissance de la communauté.
+                </p>
             </div>
         </div>
     </div>

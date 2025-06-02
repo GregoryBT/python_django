@@ -1,34 +1,41 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib import messages
-from django.db.models import Count, Max
+from django.db.models import Count, Max, Q
+from django.utils import timezone
+from datetime import datetime, timedelta
 from .models import Article, Commentaire, Categorie
 from .forms import ArticleForm, CommentaireForm
 
 
 def home(request):
-    categorie_id = request.GET.get('categorie')
-    articles = Article.objects.all()
+    """Vue de la page d'accueil avec fonctionnalité de recherche"""
+    search_query = request.GET.get('search')
+    articles = Article.objects.all().order_by('-date_creation')
     
-    if categorie_id:
-        articles = articles.filter(categorie_id=categorie_id)
+    # Recherche par titre ou auteur
+    if search_query:
+        articles = articles.filter(
+            Q(titre__icontains=search_query) | 
+            Q(auteur__icontains=search_query)
+        )
     
-    # Grouper les articles par catégorie
-    categories = Categorie.objects.all()
-    articles_par_categorie = {}
-    articles_sans_categorie = articles.filter(categorie__isnull=True)
+    # Calcul de la date d'il y a un mois
+    un_mois_avant = timezone.now() - timedelta(days=30)
     
-    for categorie in categories:
-        articles_categorie = articles.filter(categorie=categorie)
-        if articles_categorie:
-            articles_par_categorie[categorie] = articles_categorie
+    # Statistiques pour la page d'accueil
+    stats = {
+        'total_articles': Article.objects.count(),
+        'total_auteurs': Article.objects.values('auteur').distinct().count(),
+        'lecteurs_ce_mois': Article.objects.filter(date_creation__gte=un_mois_avant).count(),  # Approximation avec articles vus
+        'total_commentaires': Commentaire.objects.count(),
+        'total_categories': Categorie.objects.count(),
+    }
     
     return render(request, 'blog/home.html', {
         'articles': articles,
-        'categories': categories,
-        'articles_par_categorie': articles_par_categorie,
-        'articles_sans_categorie': articles_sans_categorie,
-        'categorie_selectionnee': categorie_id
+        'search_query': search_query,
+        'stats': stats
     })
 
 

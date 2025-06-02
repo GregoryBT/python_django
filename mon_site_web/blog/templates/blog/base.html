@@ -30,27 +30,33 @@
                 <div class="flex">
                     <!-- Logo -->
                     <div class="flex items-center">
-                        <a href="{% url 'home' %}" class="flex items-center space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                        <a href="{% url 'home' %}"
+                            class="flex items-center space-x-2 text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
                             <span class="text-2xl">📚</span>
                             <span>Mon Blog</span>
                         </a>
                     </div>
-                    
+
                     <!-- Navigation principale -->
                     <div class="hidden md:ml-8 md:flex md:space-x-8">
-                        <a href="{% url 'home' %}" class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
+                        <a href="{% url 'home' %}"
+                            class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
                             🏠 Accueil
                         </a>
-                        <a href="{% url 'articles' %}" class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
+                        <a href="{% url 'articles' %}"
+                            class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
                             📄 Articles
                         </a>
-                        <a href="{% url 'categories' %}" class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
+                        <a href="{% url 'categories' %}"
+                            class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
                             🏷️ Catégories
                         </a>
-                        <a href="{% url 'auteurs' %}" class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
+                        <a href="{% url 'auteurs' %}"
+                            class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
                             👥 Auteurs
                         </a>
-                        <a href="{% url 'a_propos' %}" class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
+                        <a href="{% url 'a_propos' %}"
+                            class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
                             ℹ️ À propos
                         </a>
                     </div>
@@ -60,52 +66,71 @@
                 <div class="flex items-center space-x-4">
                     <!-- Sélecteur de langue -->
                     <div class="relative">
-                        <select onchange="changeLanguage(this.value)" class="bg-transparent border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-300 text-sm rounded-md px-3 py-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700">
+                        <select onchange="changeLanguage(this.value)"
+                            class="bg-transparent border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-300 text-sm rounded-md px-3 py-1 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700">
                             <option value="fr">🇫🇷 FR</option>
                             <option value="en">🇬🇧 EN</option>
                         </select>
                     </div>
 
                     <!-- Sélecteur de thème -->
-                    <button onclick="toggleTheme()" class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                    <button onclick="toggleTheme()"
+                        class="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
                         <span id="theme-icon" class="text-lg">🌙</span>
                     </button>
 
                     <!-- Section authentification -->
                     {% if user.is_authenticated %}
-                        <div class="relative">
-                            <button onclick="toggleUserMenu()" class="flex items-center space-x-2 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
-                                <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
-                                    {{ user.first_name|first|default:user.username|first|upper }}
-                                </div>
-                                <span class="text-gray-900 dark:text-gray-300 font-medium">{{ user.first_name|default:user.username }}</span>
-                                <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                                </svg>
-                            </button>
-                            
-                            <!-- Menu utilisateur -->
-                            <div id="user-menu" class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
-                                <div class="py-1">
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">👤 Mon profil</a>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">⚙️ Paramètres</a>
-                                    <a href="/admin/" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">🔧 Administration</a>
-                                    <div class="border-t border-gray-100 dark:border-gray-600"></div>
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">🚪 Déconnexion</a>
-                                </div>
+                    <div class="relative">
+                        <button onclick="toggleUserMenu()"
+                            class="flex items-center space-x-2 text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200">
+                            <div
+                                class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+                                {{ user.first_name|first|default:user.username|first|upper }}
+                            </div>
+                            <span class="text-gray-900 dark:text-gray-300 font-medium">{{
+                                user.first_name|default:user.username }}</span>
+                            <svg class="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+
+                        <!-- Menu utilisateur -->
+                        <div id="user-menu"
+                            class="hidden absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 z-50">
+                            <div class="py-1">
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">👤
+                                    Mon profil</a>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">⚙️
+                                    Paramètres</a>
+                                <a href="/admin/"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">🔧
+                                    Administration</a>
+                                <div class="border-t border-gray-100 dark:border-gray-600"></div>
+                                <a href="#"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">🚪
+                                    Déconnexion</a>
                             </div>
                         </div>
+                    </div>
                     {% else %}
-                        <a href="#" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                            🔐 Connexion
-                        </a>
+                    <a href="#"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
+                        🔐 Connexion
+                    </a>
                     {% endif %}
 
                     <!-- Menu mobile -->
                     <div class="md:hidden">
-                        <button onclick="toggleMobileMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <button onclick="toggleMobileMenu()"
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
                             <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </button>
                     </div>
@@ -116,31 +141,47 @@
         <!-- Menu mobile -->
         <div id="mobile-menu" class="hidden md:hidden">
             <div class="px-2 pt-2 pb-3 space-y-1 bg-gray-50 dark:bg-gray-800">
-                <a href="{% url 'home' %}" class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">🏠 Accueil</a>
-                <a href="{% url 'articles' %}" class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">📄 Articles</a>
-                <a href="{% url 'categories' %}" class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">🏷️ Catégories</a>
-                <a href="{% url 'auteurs' %}" class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">👥 Auteurs</a>
-                <a href="{% url 'a_propos' %}" class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">ℹ️ À propos</a>
+                <a href="{% url 'home' %}"
+                    class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">🏠
+                    Accueil</a>
+                <a href="{% url 'articles' %}"
+                    class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">📄
+                    Articles</a>
+                <a href="{% url 'categories' %}"
+                    class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">🏷️
+                    Catégories</a>
+                <a href="{% url 'auteurs' %}"
+                    class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">👥
+                    Auteurs</a>
+                <a href="{% url 'a_propos' %}"
+                    class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">ℹ️
+                    À propos</a>
             </div>
         </div>
     </nav>
 
     <!-- Main Content -->
     <main class="flex-grow">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-8">
             <!-- Messages -->
             {% if messages %}
             {% for message in messages %}
-            <div class="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-300 px-4 py-3 rounded-lg mb-6 flex items-center justify-between">
+            <div
+                class="bg-green-100 dark:bg-green-900 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-300 px-4 py-3 rounded-lg mb-6 flex items-center justify-between">
                 <span class="flex items-center">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clip-rule="evenodd"></path>
                     </svg>
                     {{ message }}
                 </span>
-                <button onclick="this.parentElement.style.display='none'" class="text-green-700 dark:text-green-300 hover:text-green-900 dark:hover:text-green-100">
+                <button onclick="this.parentElement.style.display='none'"
+                    class="text-green-700 dark:text-green-300 hover:text-green-900 dark:hover:text-green-100">
                     <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                        <path fill-rule="evenodd"
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
                     </svg>
                 </button>
             </div>
@@ -154,7 +195,7 @@
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="max-w-7xl mx-auto px-1 sm:px-2 lg:px-3 py-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Section À propos -->
                 <div>
@@ -215,7 +256,7 @@
         function toggleTheme() {
             const html = document.documentElement;
             const themeIcon = document.getElementById('theme-icon');
-            
+
             if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
                 themeIcon.textContent = '🌙';
@@ -228,10 +269,10 @@
         }
 
         // Initialiser le thème au chargement
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const savedTheme = localStorage.getItem('theme');
             const themeIcon = document.getElementById('theme-icon');
-            
+
             if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                 document.documentElement.classList.add('dark');
                 themeIcon.textContent = '☀️';
@@ -260,14 +301,14 @@
         }
 
         // Fermer les menus quand on clique ailleurs
-        document.addEventListener('click', function(event) {
+        document.addEventListener('click', function (event) {
             const userMenu = document.getElementById('user-menu');
             const mobileMenu = document.getElementById('mobile-menu');
-            
+
             if (!event.target.closest('.relative') && userMenu) {
                 userMenu.classList.add('hidden');
             }
-            
+
             if (!event.target.closest('.md\\:hidden') && mobileMenu) {
                 mobileMenu.classList.add('hidden');
             }

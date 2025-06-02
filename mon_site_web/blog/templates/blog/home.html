@@ -1,182 +1,292 @@
 {% extends 'blog/base.html' %}
 
-{% block title %}Accueil - Mon Blog Django{% endblock %}
+{% block title %}Accueil - Blog Académique Universitaire{% endblock %}
 
 {% block content %}
-<!-- Filtres par catégorie -->
-<div class="mb-8">
-    <div class="flex flex-wrap gap-2">
-        <a href="{% url 'home' %}"
-            class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 {% if not categorie_selectionnee %}bg-blue-600 text-white shadow-lg{% else %}bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 border-2 border-blue-600 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-gray-600{% endif %}">
-            Toutes les catégories
-        </a>
-        {% for categorie in categories %}
-        <a href="?categorie={{ categorie.id }}"
-            class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 {% if categorie_selectionnee == categorie.id|stringformat:'s' %}text-white shadow-lg{% else %}bg-white dark:bg-gray-700 border-2 hover:shadow-md{% endif %}"
-            style="{% if categorie_selectionnee == categorie.id|stringformat:'s' %}background-color: {{ categorie.couleur }}; border-color: {{ categorie.couleur }};{% else %}color: {{ categorie.couleur }}; border-color: {{ categorie.couleur }};{% endif %}">
-            {{ categorie.nom }}
-        </a>
-        {% endfor %}
-    </div>
-</div>
-
-<!-- Compteur et affichage des articles -->
-<div class="mb-6">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
-        📄 Articles
-        <span class="ml-2 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 text-sm font-medium px-3 py-1 rounded-full">
-            {{ articles.count }}
-        </span>
-    </h2>
-</div>
-
-{% if categorie_selectionnee %}
-<!-- Articles filtrés par catégorie -->
-{% if articles %}
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {% for article in articles %}
+<!-- Section Hero avec fond coloré -->
+<div
+    class="bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl shadow-2xl p-12 mb-12 text-white relative overflow-hidden">
+    <!-- Éléments décoratifs de fond -->
+    <div class="absolute inset-0 bg-black bg-opacity-10"></div>
     <div
-        class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
-        <div class="p-6">
-            {% if article.categorie %}
-            <span class="inline-block px-3 py-1 text-xs font-semibold text-white rounded-full mb-3"
-                style="background-color: {{ article.categorie.couleur }};">
-                {{ article.categorie.nom }}
-            </span>
-            {% endif %}
-            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
-                <a href="{% url 'detail_article' article.id %}"
-                    class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
-                    {{ article.titre }}
+        class="absolute top-0 right-0 w-64 h-64 bg-white bg-opacity-5 rounded-full transform translate-x-32 -translate-y-32">
+    </div>
+    <div
+        class="absolute bottom-0 left-0 w-48 h-48 bg-white bg-opacity-5 rounded-full transform -translate-x-24 translate-y-24">
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="relative z-10 max-w-4xl mx-auto text-center">
+        <!-- Titre principal -->
+        <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
+            📚 Blog Académique Universitaire
+        </h1>
+
+        <!-- Sous-titre -->
+        <p class="text-xl md:text-2xl text-blue-100 mb-10 leading-relaxed">
+            Découvrez des articles de recherche, des analyses, et des réflexions académiques
+        </p>
+
+        <!-- Barre de recherche -->
+        <div class="max-w-2xl mx-auto">
+            <form method="GET" action="{% url 'home' %}" class="relative">
+                <div class="flex items-center bg-white rounded-full shadow-lg overflow-hidden">
+                    <input type="text" name="search" value="{{ search_query|default:'' }}"
+                        placeholder="Rechercher par titre ou auteur..."
+                        class="flex-1 px-6 py-4 text-gray-900 text-lg focus:outline-none focus:ring-0 placeholder-gray-500">
+                    <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 transition-colors duration-200 font-semibold">
+                        🔍 Rechercher
+                    </button>
+                </div>
+            </form>
+
+            <!-- Suggestions de recherche -->
+            <div class="mt-4 flex flex-wrap justify-center gap-2">
+                <span class="text-blue-200 text-sm">Recherches populaires :</span>
+                <a href="?search=python"
+                    class="bg-blue-500 bg-opacity-50 hover:bg-opacity-70 text-white px-3 py-1 rounded-full text-sm transition-all duration-200">
+                    Python
                 </a>
-            </h3>
-            <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">
-                Par <span class="font-medium">{{ article.auteur }}</span> • {{ article.date_creation|date:"d/m/Y à H:i" }}
-            </p>
-            <p class="text-gray-700 dark:text-gray-300 mb-4">{{ article.contenu|truncatewords:25 }}</p>
-            <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
-                    💬 {{ article.commentaires.count }} commentaire{{ article.commentaires.count|pluralize }}
-                </span>
-                <a href="{% url 'detail_article' article.id %}"
-                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium">
-                    Lire la suite
+                <a href="?search=intelligence"
+                    class="bg-blue-500 bg-opacity-50 hover:bg-opacity-70 text-white px-3 py-1 rounded-full text-sm transition-all duration-200">
+                    Intelligence Artificielle
+                </a>
+                <a href="?search=recherche"
+                    class="bg-blue-500 bg-opacity-50 hover:bg-opacity-70 text-white px-3 py-1 rounded-full text-sm transition-all duration-200">
+                    Recherche
                 </a>
             </div>
         </div>
     </div>
-    {% endfor %}
 </div>
-{% else %}
-<div class="bg-blue-50 border border-blue-200 rounded-lg p-6 text-center">
-    <div class="text-4xl mb-4">📭</div>
-    <h3 class="text-lg font-semibold text-blue-900 mb-2">Aucun article dans cette catégorie</h3>
-    <p class="text-blue-700">
-        <a href="{% url 'home' %}" class="font-medium hover:underline">Voir tous les articles</a>
-    </p>
-</div>
-{% endif %}
-{% else %}
-<!-- Articles groupés par catégorie -->
-{% for categorie, articles_categorie in articles_par_categorie.items %}
-<div class="mb-12">
-    <div class="flex items-center mb-6">
-        <span class="inline-flex items-center px-4 py-2 rounded-full text-white font-semibold text-lg mr-4"
-            style="background-color: {{ categorie.couleur }};">
-            {{ categorie.nom }}
-        </span>
-        <h3 class="text-xl font-bold text-gray-900 dark:text-white">
-            {{ articles_categorie.count }} article{{ articles_categorie.count|pluralize }}
-        </h3>
-    </div>
-    {% if categorie.description %}
-    <p class="text-gray-600 dark:text-gray-400 mb-6 italic">{{ categorie.description }}</p>
-    {% endif %}
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for article in articles_categorie %}
-        <div
-            class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+<!-- Section des 4 cartes de statistiques -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    <!-- Articles publiés -->
+    <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Articles publiés
+                </p>
+                <p class="text-3xl font-bold text-blue-600 dark:text-blue-400 mt-2">{{ stats.total_articles|default:0 }}
+                </p>
+                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Total des publications</p>
+            </div>
+            <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                <span class="text-2xl">📄</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auteurs actifs -->
+    <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Auteurs actifs
+                </p>
+                <p class="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{{ stats.total_auteurs|default:0
+                    }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Contributeurs uniques</p>
+            </div>
+            <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                <span class="text-2xl">👥</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lecteurs ce mois -->
+    <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Lectures ce mois
+                </p>
+                <p class="text-3xl font-bold text-purple-600 dark:text-purple-400 mt-2">{{
+                    stats.lecteurs_ce_mois|default:0 }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Nouveaux articles vus</p>
+            </div>
+            <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                <span class="text-2xl">👁️</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Commentaires -->
+    <div
+        class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
+        <div class="flex items-center justify-between">
+            <div>
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Commentaires</p>
+                <p class="text-3xl font-bold text-orange-600 dark:text-orange-400 mt-2">{{
+                    stats.total_commentaires|default:0 }}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Total des interactions</p>
+            </div>
+            <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
+                <span class="text-2xl">💬</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Section des résultats de recherche ou articles récents -->
+<div class="mb-12">
+    {% if search_query %}
+    <!-- Résultats de recherche -->
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            🔍 Résultats de recherche pour "{{ search_query }}"
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+            {{ articles.count }} résultat{{ articles.count|pluralize }} trouvé{{ articles.count|pluralize }}
+        </p>
+    </div>
+
+    {% if articles %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for article in articles %}
+        <article
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-200 dark:border-gray-700">
             <div class="p-6">
-                <h4 class="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                {% if article.categorie %}
+                <span class="inline-block px-3 py-1 text-xs font-semibold text-white rounded-full mb-4"
+                    style="background-color: {{ article.categorie.couleur }};">
+                    {{ article.categorie.nom }}
+                </span>
+                {% endif %}
+
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 leading-tight">
                     <a href="{% url 'detail_article' article.id %}"
                         class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
                         {{ article.titre }}
                     </a>
-                </h4>
-                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">
-                    Par <span class="font-medium">{{ article.auteur }}</span> • {{ article.date_creation|date:"d/m/Y à H:i" }}
+                </h3>
+
+                <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    <span class="font-medium">{{ article.auteur }}</span>
+                    <span class="mx-2">•</span>
+                    <span>{{ article.date_creation|date:"d/m/Y" }}</span>
+                </div>
+
+                <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                    {{ article.contenu|truncatewords:25 }}
                 </p>
-                <p class="text-gray-700 dark:text-gray-300 mb-4">{{ article.contenu|truncatewords:25 }}</p>
+
                 <div class="flex items-center justify-between">
                     <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
                         💬 {{ article.commentaires.count }} commentaire{{ article.commentaires.count|pluralize }}
                     </span>
                     <a href="{% url 'detail_article' article.id %}"
                         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium">
-                        Lire la suite
+                        Lire l'article
                     </a>
                 </div>
             </div>
-        </div>
+        </article>
         {% endfor %}
     </div>
-</div>
-{% endfor %}
-
-<!-- Articles sans catégorie -->
-{% if articles_sans_categorie %}
-<div class="mb-12">
-    <div class="flex items-center mb-6">
-        <span class="inline-flex items-center px-4 py-2 rounded-full bg-gray-500 text-white font-semibold text-lg mr-4">
-            Sans catégorie
-        </span>
-        <h3 class="text-xl font-bold text-gray-900">
-            {{ articles_sans_categorie.count }} article{{ articles_sans_categorie.count|pluralize }}
-        </h3>
+    {% else %}
+    <!-- Aucun résultat trouvé -->
+    <div
+        class="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
+        <div class="text-6xl mb-4">🔍</div>
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Aucun résultat trouvé</h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+            Aucun article ne correspond à votre recherche "{{ search_query }}".
+        </p>
+        <div class="space-x-4">
+            <a href="{% url 'home' %}"
+                class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
+                Voir tous les articles
+            </a>
+            <a href="{% url 'ajouter_article' %}"
+                class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium">
+                Créer un article
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    {% else %}
+    <!-- Articles récents (quand pas de recherche) -->
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+            📄 Articles récents
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+            Découvrez les dernières publications académiques
+        </p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {% for article in articles_sans_categorie %}
-        <div
-            class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+    {% if articles %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {% for article in articles|slice:":6" %}
+        <article
+            class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-200 dark:border-gray-700">
             <div class="p-6">
-                <h4 class="text-xl font-bold text-gray-900 mb-2">
+                {% if article.categorie %}
+                <span class="inline-block px-3 py-1 text-xs font-semibold text-white rounded-full mb-4"
+                    style="background-color: {{ article.categorie.couleur }};">
+                    {{ article.categorie.nom }}
+                </span>
+                {% endif %}
+
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 leading-tight">
                     <a href="{% url 'detail_article' article.id %}"
-                        class="hover:text-blue-600 transition-colors duration-200">
+                        class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
                         {{ article.titre }}
                     </a>
-                </h4>
-                <p class="text-sm text-gray-500 mb-3">
-                    Par <span class="font-medium">{{ article.auteur }}</span> • {{ article.date_creation|date:"d/m/Y à H:i" }}
+                </h3>
+
+                <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                    <span class="font-medium">{{ article.auteur }}</span>
+                    <span class="mx-2">•</span>
+                    <span>{{ article.date_creation|date:"d/m/Y" }}</span>
+                </div>
+
+                <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
+                    {{ article.contenu|truncatewords:25 }}
                 </p>
-                <p class="text-gray-700 mb-4">{{ article.contenu|truncatewords:25 }}</p>
+
                 <div class="flex items-center justify-between">
-                    <span class="text-sm text-gray-500 flex items-center">
+                    <span class="text-sm text-gray-500 dark:text-gray-400 flex items-center">
                         💬 {{ article.commentaires.count }} commentaire{{ article.commentaires.count|pluralize }}
                     </span>
                     <a href="{% url 'detail_article' article.id %}"
                         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium">
-                        Lire la suite
+                        Lire l'article
                     </a>
                 </div>
             </div>
-        </div>
+        </article>
         {% endfor %}
     </div>
-</div>
-{% endif %}
 
-{% if not articles_par_categorie and not articles_sans_categorie %}
-<div class="bg-blue-50 border border-blue-200 rounded-lg p-8 text-center">
-    <div class="text-6xl mb-4">📝</div>
-    <h3 class="text-2xl font-bold text-blue-900 mb-4">Aucun article pour le moment</h3>
-    <p class="text-blue-700 mb-6">Commencez par créer votre premier article et partagez vos idées avec le monde !</p>
-    <a href="{% url 'ajouter_article' %}"
-        class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
-        ✨ Créer mon premier article
-    </a>
+    <!-- Bouton voir plus -->
+    {% if articles.count > 6 %}
+    <div class="text-center mt-12">
+        <a href="{% url 'articles' %}"
+            class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-semibold text-lg shadow-lg">
+            Voir tous les articles ({{ articles.count }})
+        </a>
+    </div>
+    {% endif %}
+    {% else %}
+    <!-- Aucun article -->
+    <div
+        class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
+        <div class="text-6xl mb-4">📚</div>
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Aucun article publié</h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+            Soyez le premier à partager vos recherches et analyses académiques !
+        </p>
+        <a href="{% url 'ajouter_article' %}"
+            class="bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg">
+            ✍️ Publier le premier article
+        </a>
+    </div>
+    {% endif %}
+    {% endif %}
 </div>
-{% endif %}
-{% endif %}
 {% endblock %}
