@@ -27,7 +27,7 @@ def home(request):
     stats = {
         'total_articles': Article.objects.count(),
         'total_auteurs': Article.objects.values('auteur').distinct().count(),
-        'lecteurs_ce_mois': VueArticle.objects.filter(date_vue__gte=un_mois_avant).count(),  # Vraies lectures ce mois
+        'lecteurs_ce_mois': sum(article.nombre_vues for article in Article.objects.all()),  # Toutes les vues, tous rafraîchissements inclus
         'total_commentaires': Commentaire.objects.count(),
         'total_categories': Categorie.objects.count(),
     }
@@ -54,9 +54,12 @@ def ajouter_article(request):
 
 def detail_article(request, article_id):
     article = get_object_or_404(Article, id=article_id)
-    commentaires = article.commentaires.all()
     
-    # Enregistrer la vue de l'article
+    # Incrémenter le nombre de vues à chaque visite (tous rafraîchissements inclus)
+    article.nombre_vues += 1
+    article.save()
+    
+    # Récupérer l'IP du visiteur
     def get_client_ip(request):
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
@@ -65,25 +68,16 @@ def detail_article(request, article_id):
             ip = request.META.get('REMOTE_ADDR')
         return ip
     
-    # Créer une nouvelle vue d'article
     ip_address = get_client_ip(request)
-    user_agent = request.META.get('HTTP_USER_AGENT', '')
     
-    # Éviter de compter plusieurs fois la même IP dans la même minute
-    derniere_vue = VueArticle.objects.filter(
+    # Enregistrer la vue (pour des statistiques détaillées si nécessaire)
+    VueArticle.objects.create(
         article=article,
-        adresse_ip=ip_address,
-        date_vue__gte=timezone.now() - timedelta(minutes=1)
-    ).first()
+        ip_address=ip_address,
+        date_vue=timezone.now()
+    )
     
-    if not derniere_vue:
-        VueArticle.objects.create(
-            article=article,
-            adresse_ip=ip_address,
-            user_agent=user_agent
-        )
-        # Incrémenter aussi le compteur simple
-        article.incrementer_vues()
+    commentaires = article.commentaires.all()
     
     if request.method == 'POST':
         form = CommentaireForm(request.POST)
