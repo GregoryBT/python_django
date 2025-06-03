@@ -25,4 +25,7 @@ urlpatterns = [
     path('categories/', views.categories_view, name='categories'),
     path('auteurs/', views.auteurs_view, name='auteurs'),
     path('a-propos/', views.a_propos_view, name='a_propos'),
+    
+    # Analytics
+    path('analytics/', views.analytics_view, name='analytics'),
 ]

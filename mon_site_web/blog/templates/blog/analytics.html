@@ -1,0 +1,118 @@
+{% extends 'blog/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Analytics" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>{% trans "Analytics Dashboard" %}</h2>
+    
+    <!-- Statistiques générales -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">{{ stats.total_articles }}</h5>
+                    <p class="card-text">{% trans "Articles publiés" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">{{ stats.total_auteurs }}</h5>
+                    <p class="card-text">{% trans "Auteurs actifs" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">{{ stats.total_vues }}</h5>
+                    <p class="card-text">{% trans "Vues totales" %}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">{{ stats.moyenne_vues_par_article|floatformat:1 }}</h5>
+                    <p class="card-text">{% trans "Moyenne vues/article" %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Articles populaires -->
+    <div class="row">
+        <div class="col-md-6">
+            <h4>{% trans "Articles les plus populaires" %}</h4>
+            <div class="list-group">
+                {% for article in articles_populaires %}
+                <a href="{% url 'detail_article' article.slug %}" class="list-group-item list-group-item-action">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1">{{ article.titre }}</h6>
+                        <small class="text-muted">{{ article.nombre_vues }} vues</small>
+                    </div>
+                    <small>{% trans "Par" %} {{ article.auteur.username }}</small>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- Auteurs actifs -->
+        <div class="col-md-6">
+            <h4>{% trans "Auteurs les plus actifs" %}</h4>
+            <div class="list-group">
+                {% for auteur in auteurs_actifs %}
+                <div class="list-group-item">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1">{{ auteur.username }}</h6>
+                        <small class="text-muted">{{ auteur.nb_articles }} articles</small>
+                    </div>
+                    <small>{{ auteur.total_vues|default:0 }} vues totales</small>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Évolution des vues -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <h4>{% trans "Évolution des vues (6 derniers mois)" %}</h4>
+            <canvas id="vuesChart" width="400" height="100"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const ctx = document.getElementById('vuesChart').getContext('2d');
+const vuesData = {{ vues_par_mois|safe }};
+const labels = vuesData.map(item => item.mois);
+const data = vuesData.map(item => item.total_vues);
+
+new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [{
+            label: '{% trans "Vues par mois" %}',
+            data: data,
+            borderColor: 'rgb(75, 192, 192)',
+            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            tension: 0.1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+</script>
+{% endblock %}

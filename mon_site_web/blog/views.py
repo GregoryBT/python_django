@@ -4,12 +4,14 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
-from django.db.models import Count, Max, Q
+from django.db.models import Count, Max, Q, Avg, Sum
 from django.utils import timezone
 from datetime import datetime, timedelta
 from functools import wraps
 from .models import Article, Commentaire, Categorie, VueArticle, Profil
 from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 def home(request):
@@ -415,3 +417,96 @@ def auteurs_view(request):
 def a_propos_view(request):
     """Vue de la page À propos"""
     return render(request, 'blog/a_propos.html')
+
+
+@user_passes_test(peut_moderer)
+def analytics_view(request):
+    """Vue d'analytics pour les modérateurs et admins"""
+    # Statistiques générales
+    stats = {
+        'total_articles': Article.objects.filter(est_publie=True).count(),
+        'total_auteurs': User.objects.filter(profil__role__in=['auteur', 'moderateur', 'admin']).count(),
+        'total_vues': sum(article.nombre_vues for article in Article.objects.filter(est_publie=True)),
+        'moyenne_vues_par_article': Article.objects.filter(est_publie=True).aggregate(Avg('nombre_vues'))['nombre_vues__avg'] or 0,
+        'total_commentaires': Commentaire.objects.filter(est_approuve=True).count(),
+    }
+    
+    # Articles les plus populaires
+    articles_populaires = Article.objects.filter(est_publie=True).order_by('-nombre_vues')[:10]
+    
+    # Auteurs les plus actifs
+    auteurs_actifs = User.objects.filter(
+        articles__est_publie=True
+    ).annotate(
+        nb_articles=Count('articles', filter=Q(articles__est_publie=True)),
+        total_vues=Sum('articles__nombre_vues', filter=Q(articles__est_publie=True))
+    ).order_by('-nb_articles')[:10]
+    
+    # Évolution des vues par mois (6 derniers mois)
+    six_mois_avant = timezone.now() - timedelta(days=180)
+    vues_par_mois = VueArticle.objects.filter(
+        date_vue__gte=six_mois_avant
+    ).extra({
+        'mois': "DATE_FORMAT(date_vue, '%%Y-%%m')"
+    }).values('mois').annotate(
+        total_vues=Count('id')
+    ).order_by('mois')
+    
+    return render(request, 'blog/analytics.html', {
+        'stats': stats,
+        'articles_populaires': articles_populaires,
+        'auteurs_actifs': auteurs_actifs,
+        'vues_par_mois': vues_par_mois,
+    })
+
+
+def envoyer_notification_email(destinataire, sujet, message):
+    """Envoie une notification par email"""
+    try:
+        send_mail(
+            sujet,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [destinataire],
+            fail_silently=False,
+        )
+    except Exception as e:
+        print(f"Erreur envoi email: {e}")
+
+
+@login_required
+def ajouter_commentaire(request, article_id):
+    article = get_object_or_404(Article, id=article_id)
+    
+    if request.method == 'POST':
+        form = CommentaireForm(request.POST)
+        if form.is_valid():
+            commentaire = form.save(commit=False)
+            commentaire.article = article
+            commentaire.auteur = request.user
+            commentaire.save()
+            
+            # Notification email to article author
+            if article.auteur.email:
+                sujet = f"Nouveau commentaire sur votre article: {article.titre}"
+                message = f"""
+Bonjour {article.auteur.username},
+
+Vous avez reçu un nouveau commentaire sur votre article "{article.titre}".
+
+Commentaire de {request.user.username}:
+{commentaire.contenu}
+
+Consultez votre article: http://localhost:8000/article/{article.id}/
+                """
+                envoyer_notification_email(article.auteur.email, sujet, message)
+            
+            messages.success(request, 'Commentaire ajouté avec succès!')
+            return redirect('detail_article', article_id=article.id)
+    else:
+        form = CommentaireForm()
+    
+    return render(request, 'blog/detail_article.html', {
+        'article': article,
+        'form': form
+    })

@@ -21,6 +21,9 @@ msgstr ""
 msgid "Mon Blog"
 msgstr "My Blog"
 
+msgid "Découvrez des articles de recherche, des analyses, et des réflexions académiques"
+msgstr "Discover research articles, analyses, and academic reflections"
+
 msgid "Accueil"
 msgstr "Accueil"
 
