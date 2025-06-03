@@ -116,6 +116,22 @@ class Article(models.Model):
         self.nombre_vues += 1
         self.save(update_fields=['nombre_vues'])
 
+    def get_auteur_display(self):
+        """Retourne le nom de l'auteur à afficher"""
+        if self.user_auteur:
+            # Si l'article a un utilisateur assigné, utiliser son nom complet ou username
+            if self.user_auteur.first_name and self.user_auteur.last_name:
+                return f"{self.user_auteur.first_name} {self.user_auteur.last_name}"
+            else:
+                return self.user_auteur.username
+        else:
+            # Sinon, utiliser le champ auteur classique
+            return self.auteur or "Auteur inconnu"
+    
+    def get_nom_auteur(self):
+        """Alias pour get_auteur_display pour compatibilité"""
+        return self.get_auteur_display()
+
     class Meta:
         ordering = ['-date_creation']
 
@@ -152,6 +168,18 @@ class Commentaire(models.Model):
 
     def __str__(self):
         return f'Commentaire de {self.nom_auteur} sur {self.article.titre}'
+
+    def get_nom_auteur(self):
+        """Retourne le nom de l'auteur du commentaire à afficher"""
+        if self.user_auteur:
+            # Si le commentaire a un utilisateur assigné, utiliser son nom complet ou username
+            if self.user_auteur.first_name and self.user_auteur.last_name:
+                return f"{self.user_auteur.first_name} {self.user_auteur.last_name}"
+            else:
+                return self.user_auteur.username
+        else:
+            # Sinon, utiliser le champ nom_auteur classique
+            return self.nom_auteur or "Auteur inconnu"
 
     class Meta:
         ordering = ['date_creation']

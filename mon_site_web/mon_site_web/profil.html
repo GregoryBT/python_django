@@ -22,7 +22,9 @@
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
                     {{ user.first_name }} {{ user.last_name }}
                 </h1>
-                <p class="text-lg text-gray-600 dark:text-gray-400">@{{ user.username }}</p>
+                <p class="text-lg text-gray-600 dark:text-gray-400">
+                    @{{ user.username }}
+                </p>
                 <div class="flex items-center mt-2">
                     <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
                         style="background-color: {% if profil_user.role == 'admin' %}#ef4444{% elif profil_user.role == 'moderateur' %}#f59e0b{% elif profil_user.role == 'auteur' %}#10b981{% else %}#6b7280{% endif %}20; color: {% if profil_user.role == 'admin' %}#ef4444{% elif profil_user.role == 'moderateur' %}#f59e0b{% elif profil_user.role == 'auteur' %}#10b981{% else %}#6b7280{% endif %};">
@@ -145,7 +147,7 @@
                     <div class="flex items-center justify-between">
                         <span class="text-gray-600 dark:text-gray-400">Brouillons</span>
                         <span class="font-semibold text-gray-600 dark:text-gray-400">
-                            {{ stats.articles_brouillons }}</span>
+                            {{ struncatechars:70 }}</span>
                     </div>
                     <div class="flex items-center justify-between">
                         <span class="text-gray-600 dark:text-gray-400">Vues totales</span>
@@ -167,19 +169,22 @@
                 <div class="space-y-3 text-sm">
                     <div>
                         <span class="text-gray-600 dark:text-gray-400">Membre depuis :</span>
-                        <div class="font-medium text-gray-900 dark:text-white">{{ user.date_joined|date:"d/m/Y" }}</div>
+                        <div class="font-medium text-gray-900 dark:text-white">
+                            {{ user.date_joined|date:"d/m/Y" }}
+                        </div>
                     </div>
                     {% if profil_user.derniere_connexion %}
                     <div>
                         <span class="text-gray-600 dark:text-gray-400">Dernière connexion :</span>
-                        <div class="font-medium text-gray-900 dark:text-white">
-                            {{ profil_user.derniere_connexion|date:"d/m/Y H:i" }}
-                        </div>
+                        <div class="font-medium text-gray-900 dark:text-white">{{
+                            profil_user.derniere_connexion|date:"d/m/Y H:i" }}</div>
                     </div>
                     {% endif %}
                     <div>
                         <span class="text-gray-600 dark:text-gray-400">Type de compte :</span>
-                        <div class="font-medium text-gray-900 dark:text-white">{{ profil_user.get_role_display }}</div>
+                        <div class="font-medium text-gray-900 dark:text-white">
+                            {{ profil_user.get_role_display }}
+                        </div>
                     </div>
                 </div>
             </div>
