@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 {% load i18n %}
 
-{% block title %}{% trans "Accueil" %} - {% trans "Blog Académique Universitaire" %}{% endblock %}
+{% block title %}Accueil - Blog Académique Universitaire{% endblock %}
 
 {% block content %}
 <!-- Section Hero avec fond coloré -->
@@ -20,7 +20,7 @@
     <div class="relative z-10 max-w-4xl mx-auto text-center">
         <!-- Titre principal -->
         <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-            📚 {% trans "Blog Académique Universitaire" %}
+            📚 Blog Académique Universitaire
         </h1>
 
         <!-- Sous-titre -->
@@ -33,29 +33,29 @@
             <form method="GET" action="{% url 'home' %}" class="relative">
                 <div class="flex items-center bg-white rounded-full shadow-lg overflow-hidden">
                     <input type="text" name="search" value="{{ search_query|default:'' }}"
-                        placeholder="{% trans 'Rechercher par titre ou auteur...' %}"
+                        placeholder="Rechercher par titre ou auteur..."
                         class="flex-1 px-6 py-4 text-gray-900 text-lg focus:outline-none focus:ring-0 placeholder-gray-500">
                     <button type="submit"
                         class="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 transition-colors duration-200 font-semibold">
-                        🔍 {% trans "Rechercher" %}
+                        🔍 Rechercher
                     </button>
                 </div>
             </form>
 
             <!-- Suggestions de recherche -->
             <div class="mt-4 flex flex-wrap justify-center gap-2">
-                <span class="text-blue-200 text-sm">{% trans "Recherches populaires :" %}</span>
+                <span class="text-blue-200 text-sm">Recherches populaires :</span>
                 <a href="?search=python"
                     class="bg-blue-500 bg-opacity-50 hover:bg-opacity-70 text-white px-3 py-1 rounded-full text-sm transition-all duration-200">
                     Python
                 </a>
                 <a href="?search=intelligence"
                     class="bg-blue-500 bg-opacity-50 hover:bg-opacity-70 text-white px-3 py-1 rounded-full text-sm transition-all duration-200">
-                    {% trans "Intelligence Artificielle" %}
+                    Intelligence Artificielle
                 </a>
                 <a href="?search=recherche"
                     class="bg-blue-500 bg-opacity-50 hover:bg-opacity-70 text-white px-3 py-1 rounded-full text-sm transition-all duration-200">
-                    {% trans "Recherche" %}
+                    Recherche
                 </a>
             </div>
         </div>
@@ -69,11 +69,11 @@
         class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{% trans "Articles publiés" %}
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Articles publiés
                 </p>
                 <p class="text-3xl font-bold text-blue-600 dark:text-blue-400 mt-2">{{ stats.total_articles|default:0 }}
                 </p>
-                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">{% trans "Total des publications" %}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Total des publications</p>
             </div>
             <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
                 <span class="text-2xl">📄</span>
@@ -86,11 +86,11 @@
         class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{% trans "Auteurs actifs" %}
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Auteurs actifs
                 </p>
                 <p class="text-3xl font-bold text-green-600 dark:text-green-400 mt-2">{{stats.total_auteurs|default:0}}
                 </p>
-                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">{% trans "Contributeurs uniques" %}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Contributeurs uniques</p>
             </div>
             <div class="w-12 h-12 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
                 <span class="text-2xl">👥</span>
@@ -103,11 +103,11 @@
         class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{% trans "Lectures totales" %}
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Lectures totales
                 </p>
                 <p class="text-3xl font-bold text-purple-600 dark:text-purple-400 mt-2">
                     {{stats.lecteurs_ce_mois|default:0}}</p>
-                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">{% trans "Vues des articles" %}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Vues des articles</p>
             </div>
             <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
                 <span class="text-2xl">👁️</span>
@@ -120,10 +120,10 @@
         class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow duration-300">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">{% trans "Commentaires" %}</p>
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Commentaires</p>
                 <p class="text-3xl font-bold text-orange-600 dark:text-orange-400 mt-2">
                     {{stats.total_commentaires|default:0}}</p>
-                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">{% trans "Total des interactions" %}</p>
+                <p class="text-sm text-gray-500 dark:text-gray-500 mt-1">Total des interactions</p>
             </div>
             <div class="w-12 h-12 bg-orange-100 dark:bg-orange-900 rounded-lg flex items-center justify-center">
                 <span class="text-2xl">💬</span>
@@ -139,10 +139,10 @@
     <!-- Résultats de recherche -->
     <div class="mb-8">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            🔍 {% trans "Résultats de recherche pour" %} "{{ search_query }}"
+            🔍 Résultats de recherche pour "{{ search_query }}"
         </h2>
         <p class="text-gray-600 dark:text-gray-400 mb-6">
-            {{ articles.count }} {% trans "résultat" %}{{ articles.count|pluralize }} {% trans "trouvé" %}{{ articles.count|pluralize }}
+            {{ articles.count }} résultat{{ articles.count|pluralize }} trouvé{{ articles.count|pluralize }}
         </p>
     </div>
 
@@ -165,7 +165,7 @@
                                 d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-sm font-medium">📄 {% trans "Article" %}</span>
+                        <span class="text-sm font-medium">📄 Article</span>
                     </div>
                 </div>
                 {% endif %}
@@ -217,15 +217,15 @@
                                     d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
                                     clip-rule="evenodd"></path>
                             </svg>
-                            {{ article.nombre_vues }} {% trans "vue" %}{{ article.nombre_vues|pluralize }}
+                            {{ article.nombre_vues }} vue{{ article.nombre_vues|pluralize }}
                         </span>
                         <span class="flex items-center">
-                            💬 {{ article.commentaires.count }} {% trans "commentaire" %}{{ article.commentaires.count|pluralize }}
+                            💬 {{ article.commentaires.count }} commentaire{{ article.commentaires.count|pluralize }}
                         </span>
                     </div>
                     <a href="{% url 'detail_article' article.id %}"
                         class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium">
-                        {% trans "Lire l'article" %}
+                        Lire l'article
                     </a>
                 </div>
             </div>
@@ -237,18 +237,18 @@
     <div
         class="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
         <div class="text-6xl mb-4">🔍</div>
-        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{% trans "Aucun résultat trouvé" %}</h3>
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Aucun résultat trouvé</h3>
         <p class="text-gray-600 dark:text-gray-400 mb-6">
-            {% trans "Aucun article ne correspond à votre recherche" %} "{{ search_query }}".
+            Aucun article ne correspond à votre recherche "{{ search_query }}".
         </p>
         <div class="space-x-4">
             <a href="{% url 'home' %}"
                 class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
-                {% trans "Voir tous les articles" %}
+                Voir tous les articles
             </a>
             <a href="{% url 'ajouter_article' %}"
                 class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium">
-                {% trans "Créer un article" %}
+                Créer un article
             </a>
         </div>
     </div>
@@ -257,10 +257,10 @@
     <!-- Articles récents (quand pas de recherche) -->
     <div class="mb-8">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            📄 {% trans "Articles récents" %}
+            📄 Articles récents
         </h2>
         <p class="text-gray-600 dark:text-gray-400 mb-6">
-            {% trans "Découvrez les dernières publications académiques" %}
+            Découvrez les dernières publications académiques
         </p>
     </div>
 
@@ -383,10 +383,10 @@
 <div class="mb-12">
     <div class="mb-8">
         <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-            📊 {% trans "Tableau de Bord" %}
+            📊 Tableau de Bord
         </h2>
         <p class="text-gray-600 dark:text-gray-400 mb-6">
-            {% trans "Aperçu de l'activité récente et des performances du blog" %}
+            Aperçu de l'activité récente et des performances du blog
         </p>
     </div>
 
@@ -396,10 +396,10 @@
             class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center">
-                    🔥 {% trans "Articles les plus populaires" %}
+                    🔥 Articles les plus populaires
                 </h3>
                 <a href="{% url 'articles' %}" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
-                    {% trans "Voir tous" %} →
+                    Voir tous →
                 </a>
             </div>
             {% if stats.articles_populaires %}
@@ -451,8 +451,8 @@
             {% else %}
             <div class="text-center py-8">
                 <div class="text-4xl mb-4">📈</div>
-                <p class="text-gray-600 dark:text-gray-400">{% trans "Aucune donnée de popularité disponible" %}</p>
-                <p class="text-gray-500 text-sm">{% trans "Publiez des articles pour voir les statistiques" %}</p>
+                <p class="text-gray-600 dark:text-gray-400">Aucune donnée de popularité disponible</p>
+                <p class="text-gray-500 text-sm">Publiez des articles pour voir les statistiques</p>
             </div>
             {% endif %}
         </div>
@@ -461,7 +461,7 @@
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center justify-between mb-6">
                 <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center">
-                    ⚡ {% trans "Activité récente" %}
+                    ⚡ Activité récente
                 </h3>
             </div>
             {% if stats.activite_recente %}
@@ -484,8 +484,8 @@
             {% else %}
             <div class="text-center py-8">
                 <div class="text-4xl mb-4">🔄</div>
-                <p class="text-gray-600 dark:text-gray-400">{% trans "Aucune activité récente" %}</p>
-                <p class="text-gray-500 text-sm">{% trans "L'activité apparaîtra ici" %}</p>
+                <p class="text-gray-600 dark:text-gray-400">Aucune activité récente</p>
+                <p class="text-gray-500 text-sm">L'activité apparaîtra ici</p>
             </div>
             {% endif %}
         </div>
@@ -496,8 +496,8 @@
         class="mt-8 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 border border-blue-200 dark:border-blue-700">
         <div class="flex items-center justify-between">
             <div>
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">🚀 {% trans "Actions rapides" %}</h3>
-                <p class="text-gray-600 dark:text-gray-400 text-sm">{% trans "Gérez votre blog en un clic" %}</p>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">🚀 Actions rapides</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">Gérez votre blog en un clic</p>
             </div>
             <div class="flex space-x-3">
                 <a href="{% url 'ajouter_article' %}"
@@ -507,7 +507,7 @@
                             d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    {% trans "Nouvel article" %}
+                    Nouvel article
                 </a>
                 <a href="{% url 'categories' %}"
                     class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-sm flex items-center">
@@ -516,7 +516,7 @@
                             d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z">
                         </path>
                     </svg>
-                    {% trans "Catégories" %}
+                    Catégories
                 </a>
                 <a href="/admin/" target="_blank"
                     class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-sm flex items-center">

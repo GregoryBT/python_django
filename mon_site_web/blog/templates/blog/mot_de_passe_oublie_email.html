@@ -1,0 +1,102 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Réinitialisation de votre mot de passe" %}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .content {
+            padding: 30px;
+        }
+        .button {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .footer {
+            background: #f8f9fa;
+            padding: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔐 {% trans "Réinitialisation de mot de passe" %}</h1>
+            <p>{% trans "Blog Académique Universitaire" %}</p>
+        </div>
+        
+        <div class="content">
+            <p>{% trans "Bonjour" %},</p>
+            
+            <p>{% trans "Vous avez demandé la réinitialisation de votre mot de passe pour votre compte sur le Blog Académique Universitaire." %}</p>
+            
+            <p>{% trans "Pour définir un nouveau mot de passe, cliquez sur le bouton ci-dessous :" %}</p>
+            
+            <div style="text-align: center;">
+                <a href="{{ protocol }}://{{ domain }}{% url 'nouveau_mot_de_passe' uidb64=uid token=token %}" class="button">
+                    {% trans "Réinitialiser mon mot de passe" %}
+                </a>
+            </div>
+            
+            <div class="warning">
+                <p><strong>⚠️ {% trans "Important :" %}</strong></p>
+                <ul>
+                    <li>{% trans "Ce lien expire dans 24 heures pour votre sécurité" %}</li>
+                    <li>{% trans "Si vous n'avez pas demandé cette réinitialisation, ignorez cet email" %}</li>
+                    <li>{% trans "Ne partagez jamais ce lien avec personne" %}</li>
+                </ul>
+            </div>
+            
+            <p>{% trans "Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre navigateur :" %}</p>
+            <p style="word-break: break-all; background: #f8f9fa; padding: 10px; border-radius: 5px; font-family: monospace;">
+                {{ protocol }}://{{ domain }}{% url 'nouveau_mot_de_passe' uidb64=uid token=token %}
+            </p>
+        </div>
+        
+        <div class="footer">
+            <p>{% trans "Cet email a été envoyé automatiquement par le Blog Académique Universitaire." %}</p>
+            <p>{% trans "Si vous avez des questions, contactez notre équipe de support." %}</p>
+        </div>
+    </div>
+</body>
+</html>

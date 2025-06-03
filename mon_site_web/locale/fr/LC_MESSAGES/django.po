@@ -1196,3 +1196,163 @@ msgstr "Commentaires approuvés"
 #: blog/templates/blog/moderation.html:283
 msgid "Administration Django"
 msgstr "Administration Django"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:5
+msgid "Nouveau mot de passe"
+msgstr "Nouveau mot de passe"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:15
+msgid "Définir un nouveau mot de passe"
+msgstr "Définir un nouveau mot de passe"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:18
+msgid "Choisissez un nouveau mot de passe sécurisé pour votre compte"
+msgstr "Choisissez un nouveau mot de passe sécurisé pour votre compte"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:53
+msgid "Votre nouveau mot de passe"
+msgstr "Votre nouveau mot de passe"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:77
+msgid "Confirmer le nouveau mot de passe"
+msgstr "Confirmer le nouveau mot de passe"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:84
+msgid "Confirmez votre nouveau mot de passe"
+msgstr "Confirmez votre nouveau mot de passe"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:105
+msgid "Changer le mot de passe"
+msgstr "Changer le mot de passe"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:112
+msgid "Retour à la connexion"
+msgstr "Retour à la connexion"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:5
+msgid "Mot de passe réinitialisé"
+msgstr "Mot de passe réinitialisé"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:16
+msgid "Mot de passe réinitialisé avec succès"
+msgstr "Mot de passe réinitialisé avec succès"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:19
+msgid "Votre mot de passe a été modifié avec succès"
+msgstr "Votre mot de passe a été modifié avec succès"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:31
+msgid "Réinitialisation terminée"
+msgstr "Réinitialisation terminée"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:34
+msgid "Votre nouveau mot de passe a été enregistré. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
+msgstr "Votre nouveau mot de passe a été enregistré. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:45
+msgid "Se connecter maintenant"
+msgstr "Se connecter maintenant"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:55
+msgid "Retour à l'accueil"
+msgstr "Retour à l'accueil"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:67
+msgid "Conseil de sécurité :"
+msgstr "Conseil de sécurité :"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:68
+msgid "Assurez-vous de garder votre mot de passe en sécurité et de ne jamais le partager avec personne."
+msgstr "Assurez-vous de garder votre mot de passe en sécurité et de ne jamais le partager avec personne."
+
+#: blog/templates/blog/mot_de_passe_oublie.html:16
+msgid "Entrez votre adresse email pour recevoir un lien de réinitialisation de mot de passe."
+msgstr "Entrez votre adresse email pour recevoir un lien de réinitialisation de mot de passe."
+
+#: blog/templates/blog/mot_de_passe_oublie.html:59
+msgid "Votre adresse email"
+msgstr "Votre adresse email"
+
+#: blog/templates/blog/mot_de_passe_oublie.html:75
+msgid "Envoyer le lien"
+msgstr "Envoyer le lien"
+
+#: blog/templates/blog/mot_de_passe_oublie.html:84
+msgid "Vous vous souvenez de votre mot de passe ?"
+msgstr "Vous vous souvenez de votre mot de passe ?"
+
+#: blog/templates/blog/mot_de_passe_oublie.html:96
+msgid "Comment ça fonctionne ?"
+msgstr "Comment ça fonctionne ?"
+
+#: blog/templates/blog/mot_de_passe_oublie.html:101
+msgid "Entrez l'adresse email de votre compte"
+msgstr "Entrez l'adresse email de votre compte"
+
+#: blog/templates/blog/mot_de_passe_oublie.html:102
+msgid "Vous recevrez un email avec un lien sécurisé"
+msgstr "Vous recevrez un email avec un lien sécurisé"
+
+#: blog/templates/blog/mot_de_passe_oublie.html:103
+msgid "Cliquez sur le lien pour définir un nouveau mot de passe"
+msgstr "Cliquez sur le lien pour définir un nouveau mot de passe"
+
+#: blog/templates/blog/mot_de_passe_oublie.html:104
+msgid "Le lien expire après 24 heures pour votre sécurité"
+msgstr "Le lien expire après 24 heures pour votre sécurité"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:5
+msgid "Email envoyé"
+msgstr "Email envoyé"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:14
+msgid "Email envoyé avec succès"
+msgstr "Email envoyé avec succès"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:17
+msgid "Vérifiez votre boîte de réception pour continuer"
+msgstr "Vérifiez votre boîte de réception pour continuer"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:27
+msgid "Instructions envoyées"
+msgstr "Instructions envoyées"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:30
+msgid "Un email contenant les instructions de réinitialisation de votre mot de passe a été envoyé à votre adresse email."
+msgstr "Un email contenant les instructions de réinitialisation de votre mot de passe a été envoyé à votre adresse email."
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:40
+msgid "Étapes suivantes :"
+msgstr "Étapes suivantes :"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:44
+msgid "Vérifiez votre boîte de réception"
+msgstr "Vérifiez votre boîte de réception"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:45
+msgid "Cliquez sur le lien dans l'email"
+msgstr "Cliquez sur le lien dans l'email"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:46
+msgid "Définissez votre nouveau mot de passe"
+msgstr "Définissez votre nouveau mot de passe"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:47
+msgid "Connectez-vous avec vos nouveaux identifiants"
+msgstr "Connectez-vous avec vos nouveaux identifiants"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:58
+msgid "Note importante :"
+msgstr "Note importante :"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:59
+msgid "Si vous ne recevez pas l'email dans les prochaines minutes, vérifiez votre dossier spam ou courrier indésirable."
+msgstr "Si vous ne recevez pas l'email dans les prochaines minutes, vérifiez votre dossier spam ou courrier indésirable."
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:89
+msgid "Besoin d'aide ?"
+msgstr "Besoin d'aide ?"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:92
+msgid "Si vous continuez à rencontrer des problèmes, contactez l'équipe de support du Blog Académique Universitaire."
+msgstr "Si vous continuez à rencontrer des problèmes, contactez l'équipe de support du Blog Académique Universitaire."

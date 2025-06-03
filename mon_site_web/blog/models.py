@@ -45,14 +45,12 @@ class Tag(models.Model):
 class Profil(models.Model):
     """Modèle pour étendre les informations utilisateur avec des rôles"""
     ROLES = [
-        ('lecteur', _('Lecteur')),
-        ('auteur', _('Auteur')),
-        ('moderateur', _('Modérateur')),
-        ('admin', _('Administrateur')),
+        ('utilisateur', _('Utilisateur')),
+        ('administrateur', _('Administrateur')),
     ]
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profil', verbose_name=_("Utilisateur"))
-    role = models.CharField(max_length=20, choices=ROLES, default='lecteur', verbose_name=_("Rôle"))
+    role = models.CharField(max_length=20, choices=ROLES, default='utilisateur', verbose_name=_("Rôle"))
     bio = models.TextField(max_length=500, blank=True, help_text=_('Biographie de l\'utilisateur'), verbose_name=_("Biographie"))
     avatar = models.ImageField(upload_to='avatars/', null=True, blank=True, help_text=_('Photo de profil'), verbose_name=_("Avatar"))
     site_web = models.URLField(blank=True, help_text=_('Site web personnel'), verbose_name=_("Site web"))
@@ -64,15 +62,41 @@ class Profil(models.Model):
     
     def peut_creer_article(self):
         """Vérifie si l'utilisateur peut créer des articles"""
-        return self.role in ['auteur', 'moderateur', 'admin']
+        # Tous les utilisateurs connectés peuvent créer des articles
+        return True
+    
+    def peut_modifier_article(self, article):
+        """Vérifie si l'utilisateur peut modifier un article spécifique"""
+        # Administrateur peut tout modifier, utilisateur peut modifier ses propres articles
+        if self.role == 'administrateur':
+            return True
+        return article.user_auteur == self.user
+    
+    def peut_supprimer_article(self, article):
+        """Vérifie si l'utilisateur peut supprimer un article spécifique"""
+        # Administrateur peut tout supprimer, utilisateur peut supprimer ses propres articles
+        if self.role == 'administrateur':
+            return True
+        return article.user_auteur == self.user
     
     def peut_moderer(self):
         """Vérifie si l'utilisateur peut modérer (supprimer commentaires, etc.)"""
-        return self.role in ['moderateur', 'admin']
+        # Seuls les administrateurs peuvent modérer
+        return self.role == 'administrateur'
     
     def est_admin(self):
         """Vérifie si l'utilisateur est administrateur"""
-        return self.role == 'admin'
+        return self.role == 'administrateur'
+    
+    def peut_voir_article(self, article):
+        """Vérifie si l'utilisateur peut voir un article spécifique"""
+        # Article publié : tout le monde peut voir
+        if article.est_publie:
+            return True
+        # Article non publié : administrateur ou auteur de l'article
+        if self.role == 'administrateur':
+            return True
+        return article.user_auteur == self.user
     
     class Meta:
         ordering = ['-date_creation']

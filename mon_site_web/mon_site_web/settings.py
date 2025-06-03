@@ -13,10 +13,32 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 from pathlib import Path
 from decouple import config, Csv
 from django.utils.translation import gettext_lazy as _
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+LOGSDIR = os.path.join(BASE_DIR, 'logs')
+os.makedirs(LOGSDIR, exist_ok=True)
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'logs/django.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    },
+}
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
@@ -144,3 +166,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = '/connexion/'  # URL vers laquelle rediriger les utilisateurs non connectés
 LOGIN_REDIRECT_URL = '/'   # URL vers laquelle rediriger après connexion réussie
 LOGOUT_REDIRECT_URL = '/'  # URL vers laquelle rediriger après déconnexion
+
+# Configuration Email - Mailtrap pour le développement
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'Blog Académique Universitaire <noreply@blog-universitaire.com>'
+EMAIL_TIMEOUT = 60
+
+# Configuration pour les emails de réinitialisation de mot de passe
+PASSWORD_RESET_TIMEOUT = 86400  # 24 heures en secondes

@@ -10,6 +10,12 @@ urlpatterns = [
     path('deconnexion/', views.deconnexion_view, name='deconnexion'),
     path('profil/', views.profil_view, name='profil'),
     
+    # Mot de passe oublié
+    path('mot-de-passe-oublie/', views.MotDePasseOublieView.as_view(), name='mot_de_passe_oublie'),
+    path('mot-de-passe-oublie/envoye/', views.MotDePasseOublieEnvoyeView.as_view(), name='mot_de_passe_oublie_envoye'),
+    path('reset/<uidb64>/<token>/', views.NouveauMotDePasseView.as_view(), name='password_reset_confirm'),
+    path('mot-de-passe-reinitialise/', views.MotDePasseReinitialiseView.as_view(), name='mot_de_passe_reinitialise'),
+    
     # Articles
     path('ajouter/', views.ajouter_article, name='ajouter_article'),
     path('article/<int:article_id>/', views.detail_article, name='detail_article'),

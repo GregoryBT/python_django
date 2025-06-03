@@ -968,202 +968,162 @@ msgstr "Quick actions"
 msgid "Gérez votre blog en un clic"
 msgstr "Manage your blog with one click"
 
-#: blog/templates/blog/inscription.html:4
-msgid "Inscription"
-msgstr "Registration"
+#: blog/templates/blog/nouveau_mot_de_passe.html:5
+msgid "Nouveau mot de passe"
+msgstr "New Password"
 
-#: blog/templates/blog/inscription.html:14
-msgid "Créer un compte"
-msgstr "Create an account"
+#: blog/templates/blog/nouveau_mot_de_passe.html:15
+msgid "Définir un nouveau mot de passe"
+msgstr "Set a New Password"
 
-#: blog/templates/blog/inscription.html:17
-msgid "Rejoignez notre communauté académique"
-msgstr "Join our academic community"
+#: blog/templates/blog/nouveau_mot_de_passe.html:18
+msgid "Choisissez un nouveau mot de passe sécurisé pour votre compte"
+msgstr "Choose a secure new password for your account"
 
-#: blog/templates/blog/inscription.html:35
-msgid "Choisissez un nom d\\"
-msgstr "Choose a username"
+#: blog/templates/blog/nouveau_mot_de_passe.html:53
+msgid "Votre nouveau mot de passe"
+msgstr "Your new password"
 
-#: blog/templates/blog/inscription.html:58
-msgid "Prénom"
-msgstr "First name"
+#: blog/templates/blog/nouveau_mot_de_passe.html:77
+msgid "Confirmer le nouveau mot de passe"
+msgstr "Confirm New Password"
 
-#: blog/templates/blog/inscription.html:64
-msgid "Votre prénom"
-msgstr "Your first name"
+#: blog/templates/blog/nouveau_mot_de_passe.html:84
+msgid "Confirmez votre nouveau mot de passe"
+msgstr "Confirm your new password"
 
-#: blog/templates/blog/inscription.html:81
-msgid "Votre nom"
-msgstr "Your last name"
+#: blog/templates/blog/nouveau_mot_de_passe.html:105
+msgid "Changer le mot de passe"
+msgstr "Change Password"
 
-#: blog/templates/blog/inscription.html:95
-msgid "Adresse email"
-msgstr "Email address"
+#: blog/templates/blog/nouveau_mot_de_passe.html:112
+msgid "Retour à la connexion"
+msgstr "Back to Login"
 
-#: blog/templates/blog/inscription.html:124
-msgid "Type de compte"
-msgstr "Account type"
+#: blog/templates/blog/mot_de_passe_reinitialise.html:5
+msgid "Mot de passe réinitialisé"
+msgstr "Password Reset"
 
-#: blog/templates/blog/inscription.html:129
-msgid "Choisissez un type de compte"
-msgstr "Choose an account type"
+#: blog/templates/blog/mot_de_passe_reinitialise.html:16
+msgid "Mot de passe réinitialisé avec succès"
+msgstr "Password Reset Successfully"
 
-#: blog/templates/blog/inscription.html:158
-msgid "Choisissez un mot de passe"
-msgstr "Choose a password"
+#: blog/templates/blog/mot_de_passe_reinitialise.html:19
+msgid "Votre mot de passe a été modifié avec succès"
+msgstr "Your password has been successfully changed"
 
-#: blog/templates/blog/inscription.html:179
-msgid "Confirmer le mot de passe"
-msgstr "Confirm password"
+#: blog/templates/blog/mot_de_passe_reinitialise.html:31
+msgid "Réinitialisation terminée"
+msgstr "Reset Complete"
 
-#: blog/templates/blog/inscription.html:186
-msgid "Confirmez votre mot de passe"
-msgstr "Confirm your password"
+#: blog/templates/blog/mot_de_passe_reinitialise.html:34
+msgid "Votre nouveau mot de passe a été enregistré. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe."
+msgstr "Your new password has been saved. You can now log in with your new password."
 
-#: blog/templates/blog/inscription.html:216
-msgid "Créer mon compte"
-msgstr "Create my account"
+#: blog/templates/blog/mot_de_passe_reinitialise.html:45
+msgid "Se connecter maintenant"
+msgstr "Sign In Now"
 
-#: blog/templates/blog/inscription.html:223
-msgid "Vous avez déjà un compte ?"
-msgstr "Already have an account?"
+#: blog/templates/blog/mot_de_passe_reinitialise.html:55
+msgid "Retour à l'accueil"
+msgstr "Back to Home"
 
-#: blog/templates/blog/mes_articles.html:4
-#: blog/templates/blog/mes_articles.html:13
-#, fuzzy
-#| msgid "Articles"
-msgid "Mes Articles"
-msgstr "My Articles"
+#: blog/templates/blog/mot_de_passe_reinitialise.html:67
+msgid "Conseil de sécurité :"
+msgstr "Security Tip:"
 
-#: blog/templates/blog/mes_articles.html:16
-msgid "Gérez vos articles publiés et vos brouillons"
-msgstr "Manage your published articles and drafts"
+#: blog/templates/blog/mot_de_passe_reinitialise.html:68
+msgid "Assurez-vous de garder votre mot de passe en sécurité et de ne jamais le partager avec personne."
+msgstr "Make sure to keep your password secure and never share it with anyone."
 
-#: blog/templates/blog/mes_articles.html:23
-#, fuzzy
-#| msgid "Articles"
-msgid "Nouvel Article"
-msgstr "New Article"
+#: blog/templates/blog/mot_de_passe_oublie.html:16
+msgid "Entrez votre adresse email pour recevoir un lien de réinitialisation de mot de passe."
+msgstr "Enter your email address to receive a password reset link."
 
-#: blog/templates/blog/mes_articles.html:39
-msgid "Total"
-msgstr "Total"
+#: blog/templates/blog/mot_de_passe_oublie.html:59
+msgid "Votre adresse email"
+msgstr "Your email address"
 
-#: blog/templates/blog/mes_articles.html:53
-msgid "Publiés"
-msgstr "Published"
+#: blog/templates/blog/mot_de_passe_oublie.html:75
+msgid "Envoyer le lien"
+msgstr "Send Link"
 
-#: blog/templates/blog/mes_articles.html:67
-msgid "Brouillons"
-msgstr "Drafts"
+#: blog/templates/blog/mot_de_passe_oublie.html:84
+msgid "Vous vous souvenez de votre mot de passe ?"
+msgstr "Remember your password?"
 
-#: blog/templates/blog/mes_articles.html:93
-msgid "Tous mes articles"
-msgstr "All my articles"
+#: blog/templates/blog/mot_de_passe_oublie.html:96
+msgid "Comment ça fonctionne ?"
+msgstr "How does it work?"
 
-#: blog/templates/blog/mes_articles.html:113
-msgid "Publié"
-msgstr "Published"
+#: blog/templates/blog/mot_de_passe_oublie.html:101
+msgid "Entrez l'adresse email de votre compte"
+msgstr "Enter your account email address"
 
-#: blog/templates/blog/mes_articles.html:117
-#: blog/templates/blog/moderation.html:205
-msgid "Brouillon"
-msgstr "Draft"
+#: blog/templates/blog/mot_de_passe_oublie.html:102
+msgid "Vous recevrez un email avec un lien sécurisé"
+msgstr "You will receive an email with a secure link"
 
-#: blog/templates/blog/mes_articles.html:171
-msgid "Voir l\\"
-msgstr "View article"
+#: blog/templates/blog/mot_de_passe_oublie.html:103
+msgid "Cliquez sur le lien pour définir un nouveau mot de passe"
+msgstr "Click the link to set a new password"
 
-#: blog/templates/blog/mes_articles.html:176
-msgid "Modifier l\\"
-msgstr "Edit article"
+#: blog/templates/blog/mot_de_passe_oublie.html:104
+msgid "Le lien expire après 24 heures pour votre sécurité"
+msgstr "The link expires after 24 hours for your security"
 
-#: blog/templates/blog/mes_articles.html:181
-msgid "Supprimer l\\"
-msgstr "Delete article"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:5
+msgid "Email envoyé"
+msgstr "Email Sent"
 
-#: blog/templates/blog/mes_articles.html:201
-msgid ""
-"Commencez à écrire votre premier article pour partager vos idées avec la "
-"communauté."
-msgstr "Start writing your first article to share your ideas with the community."
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:14
+msgid "Email envoyé avec succès"
+msgstr "Email Sent Successfully"
 
-#: blog/templates/blog/mes_articles.html:206
-msgid "Écrire mon premier article"
-msgstr "Write my first article"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:17
+msgid "Vérifiez votre boîte de réception pour continuer"
+msgstr "Check your inbox to continue"
 
-#: blog/templates/blog/moderation.html:4
-msgid "Modération"
-msgstr "Moderation"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:27
+msgid "Instructions envoyées"
+msgstr "Instructions Sent"
 
-#: blog/templates/blog/moderation.html:16
-msgid "Panneau de Modération"
-msgstr "Moderation Panel"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:30
+msgid "Un email contenant les instructions de réinitialisation de votre mot de passe a été envoyé à votre adresse email."
+msgstr "An email containing password reset instructions has been sent to your email address."
 
-#: blog/templates/blog/moderation.html:19
-msgid "Gérez les commentaires et surveillez l'activité du blog"
-msgstr "Manage comments and monitor blog activity"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:40
+msgid "Étapes suivantes :"
+msgstr "Next steps:"
 
-#: blog/templates/blog/moderation.html:35
-msgid "En attente"
-msgstr "Pending"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:44
+msgid "Vérifiez votre boîte de réception"
+msgstr "Check your inbox"
 
-#: blog/templates/blog/moderation.html:49
-msgid "Approuvés"
-msgstr "Approved"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:45
+msgid "Cliquez sur le lien dans l'email"
+msgstr "Click the link in the email"
 
-#: blog/templates/blog/moderation.html:64
-msgid "Utilisateurs actifs"
-msgstr "Active users"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:46
+msgid "Définissez votre nouveau mot de passe"
+msgstr "Set your new password"
 
-#: blog/templates/blog/moderation.html:91
-msgid "Commentaires en attente"
-msgstr "Pending comments"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:47
+msgid "Connectez-vous avec vos nouveaux identifiants"
+msgstr "Sign in with your new credentials"
 
-#: blog/templates/blog/moderation.html:123
-msgid "Visiteur"
-msgstr "Visitor"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:58
+msgid "Note importante :"
+msgstr "Important note:"
 
-#: blog/templates/blog/moderation.html:148
-msgid "Approuver"
-msgstr "Approve"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:59
+msgid "Si vous ne recevez pas l'email dans les prochaines minutes, vérifiez votre dossier spam ou courrier indésirable."
+msgstr "If you don't receive the email within the next few minutes, check your spam or junk folder."
 
-#: blog/templates/blog/moderation.html:157
-msgid "Êtes-vous sûr de vouloir supprimer ce commentaire ?"
-msgstr "Are you sure you want to delete this comment?"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:89
+msgid "Besoin d'aide ?"
+msgstr "Need help?"
 
-#: blog/templates/blog/moderation.html:158
-msgid "Supprimer"
-msgstr "Delete"
-
-#: blog/templates/blog/moderation.html:173
-msgid "Tout est à jour !"
-msgstr "Everything is up to date!"
-
-#: blog/templates/blog/moderation.html:176
-msgid "Aucun commentaire en attente de modération."
-msgstr "No comments pending moderation."
-
-#: blog/templates/blog/moderation.html:243
-msgid "Aucun article récent"
-msgstr "No recent articles"
-
-#: blog/templates/blog/moderation.html:246
-msgid "Aucun nouvel article à afficher."
-msgstr "No new articles to display."
-
-#: blog/templates/blog/moderation.html:259
-msgid "Tableau de bord administrateur"
-msgstr "Administrator dashboard"
-
-#: blog/templates/blog/moderation.html:267
-msgid "Utilisateurs inscrits"
-msgstr "Registered users"
-
-#: blog/templates/blog/moderation.html:275
-msgid "Commentaires approuvés"
-msgstr "Approved comments"
-
-#: blog/templates/blog/moderation.html:283
-msgid "Administration Django"
-msgstr "Django Administration"
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:92
+msgid "Si vous continuez à rencontrer des problèmes, contactez l'équipe de support du Blog Académique Universitaire."
+msgstr "If you continue to experience issues, contact the University Academic Blog support team."

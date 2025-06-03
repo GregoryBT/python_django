@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
 from .models import Article, Commentaire, Categorie, Tag, Profil
 
@@ -9,9 +9,10 @@ class InscriptionForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, required=True, label="Prénom")
     last_name = forms.CharField(max_length=30, required=True, label="Nom")
     role = forms.ChoiceField(
-        choices=[('lecteur', 'Lecteur'), ('auteur', 'Auteur')],
-        initial='lecteur',
-        label="Type de compte"
+        choices=[('utilisateur', 'Utilisateur'), ('administrateur', 'Administrateur')],
+        initial='utilisateur',
+        label="Type de compte",
+        help_text="Utilisateur : peut créer et gérer ses propres articles. Administrateur : accès complet à la plateforme."
     )
     
     class Meta:
@@ -35,11 +36,11 @@ class InscriptionForm(UserCreationForm):
         user.last_name = self.cleaned_data['last_name']
         if commit:
             user.save()
-            # Créer le profil avec le rôle sélectionné
-            profil = Profil.objects.create(
-                user=user,
-                role=self.cleaned_data['role']
-            )
+            # Mettre à jour le profil créé automatiquement par le signal
+            # avec le rôle sélectionné
+            profil = user.profil
+            profil.role = self.cleaned_data['role']
+            profil.save()
         return user
 
 
@@ -125,3 +126,46 @@ class CommentaireForm(forms.ModelForm):
                 'placeholder': 'Votre commentaire...'
             }),
         }
+
+
+class MotDePasseOublieForm(PasswordResetForm):
+    """Formulaire personnalisé pour la demande de réinitialisation de mot de passe"""
+    email = forms.EmailField(
+        max_length=254,
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Votre adresse email',
+            'autocomplete': 'email'
+        }),
+        label="Adresse email"
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['email'].help_text = "Entrez l'adresse email associée à votre compte. Nous vous enverrons un lien pour réinitialiser votre mot de passe."
+
+
+class NouveauMotDePasseForm(SetPasswordForm):
+    """Formulaire personnalisé pour définir un nouveau mot de passe"""
+    new_password1 = forms.CharField(
+        label="Nouveau mot de passe",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Nouveau mot de passe',
+            'autocomplete': 'new-password'
+        }),
+        strip=False,
+    )
+    new_password2 = forms.CharField(
+        label="Confirmez le nouveau mot de passe",
+        widget=forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Confirmez le nouveau mot de passe',
+            'autocomplete': 'new-password'
+        }),
+        strip=False,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['new_password1'].help_text = "Votre mot de passe doit contenir au moins 8 caractères et ne peut pas être entièrement numérique."

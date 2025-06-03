@@ -4,14 +4,16 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
+from django.contrib.auth.views import PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.db.models import Count, Max, Q, Avg, Sum
 from django.utils import timezone
 from datetime import datetime, timedelta
 from functools import wraps
 from .models import Article, Commentaire, Categorie, VueArticle, Profil
-from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm
+from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm, MotDePasseOublieForm, NouveauMotDePasseForm
 from django.core.mail import send_mail
 from django.conf import settings
+from django.urls import reverse_lazy
 
 
 def home(request):
@@ -100,24 +102,19 @@ def connexion_view(request):
         return redirect('home')
     
     if request.method == 'POST':
-        form = ConnexionForm(request.POST)
+        form = ConnexionForm(request, data=request.POST)
         if form.is_valid():
-            username = form.cleaned_data['username']
-            password = form.cleaned_data['password']
-            user = authenticate(request, username=username, password=password)
+            user = form.get_user()
+            login(request, user)
             
-            if user is not None:
-                login(request, user)
-                # Mettre à jour la dernière connexion dans le profil
-                if hasattr(user, 'profil'):
-                    user.profil.derniere_connexion = timezone.now()
-                    user.profil.save()
-                
-                messages.success(request, f'Bienvenue {user.get_full_name() or user.username} !')
-                next_url = request.GET.get('next', 'home')
-                return redirect(next_url)
-            else:
-                messages.error(request, 'Nom d\'utilisateur ou mot de passe incorrect.')
+            # Mettre à jour la dernière connexion dans le profil
+            if hasattr(user, 'profil'):
+                user.profil.derniere_connexion = timezone.now()
+                user.profil.save()
+            
+            messages.success(request, f'Bienvenue {user.get_full_name() or user.username} !')
+            next_url = request.GET.get('next', 'home')
+            return redirect(next_url)
     else:
         form = ConnexionForm()
     
@@ -406,7 +403,7 @@ def auteurs_view(request):
         articles__est_publie=True
     ).annotate(
         nb_articles=Count('articles', filter=Q(articles__est_publie=True)),
-        total_vues=Count('articles__vuearticle', filter=Q(articles__est_publie=True))
+        total_vues=Sum('articles__nombre_vues', filter=Q(articles__est_publie=True))
     ).distinct().order_by('-nb_articles')
     
     return render(request, 'blog/auteurs.html', {
@@ -421,11 +418,11 @@ def a_propos_view(request):
 
 @user_passes_test(peut_moderer)
 def analytics_view(request):
-    """Vue d'analytics pour les modérateurs et admins"""
+    """Vue d'analytics pour les administrateurs"""
     # Statistiques générales
     stats = {
         'total_articles': Article.objects.filter(est_publie=True).count(),
-        'total_auteurs': User.objects.filter(profil__role__in=['auteur', 'moderateur', 'admin']).count(),
+        'total_auteurs': User.objects.filter(profil__role='administrateur').count() + User.objects.filter(articles__est_publie=True).distinct().count(),
         'total_vues': sum(article.nombre_vues for article in Article.objects.filter(est_publie=True)),
         'moyenne_vues_par_article': Article.objects.filter(est_publie=True).aggregate(Avg('nombre_vues'))['nombre_vues__avg'] or 0,
         'total_commentaires': Commentaire.objects.filter(est_approuve=True).count(),
@@ -510,3 +507,37 @@ Consultez votre article: http://localhost:8000/article/{article.id}/
         'article': article,
         'form': form
     })
+
+
+class MotDePasseOublieView(PasswordResetView):
+    """Vue pour la demande de réinitialisation de mot de passe"""
+    template_name = 'blog/mot_de_passe_oublie.html'
+    email_template_name = 'blog/mot_de_passe_oublie_email.html'
+    subject_template_name = 'blog/mot_de_passe_oublie_sujet.txt'
+    form_class = MotDePasseOublieForm
+    success_url = reverse_lazy('mot_de_passe_oublie_envoye')
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Un email avec les instructions pour réinitialiser votre mot de passe a été envoyé.')
+        return super().form_valid(form)
+
+
+class MotDePasseOublieEnvoyeView(PasswordResetDoneView):
+    """Vue après envoi de l'email de réinitialisation"""
+    template_name = 'blog/mot_de_passe_oublie_envoye.html'
+
+
+class NouveauMotDePasseView(PasswordResetConfirmView):
+    """Vue pour définir un nouveau mot de passe"""
+    template_name = 'blog/nouveau_mot_de_passe.html'
+    form_class = NouveauMotDePasseForm
+    success_url = reverse_lazy('mot_de_passe_reinitialise')
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Votre mot de passe a été réinitialisé avec succès ! Vous pouvez maintenant vous connecter.')
+        return super().form_valid(form)
+
+
+class MotDePasseReinitialiseView(PasswordResetCompleteView):
+    """Vue de confirmation après réinitialisation réussie"""
+    template_name = 'blog/mot_de_passe_reinitialise.html'
