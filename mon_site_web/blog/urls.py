@@ -13,7 +13,7 @@ urlpatterns = [
     # Mot de passe oublié
     path('mot-de-passe-oublie/', views.MotDePasseOublieView.as_view(), name='mot_de_passe_oublie'),
     path('mot-de-passe-oublie/envoye/', views.MotDePasseOublieEnvoyeView.as_view(), name='mot_de_passe_oublie_envoye'),
-    path('reset/<uidb64>/<token>/', views.NouveauMotDePasseView.as_view(), name='password_reset_confirm'),
+    path('reset/<uidb64>/<token>/', views.NouveauMotDePasseView.as_view(), name='nouveau_mot_de_passe'),
     path('mot-de-passe-reinitialise/', views.MotDePasseReinitialiseView.as_view(), name='mot_de_passe_reinitialise'),
     
     # Articles

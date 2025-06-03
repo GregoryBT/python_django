@@ -14,6 +14,7 @@ from pathlib import Path
 from decouple import config, Csv
 from django.utils.translation import gettext_lazy as _
 import os
+import ssl
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -170,12 +171,11 @@ LOGOUT_REDIRECT_URL = '/'  # URL vers laquelle rediriger après déconnexion
 # Configuration Email - Mailtrap pour le développement
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_USE_TLS = True
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = False  # Désactiver TLS pour éviter les problèmes SSL
+EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = 'Blog Académique Universitaire <noreply@blog-universitaire.com>'
 EMAIL_TIMEOUT = 60
 
-# Configuration pour les emails de réinitialisation de mot de passe
-PASSWORD_RESET_TIMEOUT = 86400  # 24 heures en secondes
