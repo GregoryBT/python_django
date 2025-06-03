@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 from decouple import config, Csv
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -111,20 +112,19 @@ LANGUAGE_CODE = 'fr'
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
+USE_L10N = True
 USE_TZ = True
 
 # Configuration des langues disponibles
 LANGUAGES = [
     ('fr', 'Français'),
-    ('en', 'English'),
+    ('en', 'Anglais'),
 ]
 
 # Répertoire pour les fichiers de traduction
 LOCALE_PATHS = [
     BASE_DIR / 'locale',
 ]
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/

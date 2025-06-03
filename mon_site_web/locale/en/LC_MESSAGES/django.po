@@ -25,7 +25,7 @@ msgid "Découvrez des articles de recherche, des analyses, et des réflexions ac
 msgstr "Discover research articles, analyses, and academic reflections"
 
 msgid "Accueil"
-msgstr "Accueil"
+msgstr "Home"
 
 msgid "Articles"
 msgstr "Articles"
@@ -38,3 +38,15 @@ msgstr "Authors"
 
 msgid "À propos"
 msgstr "About"
+
+msgid "Navigation"
+msgstr "Navigation"
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Un blog moderne créé avec Django et Tailwind CSS."
+msgstr "A modern blog created with Django and Tailwind CSS."
+
+msgid "Tous droits réservés."
+msgstr "All rights reserved."
