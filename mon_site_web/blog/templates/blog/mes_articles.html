@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
+{% load i18n %}
 
-{% block title %}Mes Articles - Blog Académique Universitaire{% endblock %}
+{% block title %}{% trans "Mes Articles" %} - {% trans "Blog Académique Universitaire" %}{% endblock %}
 
 {% block content %}
 <div class="max-w-6xl mx-auto">
@@ -9,17 +10,17 @@
         <div class="flex items-center justify-between">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-                    📝 Mes Articles
+                    📝 {% trans "Mes Articles" %}
                 </h1>
                 <p class="text-gray-600 dark:text-gray-400">
-                    Gérez vos articles publiés et vos brouillons
+                    {% trans "Gérez vos articles publiés et vos brouillons" %}
                 </p>
             </div>
             <div class="flex items-center space-x-4">
                 <a href="{% url 'ajouter_article' %}" 
                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2">
                     <span>✍️</span>
-                    <span>Nouvel Article</span>
+                    <span>{% trans "Nouvel Article" %}</span>
                 </a>
             </div>
         </div>
@@ -35,7 +36,7 @@
                     </div>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-blue-600 dark:text-blue-400">Total</p>
+                    <p class="text-sm font-medium text-blue-600 dark:text-blue-400">{% trans "Total" %}</p>
                     <p class="text-2xl font-bold text-blue-900 dark:text-blue-100">{{ stats.total_articles }}</p>
                 </div>
             </div>
@@ -49,7 +50,7 @@
                     </div>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-green-600 dark:text-green-400">Publiés</p>
+                    <p class="text-sm font-medium text-green-600 dark:text-green-400">{% trans "Publiés" %}</p>
                     <p class="text-2xl font-bold text-green-900 dark:text-green-100">{{ stats.articles_publies }}</p>
                 </div>
             </div>
@@ -63,7 +64,7 @@
                     </div>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-yellow-600 dark:text-yellow-400">Brouillons</p>
+                    <p class="text-sm font-medium text-yellow-600 dark:text-yellow-400">{% trans "Brouillons" %}</p>
                     <p class="text-2xl font-bold text-yellow-900 dark:text-yellow-100">{{ stats.articles_brouillons }}</p>
                 </div>
             </div>
@@ -77,7 +78,7 @@
                     </div>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-purple-600 dark:text-purple-400">Vues totales</p>
+                    <p class="text-sm font-medium text-purple-600 dark:text-purple-400">{% trans "Vues totales" %}</p>
                     <p class="text-2xl font-bold text-purple-900 dark:text-purple-100">{{ stats.total_vues }}</p>
                 </div>
             </div>
@@ -89,7 +90,7 @@
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white">
-                Tous mes articles ({{ articles|length }})
+                {% trans "Tous mes articles" %} ({{ articles|length }})
             </h2>
         </div>
 
@@ -109,11 +110,11 @@
                             <!-- Statut de publication -->
                             {% if article.est_publie %}
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
-                                ✅ Publié
+                                ✅ {% trans "Publié" %}
                             </span>
                             {% else %}
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200">
-                                📝 Brouillon
+                                📝 {% trans "Brouillon" %}
                             </span>
                             {% endif %}
                         </div>
@@ -131,12 +132,12 @@
                             
                             <div class="flex items-center space-x-1">
                                 <span>👁️</span>
-                                <span>{{ article.nombre_vues }} vue{{ article.nombre_vues|pluralize }}</span>
+                                <span>{{ article.nombre_vues }} {% trans "vue" %}{{ article.nombre_vues|pluralize }}</span>
                             </div>
 
                             <div class="flex items-center space-x-1">
                                 <span>💬</span>
-                                <span>{{ article.commentaires.count }} commentaire{{ article.commentaires.count|pluralize }}</span>
+                                <span>{{ article.commentaires.count }} {% trans "commentaire" %}{{ article.commentaires.count|pluralize }}</span>
                             </div>
 
                             {% if article.categorie %}
@@ -152,7 +153,7 @@
                         <!-- Tags -->
                         {% if article.tags.all %}
                         <div class="flex items-center space-x-2 mt-3">
-                            <span class="text-sm text-gray-500 dark:text-gray-400">Tags:</span>
+                            <span class="text-sm text-gray-500 dark:text-gray-400">{% trans "Tags" %}:</span>
                             {% for tag in article.tags.all %}
                             <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium"
                                   style="background-color: {{ tag.couleur }}20; color: {{ tag.couleur }};">
@@ -167,17 +168,17 @@
                     <div class="flex items-center space-x-2 ml-4">
                         <a href="{% url 'detail_article' article.id %}" 
                            class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 p-2 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors duration-200"
-                           title="Voir l'article">
+                           title="{% trans 'Voir l\'article' %}">
                             👁️
                         </a>
                         
                         <button class="text-gray-600 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
-                                title="Modifier l'article">
+                                title="{% trans 'Modifier l\'article' %}">
                             ✏️
                         </button>
                         
                         <button class="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 p-2 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors duration-200"
-                                title="Supprimer l'article">
+                                title="{% trans 'Supprimer l\'article' %}">
                             🗑️
                         </button>
                     </div>
@@ -194,15 +195,15 @@
             <span class="text-4xl">📝</span>
         </div>
         <h3 class="text-xl font-medium text-gray-900 dark:text-white mb-2">
-            Aucun article pour le moment
+            {% trans "Aucun article pour le moment" %}
         </h3>
         <p class="text-gray-600 dark:text-gray-400 mb-6">
-            Commencez à écrire votre premier article pour partager vos idées avec la communauté.
+            {% trans "Commencez à écrire votre premier article pour partager vos idées avec la communauté." %}
         </p>
         <a href="{% url 'ajouter_article' %}" 
            class="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
             <span>✍️</span>
-            <span>Écrire mon premier article</span>
+            <span>{% trans "Écrire mon premier article" %}</span>
         </a>
     </div>
     {% endif %}

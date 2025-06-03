@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
+{% load i18n %}
 
-{% block title %}Modération - Blog Académique Universitaire{% endblock %}
+{% block title %}{% trans "Modération" %} - {% trans "Blog Académique Universitaire" %}{% endblock %}
 
 {% block content %}
 <div class="max-w-7xl mx-auto">
@@ -12,10 +13,10 @@
             </div>
             <div>
                 <h1 class="text-3xl font-bold text-orange-900 dark:text-orange-100">
-                    Panneau de Modération
+                    {% trans "Panneau de Modération" %}
                 </h1>
                 <p class="text-orange-700 dark:text-orange-300">
-                    Gérez les commentaires et surveillez l'activité du blog
+                    {% trans "Gérez les commentaires et surveillez l'activité du blog" %}
                 </p>
             </div>
         </div>
@@ -31,7 +32,7 @@
                     </div>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">En attente</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{% trans "En attente" %}</p>
                     <p class="text-2xl font-bold text-red-600 dark:text-red-400">{{ commentaires_en_attente.count }}</p>
                 </div>
             </div>
@@ -45,7 +46,7 @@
                     </div>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Approuvés</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{% trans "Approuvés" %}</p>
                     <p class="text-2xl font-bold text-green-600 dark:text-green-400">{{ commentaires_approuves.count }}
                     </p>
                 </div>
@@ -60,7 +61,7 @@
                     </div>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Utilisateurs actifs</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{% trans "Utilisateurs actifs" %}</p>
                     <p class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ utilisateurs_actifs }}</p>
                 </div>
             </div>
@@ -74,7 +75,7 @@
                     </div>
                 </div>
                 <div class="ml-4">
-                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Articles récents</p>
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{% trans "Articles récents" %}</p>
                     <p class="text-2xl font-bold text-purple-600 dark:text-purple-400">{{ articles_recents.count }}</p>
                 </div>
             </div>
@@ -87,7 +88,7 @@
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
                     <span>⏳</span>
-                    <span>Commentaires en attente ({{ commentaires_en_attente.count }})</span>
+                    <span>{% trans "Commentaires en attente" %} ({{ commentaires_en_attente.count }})</span>
                 </h2>
             </div>
 
@@ -119,7 +120,7 @@
                             </div>
                             <div>
                                 <p class="font-medium text-gray-900 dark:text-white">{{ commentaire.nom_auteur }}</p>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">Visiteur</p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">{% trans "Visiteur" %}</p>
                             </div>
                             {% endif %}
                         </div>
@@ -144,7 +145,7 @@
                                 {% csrf_token %}
                                 <button type="submit"
                                     class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors duration-200">
-                                    ✅ Approuver
+                                    ✅ {% trans "Approuver" %}
                                 </button>
                             </form>
 
@@ -153,8 +154,8 @@
                                 {% csrf_token %}
                                 <button type="submit"
                                     class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors duration-200"
-                                    onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?')">
-                                    🗑️ Supprimer
+                                    onclick="return confirm('{% trans "Êtes-vous sûr de vouloir supprimer ce commentaire ?" %}')">
+                                    🗑️ {% trans "Supprimer" %}
                                 </button>
                             </form>
                         </div>
@@ -169,10 +170,10 @@
                     <span class="text-2xl">✅</span>
                 </div>
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                    Tout est à jour !
+                    {% trans "Tout est à jour !" %}
                 </h3>
                 <p class="text-gray-600 dark:text-gray-400">
-                    Aucun commentaire en attente de modération.
+                    {% trans "Aucun commentaire en attente de modération." %}
                 </p>
             </div>
             {% endif %}
@@ -183,7 +184,7 @@
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
                     <span>📄</span>
-                    <span>Articles récents</span>
+                    <span>{% trans "Articles récents" %}</span>
                 </h2>
             </div>
 
@@ -201,7 +202,7 @@
                         {% if not article.est_publie %}
                         <span
                             class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-xs font-medium">
-                            Brouillon
+                            {% trans "Brouillon" %}
                         </span>
                         {% endif %}
                     </div>
@@ -239,10 +240,10 @@
                     <span class="text-2xl">📄</span>
                 </div>
                 <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                    Aucun article récent
+                    {% trans "Aucun article récent" %}
                 </h3>
                 <p class="text-gray-600 dark:text-gray-400">
-                    Aucun nouvel article à afficher.
+                    {% trans "Aucun nouvel article à afficher." %}
                 </p>
             </div>
             {% endif %}
@@ -255,7 +256,7 @@
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
             <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
                 <span>📊</span>
-                <span>Tableau de bord administrateur</span>
+                <span>{% trans "Tableau de bord administrateur" %}</span>
             </h2>
         </div>
 
@@ -263,15 +264,15 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="text-center">
                     <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ total_utilisateurs }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Utilisateurs inscrits</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "Utilisateurs inscrits" %}</div>
                 </div>
                 <div class="text-center">
                     <div class="text-3xl font-bold text-green-600 dark:text-green-400">{{ total_articles }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Articles publiés</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "Articles publiés" %}</div>
                 </div>
                 <div class="text-center">
                     <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">{{ total_commentaires }}</div>
-                    <div class="text-sm text-gray-600 dark:text-gray-400">Commentaires approuvés</div>
+                    <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "Commentaires approuvés" %}</div>
                 </div>
             </div>
 
@@ -279,7 +280,7 @@
                 <a href="/admin/" target="_blank"
                     class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2">
                     <span>🔧</span>
-                    <span>Administration Django</span>
+                    <span>{% trans "Administration Django" %}</span>
                 </a>
             </div>
         </div>

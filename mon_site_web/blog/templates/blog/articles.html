@@ -1,12 +1,13 @@
+{% load i18n %}
 {% extends 'blog/base.html' %}
 
-{% block title %}Articles - Mon Blog Django{% endblock %}
+{% block title %}{% trans "Articles" %} - {% trans "Mon Blog Django" %}{% endblock %}
 
 {% block content %}
 <!-- En-tête de la page -->
 <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">📄 Tous les articles</h1>
-    <p class="text-gray-600 dark:text-gray-400">Découvrez tous nos articles organisés et triés selon vos préférences.
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">📄 {% trans "Tous les articles" %}</h1>
+    <p class="text-gray-600 dark:text-gray-400">{% trans "Découvrez tous nos articles organisés et triés selon vos préférences." %}
     </p>
 </div>
 
@@ -15,10 +16,10 @@
     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
         <!-- Filtres par catégorie -->
         <div class="flex flex-wrap gap-2">
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">Filtrer par :</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300 mr-2">{% trans "Filtrer par :" %}</span>
             <a href="{% url 'articles' %}"
                 class="px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 {% if not categorie_selectionnee %}bg-blue-600 text-white{% else %}bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-blue-50 dark:hover:bg-gray-600{% endif %}">
-                Toutes
+                {% trans "Toutes" %}
             </a>
             {% for categorie in categories %}
             <a href="?categorie={{ categorie.id }}"
@@ -31,14 +32,12 @@
 
         <!-- Options de tri -->
         <div class="flex items-center space-x-4">
-            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Trier par :</span>
+            <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{% trans "Trier par :" %}</span>
             <select
                 onchange="window.location.href='?sort=' + this.value + '{% if categorie_selectionnee %}&categorie={{ categorie_selectionnee }}{% endif %}'"
                 class="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-gray-300 text-sm rounded-md px-3 py-1 focus:ring-blue-500 focus:border-blue-500">
-                <option value="-date_creation" {% if sort_actuel == "-date_creation" %}selected{% endif %}>Plus récents
-                </option>
-                <option value="date_creation" {% if sort_actuel == "date_creation" %}selected{% endif %}>Plus anciens
-                </option>
+                <option value="-date_creation" {% if sort_actuel == "-date_creation" %}selected{% endif %}>{% trans "Plus récents" %}</option>
+                <option value="date_creation" {% if sort_actuel == "date_creation" %}selected{% endif %}>{% trans "Plus anciens" %}</option>
                 <option value="titre" {% if sort_actuel == "titre" %}selected{% endif %}>A-Z</option>
                 <option value="-titre" {% if sort_actuel == "-titre" %}selected{% endif %}>Z-A</option>
             </select>
@@ -50,19 +49,18 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
     <div class="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 text-center">
         <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">{{ articles.count }}</div>
-        <div class="text-sm text-blue-800 dark:text-blue-300 font-medium">Article{{ articles.count|pluralize }}</div>
+        <div class="text-sm text-blue-800 dark:text-blue-300 font-medium">{% trans "Article" %}{{ articles.count|pluralize }}</div>
     </div>
     <div class="bg-green-50 dark:bg-green-900/20 rounded-xl p-6 text-center">
         <div class="text-3xl font-bold text-green-600 dark:text-green-400">{{ categories.count }}</div>
-        <div class="text-sm text-green-800 dark:text-green-300 font-medium">Catégorie{{ categories.count|pluralize }}
-        </div>
+        <div class="text-sm text-green-800 dark:text-green-300 font-medium">{% trans "Catégorie" %}{{ categories.count|pluralize }}</div>
     </div>
     <div class="bg-purple-50 dark:bg-purple-900/20 rounded-xl p-6 text-center">
         <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">
             <a href="{% url 'ajouter_article' %}" class="hover:underline">➕</a>
         </div>
         <div class="text-sm text-purple-800 dark:text-purple-300 font-medium">
-            <a href="{% url 'ajouter_article' %}" class="hover:underline">Nouvel article</a>
+            <a href="{% url 'ajouter_article' %}" class="hover:underline">{% trans "Nouvel article" %}</a>
         </div>
     </div>
 </div>
@@ -87,7 +85,7 @@
                             d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    <span class="text-sm font-medium">📄 Article</span>
+                    <span class="text-sm font-medium">📄 {% trans "Article" %}</span>
                 </div>
             </div>
             {% endif %}
@@ -139,15 +137,15 @@
                                 d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        {{ article.nombre_vues }} vue{{ article.nombre_vues|pluralize }}
+                        {{ article.nombre_vues }} {% trans "vue" %}{{ article.nombre_vues|pluralize }}
                     </span>
                     <span class="flex items-center">
-                        💬 {{ article.commentaires.count }} commentaire{{ article.commentaires.count|pluralize }}
+                        💬 {{ article.commentaires.count }} {% trans "commentaire" %}{{ article.commentaires.count|pluralize }}
                     </span>
                 </div>
                 <a href="{% url 'detail_article' article.id %}"
                     class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium">
-                    Lire la suite
+                    {% trans "Lire la suite" %}
                 </a>
             </div>
         </div>
@@ -158,24 +156,24 @@
 <div
     class="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
     <div class="text-6xl mb-4">📭</div>
-    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">Aucun article trouvé</h3>
+    <h3 class="text-xl font-semibold text-gray-900 dark:text-white mb-2">{% trans "Aucun article trouvé" %}</h3>
     <p class="text-gray-600 dark:text-gray-400 mb-6">
         {% if categorie_selectionnee %}
-        Aucun article dans cette catégorie pour le moment.
+        {% trans "Aucun article dans cette catégorie pour le moment." %}
         {% else %}
-        Il n'y a pas encore d'articles publiés.
+        {% trans "Il n'y a pas encore d'articles publiés." %}
         {% endif %}
     </p>
     <div class="space-x-4">
         {% if categorie_selectionnee %}
         <a href="{% url 'articles' %}"
             class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium">
-            Voir tous les articles
+            {% trans "Voir tous les articles" %}
         </a>
         {% endif %}
         <a href="{% url 'ajouter_article' %}"
             class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
-            Créer un article
+            {% trans "Créer un article" %}
         </a>
     </div>
 </div>

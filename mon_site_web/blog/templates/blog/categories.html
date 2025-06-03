@@ -1,12 +1,13 @@
+{% load i18n %}
 {% extends 'blog/base.html' %}
 
-{% block title %}Catégories - Mon Blog Django{% endblock %}
+{% block title %}{% trans "Catégories" %} - {% trans "Mon Blog Django" %}{% endblock %}
 
 {% block content %}
 <!-- En-tête de la page -->
 <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">🏷️ Catégories</h1>
-    <p class="text-gray-600 dark:text-gray-400">Explorez nos articles organisés par catégories thématiques.</p>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">🏷️ {% trans "Catégories" %}</h1>
+    <p class="text-gray-600 dark:text-gray-400">{% trans "Explorez nos articles organisés par catégories thématiques." %}</p>
 </div>
 
 <!-- Statistiques générales -->
@@ -15,7 +16,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <div class="text-3xl font-bold">{{ categories.count }}</div>
-                <div class="text-blue-100">Catégorie{{ categories.count|pluralize }}</div>
+                <div class="text-blue-100">{% trans "Catégorie" %}{{ categories.count|pluralize }}</div>
             </div>
             <div class="text-4xl opacity-80">🏷️</div>
         </div>
@@ -29,7 +30,7 @@
                     {{ cat.nb_articles }}
                     {% if not forloop.last%} + {% endif %}{% endif %}{% empty %}0{% endfor %}
                 </div>
-                <div class="text-green-100">Articles total</div>
+                <div class="text-green-100">{% trans "Articles total" %}</div>
             </div>
             <div class="text-4xl opacity-80">📄</div>
         </div>
@@ -40,7 +41,7 @@
                 <div class="text-3xl font-bold">
                     {{ categories|length|add:1 }}
                 </div>
-                <div class="text-purple-100">Sections (+ Sans catégorie)</div>
+                <div class="text-purple-100">{% trans "Sections (+ Sans catégorie)" %}</div>
             </div>
             <div class="text-4xl opacity-80">📂</div>
         </div>
@@ -70,7 +71,7 @@
             </p>
             {% else %}
             <p class="text-gray-500 dark:text-gray-500 mb-4 italic">
-                Aucune description disponible.
+                {% trans "Aucune description disponible." %}
             </p>
             {% endif %}
 
@@ -80,7 +81,7 @@
                     <div class="text-center">
                         <div class="text-2xl font-bold text-gray-900 dark:text-white">{{ categorie.nb_articles }}</div>
                         <div class="text-xs text-gray-500 dark:text-gray-400">
-                            Article{{ categorie.nb_articles|pluralize }}</div>
+                            {% trans "Article" %}{{ categorie.nb_articles|pluralize }}</div>
                     </div>
                 </div>
                 <div class="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg"
@@ -95,16 +96,16 @@
                 <a href="{% url 'articles' %}?categorie={{ categorie.id }}"
                     class="block w-full text-center px-4 py-2 rounded-lg transition-colors duration-200 text-sm font-medium text-white"
                     style="background-color: {{ categorie.couleur }};">
-                    Voir les articles
+                    {% trans "Voir les articles" %}
                 </a>
                 <a href="{% url 'home' %}?categorie={{ categorie.id }}"
                     class="block w-full text-center px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 text-sm font-medium">
-                    Vue d'accueil
+                    {% trans "Vue d'accueil" %}
                 </a>
                 {% else %}
                 <div
                     class="block w-full text-center px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-500 rounded-lg text-sm">
-                    Aucun article pour le moment
+                    {% trans "Aucun article pour le moment" %}
                 </div>
                 {% endif %}
             </div>
@@ -120,27 +121,26 @@
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
                 <span
                     class="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-3">?</span>
-                Articles sans catégorie
+                {% trans "Articles sans catégorie" %}
             </h2>
-            <p class="text-gray-600 dark:text-gray-400 mt-2">Articles qui n'ont pas encore été classés dans une
-                catégorie.</p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">{% trans "Articles qui n'ont pas encore été classés dans une catégorie." %}</p>
         </div>
         <div class="text-right">
             <div class="text-3xl font-bold text-gray-500">
                 {{ articles_sans_categorie|default:0 }}
             </div>
-            <div class="text-sm text-gray-500">Article{{ articles_sans_categorie|default:0|pluralize }}</div>
+            <div class="text-sm text-gray-500">{% trans "Article" %}{{ articles_sans_categorie|default:0|pluralize }}</div>
         </div>
     </div>
 
     <div class="space-y-2">
         <a href="{% url 'articles' %}"
             class="inline-block px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors duration-200 font-medium">
-            Voir tous les articles
+            {% trans "Voir tous les articles" %}
         </a>
         <a href="{% url 'home' %}"
             class="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium ml-2">
-            Retour à l'accueil
+            {% trans "Retour à l'accueil" %}
         </a>
     </div>
 </div>
@@ -150,18 +150,18 @@
 <div
     class="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
     <div class="text-6xl mb-4">🏷️</div>
-    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Aucune catégorie créée</h3>
+    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{% trans "Aucune catégorie créée" %}</h3>
     <p class="text-gray-600 dark:text-gray-400 mb-6">
-        Commencez par créer des catégories pour organiser vos articles par thèmes.
+        {% trans "Commencez par créer des catégories pour organiser vos articles par thèmes." %}
     </p>
     <div class="space-x-4">
         <a href="/admin/blog/categorie/add/"
             class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
-            Créer une catégorie
+            {% trans "Créer une catégorie" %}
         </a>
         <a href="{% url 'ajouter_article' %}"
             class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium">
-            Créer un article
+            {% trans "Créer un article" %}
         </a>
     </div>
 </div>

@@ -1,12 +1,13 @@
+{% load i18n %}
 {% extends 'blog/base.html' %}
 
-{% block title %}Auteurs - Mon Blog Django{% endblock %}
+{% block title %}{% trans "Auteurs" %} - {% trans "Mon Blog Django" %}{% endblock %}
 
 {% block content %}
 <!-- En-tête de la page -->
 <div class="mb-8">
-    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">👥 Nos auteurs</h1>
-    <p class="text-gray-600 dark:text-gray-400">Découvrez les contributeurs de notre blog et leurs articles.</p>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">👥 {% trans "Nos auteurs" %}</h1>
+    <p class="text-gray-600 dark:text-gray-400">{% trans "Découvrez les contributeurs de notre blog et leurs articles." %}</p>
 </div>
 
 <!-- Statistiques générales -->
@@ -15,7 +16,7 @@
         <div class="flex items-center justify-between">
             <div>
                 <div class="text-3xl font-bold">{{ auteurs.count }}</div>
-                <div class="text-indigo-100">Auteur{{ auteurs.count|pluralize }}</div>
+                <div class="text-indigo-100">{% trans "Auteur" %}{{ auteurs.count|pluralize }}</div>
             </div>
             <div class="text-4xl opacity-80">👥</div>
         </div>
@@ -30,7 +31,7 @@
                     {% empty %}0
                     {% endfor %}
                 </div>
-                <div class="text-green-100">Articles total</div>
+                <div class="text-green-100">{% trans "Articles total" %}</div>
             </div>
             <div class="text-4xl opacity-80">📄</div>
         </div>
@@ -41,7 +42,7 @@
                 <div class="text-3xl font-bold">
                     {% if auteurs %}{{ auteurs.0.nb_articles }}{% else %}0{% endif %}
                 </div>
-                <div class="text-yellow-100">Auteur le + actif</div>
+                <div class="text-yellow-100">{% trans "Auteur le + actif" %}</div>
             </div>
             <div class="text-4xl opacity-80">🏆</div>
         </div>
@@ -52,7 +53,7 @@
                 <div class="text-3xl font-bold">
                     {% if auteurs %}{{ auteurs|length }}{% else %}0{% endif %}
                 </div>
-                <div class="text-purple-100">Contributeurs</div>
+                <div class="text-purple-100">{% trans "Contributeurs" %}</div>
             </div>
             <div class="text-4xl opacity-80">✍️</div>
         </div>
@@ -74,7 +75,7 @@
                 </div>
                 <div>
                     <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ auteur.auteur }}</h3>
-                    <p class="text-gray-500 dark:text-gray-400 text-sm">Contributeur</p>
+                    <p class="text-gray-500 dark:text-gray-400 text-sm">{% trans "Contributeur" %}</p>
                 </div>
             </div>
 
@@ -82,7 +83,7 @@
             <div class="grid grid-cols-2 gap-4 mb-6">
                 <div class="text-center p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                     <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">{{ auteur.nb_articles }}</div>
-                    <div class="text-xs text-blue-800 dark:text-blue-300">Article{{ auteur.nb_articles|pluralize }}
+                    <div class="text-xs text-blue-800 dark:text-blue-300">{% trans "Article" %}{{ auteur.nb_articles|pluralize }}
                     </div>
                 </div>
                 <div class="text-center p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
@@ -93,7 +94,7 @@
                         N/A
                         {% endif %}
                     </div>
-                    <div class="text-xs text-green-800 dark:text-green-300">Dernier article</div>
+                    <div class="text-xs text-green-800 dark:text-green-300">{% trans "Dernier article" %}</div>
                 </div>
             </div>
 
@@ -102,22 +103,22 @@
                 {% if forloop.counter == 1 %}
                 <span
                     class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-300">
-                    🏆 Auteur le plus actif
+                    🏆 {% trans "Auteur le plus actif" %}
                 </span>
                 {% elif auteur.nb_articles >= 5 %}
                 <span
                     class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900/20 dark:text-purple-300">
-                    ⭐ Contributeur régulier
+                    ⭐ {% trans "Contributeur régulier" %}
                 </span>
                 {% elif auteur.nb_articles >= 2 %}
                 <span
                     class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/20 dark:text-blue-300">
-                    ✨ Contributeur actif
+                    ✨ {% trans "Contributeur actif" %}
                 </span>
                 {% else %}
                 <span
                     class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300">
-                    🌱 Nouveau contributeur
+                    🌱 {% trans "Nouveau contributeur" %}
                 </span>
                 {% endif %}
             </div>
@@ -126,12 +127,12 @@
             <div class="space-y-2">
                 <a href="{% url 'articles' %}?auteur={{ auteur.auteur }}"
                     class="block w-full text-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium">
-                    Voir ses articles ({{ auteur.nb_articles }})
+                    {% trans "Voir ses articles" %} ({{ auteur.nb_articles }})
                 </a>
                 {% if auteur.nb_articles > 1 %}
                 <a href="{% url 'home' %}?auteur={{ auteur.auteur }}"
                     class="block w-full text-center px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200 text-sm font-medium">
-                    Vue d'accueil
+                    {% trans "Vue d'accueil" %}
                 </a>
                 {% endif %}
             </div>
@@ -143,18 +144,18 @@
 <!-- Section d'encouragement -->
 <div
     class="mt-12 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-8 text-center">
-    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">🌟 Rejoignez notre communauté !</h2>
+    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">🌟 {% trans "Rejoignez notre communauté !" %}</h2>
     <p class="text-gray-600 dark:text-gray-400 mb-6">
-        Vous aussi, partagez vos connaissances et devenez l'un de nos auteurs contributeurs.
+        {% trans "Vous aussi, partagez vos connaissances et devenez l'un de nos auteurs contributeurs." %}
     </p>
     <div class="space-x-4">
         <a href="{% url 'ajouter_article' %}"
             class="inline-block bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
-            ✍️ Écrire un article
+            ✍️ {% trans "Écrire un article" %}
         </a>
         <a href="{% url 'home' %}"
             class="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium">
-            🏠 Retour à l'accueil
+            🏠 {% trans "Retour à l'accueil" %}
         </a>
     </div>
 </div>
@@ -164,18 +165,18 @@
 <div
     class="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
     <div class="text-6xl mb-4">👥</div>
-    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Aucun auteur pour le moment</h3>
+    <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{% trans "Aucun auteur pour le moment" %}</h3>
     <p class="text-gray-600 dark:text-gray-400 mb-6">
-        Soyez le premier à contribuer en créant un article !
+        {% trans "Soyez le premier à contribuer en créant un article !" %}
     </p>
     <div class="space-x-4">
         <a href="{% url 'ajouter_article' %}"
             class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
-            ✍️ Créer le premier article
+            ✍️ {% trans "Créer le premier article" %}
         </a>
         <a href="{% url 'home' %}"
             class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium">
-            🏠 Retour à l'accueil
+            🏠 {% trans "Retour à l'accueil" %}
         </a>
     </div>
 </div>

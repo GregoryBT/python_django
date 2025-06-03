@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
+{% load i18n %}
 
-{% block title %}Mon Profil - Blog Académique Universitaire{% endblock %}
+{% block title %}{% trans "Mon Profil" %} - {% trans "Blog Académique Universitaire" %}{% endblock %}
 
 {% block content %}
 <div class="max-w-4xl mx-auto">
@@ -9,7 +10,7 @@
         <div class="flex items-center space-x-6">
             <div class="flex-shrink-0">
                 {% if profil_user.avatar %}
-                <img src="{{ profil_user.avatar.url }}" alt="Avatar"
+                <img src="{{ profil_user.avatar.url }}" alt="{% trans 'Avatar' %}"
                     class="w-20 h-20 rounded-full object-cover border-4 border-blue-200 dark:border-blue-700">
                 {% else %}
                 <div
@@ -37,7 +38,7 @@
                 {% if profil_user.site_web %}
                 <a href="{{ profil_user.site_web }}" target="_blank"
                     class="inline-flex items-center mt-2 text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
-                    🌐 Site web
+                    🌐 {% trans "Site web" %}
                     <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
                         <path
                             d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z">
@@ -56,7 +57,7 @@
         <div class="lg:col-span-2">
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 border border-gray-200 dark:border-gray-700">
                 <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                    ⚙️ Modifier mon profil
+                    ⚙️ {% trans "Modifier mon profil" %}
                 </h2>
 
                 <form method="post" enctype="multipart/form-data" class="space-y-6">
@@ -67,14 +68,14 @@
                         <div>
                             <label for="{{ form.first_name.id_for_label }}"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Prénom
+                                {% trans "Prénom" %}
                             </label>
                             {{ form.first_name }}
                         </div>
                         <div>
                             <label for="{{ form.last_name.id_for_label }}"
                                 class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                Nom
+                                {% trans "Nom" %}
                             </label>
                             {{ form.last_name }}
                         </div>
@@ -83,7 +84,7 @@
                     <div>
                         <label for="{{ form.email.id_for_label }}"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Email
+                            {% trans "Email" %}
                         </label>
                         {{ form.email }}
                     </div>
@@ -92,29 +93,27 @@
                     <div>
                         <label for="{{ form.bio.id_for_label }}"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Biographie
+                            {% trans "Biographie" %}
                         </label>
                         {{ form.bio }}
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Parlez-nous de vous, vos domaines
-                            d'expertise, etc.</p>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{% trans "Parlez-nous de vous, vos domaines d'expertise, etc." %}</p>
                     </div>
 
                     <!-- Avatar -->
                     <div>
                         <label for="{{ form.avatar.id_for_label }}"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Photo de profil
+                            {% trans "Photo de profil" %}
                         </label>
                         {{ form.avatar }}
-                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Format recommandé : JPG, PNG. Taille
-                            max : 2MB</p>
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">{% trans "Format recommandé : JPG, PNG. Taille max : 2MB" %}</p>
                     </div>
 
                     <!-- Site web -->
                     <div>
                         <label for="{{ form.site_web.id_for_label }}"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                            Site web
+                            {% trans "Site web" %}
                         </label>
                         {{ form.site_web }}
                     </div>
@@ -123,7 +122,7 @@
                     <div class="flex items-center justify-end">
                         <button type="submit"
                             class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
-                            💾 Sauvegarder les modifications
+                            💾 {% trans "Sauvegarder les modifications" %}
                         </button>
                     </div>
                 </form>
@@ -134,27 +133,27 @@
         <div class="space-y-6">
             <!-- Statistiques -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📊 Mes statistiques</h3>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">📊 {% trans "Mes statistiques" %}</h3>
                 <div class="space-y-4">
                     <div class="flex items-center justify-between">
-                        <span class="text-gray-600 dark:text-gray-400">Articles publiés</span>
+                        <span class="text-gray-600 dark:text-gray-400">{% trans "Articles publiés" %}</span>
                         <span class="font-semibold text-blue-600 dark:text-blue-400">
                             {{ stats.articles_publies }}
                         </span>
                     </div>
                     <div class="flex items-center justify-between">
-                        <span class="text-gray-600 dark:text-gray-400">Brouillons</span>
+                        <span class="text-gray-600 dark:text-gray-400">{% trans "Brouillons" %}</span>
                         <span class="font-semibold text-gray-600 dark:text-gray-400">
                             {{ stats.articles_brouillons }}</span>
                     </div>
                     <div class="flex items-center justify-between">
-                        <span class="text-gray-600 dark:text-gray-400">Vues totales</span>
+                        <span class="text-gray-600 dark:text-gray-400">{% trans "Vues totales" %}</span>
                         <span class="font-semibold text-green-600 dark:text-green-400">
                             {{ stats.total_vues }}
                         </span>
                     </div>
                     <div class="flex items-center justify-between">
-                        <span class="text-gray-600 dark:text-gray-400">Commentaires écrits</span>
+                        <span class="text-gray-600 dark:text-gray-400">{% trans "Commentaires écrits" %}</span>
                         <span class="font-semibold text-purple-600 dark:text-purple-400">
                             {{ stats.commentaires_ecrits }}</span>
                     </div>
@@ -163,22 +162,22 @@
 
             <!-- Informations du compte -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">ℹ️ Informations du compte</h3>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">ℹ️ {% trans "Informations du compte" %}</h3>
                 <div class="space-y-3 text-sm">
                     <div>
-                        <span class="text-gray-600 dark:text-gray-400">Membre depuis :</span>
+                        <span class="text-gray-600 dark:text-gray-400">{% trans "Membre depuis" %} :</span>
                         <div class="font-medium text-gray-900 dark:text-white">{{ user.date_joined|date:"d/m/Y" }}</div>
                     </div>
                     {% if profil_user.derniere_connexion %}
                     <div>
-                        <span class="text-gray-600 dark:text-gray-400">Dernière connexion :</span>
+                        <span class="text-gray-600 dark:text-gray-400">{% trans "Dernière connexion" %} :</span>
                         <div class="font-medium text-gray-900 dark:text-white">
                             {{ profil_user.derniere_connexion|date:"d/m/Y H:i" }}
                         </div>
                     </div>
                     {% endif %}
                     <div>
-                        <span class="text-gray-600 dark:text-gray-400">Type de compte :</span>
+                        <span class="text-gray-600 dark:text-gray-400">{% trans "Type de compte" %} :</span>
                         <div class="font-medium text-gray-900 dark:text-white">{{ profil_user.get_role_display }}</div>
                     </div>
                 </div>
@@ -186,22 +185,22 @@
 
             <!-- Actions rapides -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">🚀 Actions rapides</h3>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">🚀 {% trans "Actions rapides" %}</h3>
                 <div class="space-y-3">
                     {% if user.profil.peut_creer_article %}
                     <a href="{% url 'ajouter_article' %}"
                         class="block w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-3 px-4 rounded-lg font-medium transition-colors duration-200">
-                        ✍️ Écrire un article
+                        ✍️ {% trans "Écrire un article" %}
                     </a>
                     <a href="{% url 'mes_articles' %}"
                         class="block w-full bg-green-600 hover:bg-green-700 text-white text-center py-3 px-4 rounded-lg font-medium transition-colors duration-200">
-                        📝 Mes articles
+                        📝 {% trans "Mes articles" %}
                     </a>
                     {% endif %}
                     {% if user.profil.peut_moderer %}
                     <a href="{% url 'moderation' %}"
                         class="block w-full bg-orange-600 hover:bg-orange-700 text-white text-center py-3 px-4 rounded-lg font-medium transition-colors duration-200">
-                        🛡️ Modération
+                        🛡️ {% trans "Modération" %}
                     </a>
                     {% endif %}
                 </div>
@@ -212,7 +211,7 @@
     <!-- Articles récents de l'utilisateur -->
     {% if articles_recents %}
     <div class="mt-8 bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 border border-gray-200 dark:border-gray-700">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">📝 Mes articles récents</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">📝 {% trans "Mes articles récents" %}</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {% for article in articles_recents %}
             <div
@@ -230,7 +229,7 @@
                         {% if not article.est_publie %}
                         <span
                             class="bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-2 py-1 rounded text-xs">
-                            Brouillon
+                            {% trans "Brouillon" %}
                         </span>
                         {% endif %}
                     </div>
@@ -242,7 +241,7 @@
         <div class="text-center mt-6">
             <a href="{% url 'mes_articles' %}"
                 class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
-                Voir tous mes articles →
+                {% trans "Voir tous mes articles" %} →
             </a>
         </div>
         {% endif %}

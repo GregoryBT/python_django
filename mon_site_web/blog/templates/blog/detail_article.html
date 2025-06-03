@@ -1,12 +1,13 @@
+{% load i18n %}
 {% extends 'blog/base.html' %}
 
-{% block title %}{{ article.titre }} - Mon Blog Django{% endblock %}
+{% block title %}{{ article.titre }} - {% trans "Mon Blog Django" %}{% endblock %}
 
 {% block content %}
 <!-- Breadcrumb -->
 <nav class="mb-6">
     <ol class="flex items-center space-x-2 text-sm text-gray-500">
-        <li><a href="{% url 'home' %}" class="hover:text-blue-600 transition-colors duration-200">Accueil</a></li>
+        <li><a href="{% url 'home' %}" class="hover:text-blue-600 transition-colors duration-200">{% trans "Accueil" %}</a></li>
         <li class="flex items-center">
             <svg class="w-4 h-4 mx-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd"
@@ -86,12 +87,12 @@
                             d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm0 3a1 1 0 000 2h3a1 1 0 100-2H6z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    {{ commentaires.count }} commentaire{{ commentaires.count|pluralize }}
+                    {{ commentaires.count }} {% trans "commentaire" %}{{ commentaires.count|pluralize }}
                 </span>
             </div>
             <a href="{% url 'home' %}"
                 class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
-                ← Retour à l'accueil
+                ← {% trans "Retour à l'accueil" %}
             </a>
         </div>
     </div>
@@ -101,7 +102,7 @@
 <div class="bg-white rounded-xl shadow-lg overflow-hidden">
     <div class="p-6 border-b border-gray-200">
         <h2 class="text-2xl font-bold text-gray-900 flex items-center">
-            💬 Commentaires
+            💬 {% trans "Commentaires" %}
             <span class="ml-2 bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">
                 {{ commentaires.count }}
             </span>
@@ -110,18 +111,18 @@
 
     <!-- Formulaire d'ajout de commentaire -->
     <div class="p-6 bg-gray-50 border-b border-gray-200">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">✍️ Ajouter un commentaire</h3>
+        <h3 class="text-lg font-semibold text-gray-900 mb-4">✍️ {% trans "Ajouter un commentaire" %}</h3>
         <form method="post" class="space-y-4">
             {% csrf_token %}
             <div>
                 <label for="id_nom_auteur" class="block text-sm font-medium text-gray-700 mb-2">
-                    Nom <span class="text-red-500">*</span>
+                    {% trans "Nom" %} <span class="text-red-500">*</span>
                 </label>
                 {{ form.nom_auteur }}
             </div>
             <div>
                 <label for="id_contenu" class="block text-sm font-medium text-gray-700 mb-2">
-                    Commentaire <span class="text-red-500">*</span>
+                    {% trans "Commentaire" %} <span class="text-red-500">*</span>
                 </label>
                 {{ form.contenu }}
             </div>
@@ -132,7 +133,7 @@
                         d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
                     </path>
                 </svg>
-                Publier le commentaire
+                {% trans "Publier le commentaire" %}
             </button>
         </form>
     </div>
@@ -165,8 +166,8 @@
         {% else %}
         <div class="text-center py-8">
             <div class="text-4xl mb-4">💭</div>
-            <p class="text-gray-600">Aucun commentaire pour le moment.</p>
-            <p class="text-gray-500 text-sm">Soyez le premier à commenter cet article !</p>
+            <p class="text-gray-600">{% trans "Aucun commentaire pour le moment." %}</p>
+            <p class="text-gray-500 text-sm">{% trans "Soyez le premier à commenter cet article !" %}</p>
         </div>
         {% endif %}
     </div>

@@ -1,6 +1,7 @@
+{% load i18n %}
 {% extends 'blog/base.html' %}
 
-{% block title %}Inscription - Blog Académique Universitaire{% endblock %}
+{% block title %}{% trans "Inscription" %} - {% trans "Blog Académique Universitaire" %}{% endblock %}
 
 {% block content %}
 <div class="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
@@ -10,10 +11,10 @@
                 <span class="text-2xl">📝</span>
             </div>
             <h2 class="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
-                Créer un compte
+                {% trans "Créer un compte" %}
             </h2>
             <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-                Rejoignez notre communauté académique
+                {% trans "Rejoignez notre communauté académique" %}
             </p>
         </div>
 
@@ -24,14 +25,14 @@
                 <div>
                     <label for="{{ form.username.id_for_label }}"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Nom d'utilisateur
+                        {% trans "Nom d'utilisateur" %}
                     </label>
                     <div class="mt-1 relative">
                         <input type="text" 
                                name="{{ form.username.name }}" 
                                id="{{ form.username.id_for_label }}"
                                class="appearance-none relative block w-full px-3 py-3 pl-10 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-700"
-                               placeholder="Choisissez un nom d'utilisateur"
+                               placeholder="{% trans 'Choisissez un nom d\'utilisateur' %}"
                                value="{{ form.username.value|default:'' }}"
                                required>
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -54,13 +55,13 @@
                     <div>
                         <label for="{{ form.first_name.id_for_label }}"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Prénom
+                            {% trans "Prénom" %}
                         </label>
                         <input type="text" 
                                name="{{ form.first_name.name }}" 
                                id="{{ form.first_name.id_for_label }}"
                                class="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-700"
-                               placeholder="Votre prénom"
+                               placeholder="{% trans 'Votre prénom' %}"
                                value="{{ form.first_name.value|default:'' }}">
                         {% if form.first_name.errors %}
                         <div class="mt-1 text-sm text-red-600 dark:text-red-400">
@@ -71,13 +72,13 @@
                     <div>
                         <label for="{{ form.last_name.id_for_label }}"
                             class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                            Nom
+                            {% trans "Nom" %}
                         </label>
                         <input type="text" 
                                name="{{ form.last_name.name }}" 
                                id="{{ form.last_name.id_for_label }}"
                                class="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-700"
-                               placeholder="Votre nom"
+                               placeholder="{% trans 'Votre nom' %}"
                                value="{{ form.last_name.value|default:'' }}">
                         {% if form.last_name.errors %}
                         <div class="mt-1 text-sm text-red-600 dark:text-red-400">
@@ -91,7 +92,7 @@
                 <div>
                     <label for="{{ form.email.id_for_label }}"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Adresse email
+                        {% trans "Adresse email" %}
                     </label>
                     <div class="mt-1 relative">
                         <input type="email" 
@@ -120,20 +121,20 @@
                 <div>
                     <label for="{{ form.role.id_for_label }}"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Type de compte
+                        {% trans "Type de compte" %}
                     </label>
                     <select name="{{ form.role.name }}" 
                             id="{{ form.role.id_for_label }}"
                             class="mt-1 appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-700">
-                        <option value="">Choisissez un type de compte</option>
+                        <option value="">{% trans "Choisissez un type de compte" %}</option>
                         {% for value, label in form.role.field.choices %}
                             <option value="{{ value }}" {% if form.role.value == value %}selected{% endif %}>{{ label }}</option>
                         {% endfor %}
                     </select>
                     <div class="mt-1 text-xs text-gray-500 dark:text-gray-400">
                         <div class="space-y-1">
-                            <div>• <strong>Lecteur :</strong> Lire et commenter les articles</div>
-                            <div>• <strong>Auteur :</strong> Écrire et publier des articles</div>
+                            <div>• <strong>{% trans "Lecteur" %} :</strong> {% trans "Lire et commenter les articles" %}</div>
+                            <div>• <strong>{% trans "Auteur" %} :</strong> {% trans "Écrire et publier des articles" %}</div>
                         </div>
                     </div>
                     {% if form.role.errors %}
@@ -147,14 +148,14 @@
                 <div>
                     <label for="{{ form.password1.id_for_label }}"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Mot de passe
+                        {% trans "Mot de passe" %}
                     </label>
                     <div class="mt-1 relative">
                         <input type="password" 
                                name="{{ form.password1.name }}" 
                                id="{{ form.password1.id_for_label }}"
                                class="appearance-none relative block w-full px-3 py-3 pl-10 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-700"
-                               placeholder="Choisissez un mot de passe"
+                               placeholder="{% trans 'Choisissez un mot de passe' %}"
                                required>
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -175,14 +176,14 @@
                 <div>
                     <label for="{{ form.password2.id_for_label }}"
                         class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Confirmer le mot de passe
+                        {% trans "Confirmer le mot de passe" %}
                     </label>
                     <div class="mt-1 relative">
                         <input type="password" 
                                name="{{ form.password2.name }}" 
                                id="{{ form.password2.id_for_label }}"
                                class="appearance-none relative block w-full px-3 py-3 pl-10 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-700"
-                               placeholder="Confirmez votre mot de passe"
+                               placeholder="{% trans 'Confirmez votre mot de passe' %}"
                                required>
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
@@ -212,17 +213,17 @@
                                 clip-rule="evenodd" />
                         </svg>
                     </span>
-                    Créer mon compte
+                    {% trans "Créer mon compte" %}
                 </button>
             </div>
 
             <!-- Lien vers la connexion -->
             <div class="text-center">
                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Vous avez déjà un compte ?
+                    {% trans "Vous avez déjà un compte ?" %}
                     <a href="{% url 'connexion' %}"
                         class="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
-                        Se connecter
+                        {% trans "Se connecter" %}
                     </a>
                 </p>
             </div>
