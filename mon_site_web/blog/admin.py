@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
-from .models import Article, Commentaire, Categorie, Tag, VueArticle, Profil
+from .models import Article, Commentaire, Categorie, Tag, VueArticle, Profil, Like, Bookmark
 
 # Inline pour afficher le profil dans l'admin des utilisateurs
 class ProfilInline(admin.StackedInline):
@@ -148,6 +148,41 @@ class VueArticleAdmin(admin.ModelAdmin):
     
     def has_add_permission(self, request):
         return False  # Empêcher l'ajout manuel de vues
+
+@admin.register(Like)
+class LikeAdmin(admin.ModelAdmin):
+    list_display = ['user', 'article', 'date_creation']
+    list_filter = ['date_creation']
+    search_fields = ['user__username', 'article__titre']
+    readonly_fields = ['date_creation']
+    
+    def has_add_permission(self, request):
+        return False  # Les likes se font via l'interface utilisateur
+
+@admin.register(Bookmark)
+class BookmarkAdmin(admin.ModelAdmin):
+    list_display = ['user', 'article', 'date_creation', 'has_note']
+    list_filter = ['date_creation']
+    search_fields = ['user__username', 'article__titre', 'note_personnelle']
+    readonly_fields = ['date_creation']
+    
+    fieldsets = (
+        ('Favori', {
+            'fields': ('user', 'article', 'date_creation')
+        }),
+        ('Note personnelle', {
+            'fields': ('note_personnelle',),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def has_note(self, obj):
+        return bool(obj.note_personnelle)
+    has_note.boolean = True
+    has_note.short_description = 'A une note'
+    
+    def has_add_permission(self, request):
+        return False  # Les favoris se font via l'interface utilisateur
 
 # Configuration du site admin
 admin.site.site_header = "Administration - Blog Académique Universitaire"

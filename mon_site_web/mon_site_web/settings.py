@@ -15,6 +15,7 @@ from decouple import config, Csv
 from django.utils.translation import gettext_lazy as _
 import os
 import ssl
+from django.conf.locale.fr import formats as fr_formats
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -132,10 +133,10 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'fr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Paris'  # Timezone française
 
 USE_I18N = True
-USE_L10N = True
+USE_L10N = True  # Active la localisation automatique des dates/heures
 USE_TZ = True
 
 # Configuration des langues disponibles
@@ -143,6 +144,41 @@ LANGUAGES = [
     ('fr', 'Français'),
     ('en', 'Anglais'),
 ]
+
+# Configuration des formats de date français
+# Configuration des formats de dates et heures français
+# Formats de dates français personnalisés
+fr_formats.DATE_FORMAT = 'd F Y'  # Ex: 4 juin 2025
+fr_formats.DATETIME_FORMAT = 'd F Y à H:i'  # Ex: 4 juin 2025 à 14:30
+fr_formats.SHORT_DATE_FORMAT = 'd/m/Y'  # Ex: 04/06/2025
+fr_formats.SHORT_DATETIME_FORMAT = 'd/m/Y H:i'  # Ex: 04/06/2025 14:30
+fr_formats.TIME_FORMAT = 'H:i'  # Ex: 14:30
+
+# Formats pour les inputs
+fr_formats.DATE_INPUT_FORMATS = [
+    '%d/%m/%Y', '%d-%m-%Y',  # 04/06/2025 ou 04-06-2025
+    '%d/%m/%y', '%d-%m-%y',  # 04/06/25 ou 04-06-25
+]
+
+fr_formats.DATETIME_INPUT_FORMATS = [
+    '%d/%m/%Y %H:%M:%S',  # 04/06/2025 14:30:00
+    '%d/%m/%Y %H:%M',     # 04/06/2025 14:30
+    '%d-%m-%Y %H:%M:%S',  # 04-06-2025 14:30:00
+    '%d-%m-%Y %H:%M',     # 04-06-2025 14:30
+]
+
+# Jours de la semaine et mois en français (Django les gère automatiquement)
+# mais on peut forcer certains comportements
+FIRST_DAY_OF_WEEK = 1  # Lundi comme premier jour de la semaine
+
+# Configuration des formats de date français
+DATE_FORMAT = 'd F Y'  # Affichage complet : 4 juin 2025
+DATETIME_FORMAT = 'd F Y à H:i'  # Avec heure : 4 juin 2025 à 14:30
+SHORT_DATE_FORMAT = 'd/m/Y'  # Format court : 04/06/2025
+SHORT_DATETIME_FORMAT = 'd/m/Y H:i'  # Format court avec heure : 04/06/2025 14:30
+
+# Utiliser les formats personnalisés
+USE_L10N = True
 
 # Répertoire pour les fichiers de traduction
 LOCALE_PATHS = [

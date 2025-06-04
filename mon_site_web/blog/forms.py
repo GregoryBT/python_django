@@ -60,39 +60,105 @@ class ConnexionForm(AuthenticationForm):
 
 class ProfilForm(forms.ModelForm):
     """Formulaire pour modifier le profil utilisateur"""
-    first_name = forms.CharField(max_length=30, required=False, label="Prénom")
-    last_name = forms.CharField(max_length=30, required=False, label="Nom")
-    email = forms.EmailField(required=False)
+    # Champs utilisateur (informations de base)
+    first_name = forms.CharField(
+        max_length=30, 
+        required=False, 
+        label="Prénom",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white',
+            'placeholder': 'Votre prénom'
+        })
+    )
+    last_name = forms.CharField(
+        max_length=30, 
+        required=False, 
+        label="Nom",
+        widget=forms.TextInput(attrs={
+            'class': 'form-control w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white',
+            'placeholder': 'Votre nom'
+        })
+    )
+    email = forms.EmailField(
+        required=False,
+        label="Email",
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white',
+            'placeholder': 'votre@email.com'
+        })
+    )
     
     class Meta:
         model = Profil
         fields = ['bio', 'avatar', 'site_web']
         widgets = {
             'bio': forms.Textarea(attrs={
-                'class': 'form-control',
+                'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none',
                 'rows': 4,
-                'placeholder': 'Parlez-nous de vous...'
+                'placeholder': 'Parlez-nous de vous, vos domaines d\'expertise, vos passions...'
             }),
             'avatar': forms.FileInput(attrs={
-                'class': 'form-control',
+                'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white',
                 'accept': 'image/*'
             }),
             'site_web': forms.URLInput(attrs={
-                'class': 'form-control',
+                'class': 'w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent dark:bg-gray-700 dark:text-white',
                 'placeholder': 'https://votre-site.com'
             }),
         }
     
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
+        # Récupérer les arguments personnalisés
+        user_instance = kwargs.pop('instance', None)  # Instance User
+        profil_instance = kwargs.pop('profil_instance', None)  # Instance Profil
+        
+        # Utiliser l'instance de profil pour le formulaire
+        if profil_instance:
+            kwargs['instance'] = profil_instance
+        
         super().__init__(*args, **kwargs)
-        if user:
-            self.fields['first_name'].initial = user.first_name
-            self.fields['last_name'].initial = user.last_name
-            self.fields['email'].initial = user.email
-            self.fields['first_name'].widget.attrs.update({'class': 'form-control'})
-            self.fields['last_name'].widget.attrs.update({'class': 'form-control'})
-            self.fields['email'].widget.attrs.update({'class': 'form-control'})
+        
+        # Si on a une instance User, préremplir les champs utilisateur
+        if user_instance:
+            self.fields['first_name'].initial = user_instance.first_name
+            self.fields['last_name'].initial = user_instance.last_name
+            self.fields['email'].initial = user_instance.email
+        
+        # Rendre les champs requis pour une meilleure UX
+        self.fields['first_name'].required = True
+        self.fields['last_name'].required = True
+        self.fields['email'].required = True
+        
+        # Messages d'aide
+        self.fields['bio'].help_text = "Décrivez-vous en quelques mots (optionnel)"
+        self.fields['avatar'].help_text = "Format recommandé : JPG, PNG. Taille max : 2MB"
+        self.fields['site_web'].help_text = "Votre site web personnel ou professionnel (optionnel)"
+    
+    def clean_email(self):
+        """Validation de l'email pour éviter les doublons"""
+        email = self.cleaned_data.get('email')
+        if email:
+            # Vérifier si un autre utilisateur utilise déjà cet email
+            user = self.instance.user if hasattr(self.instance, 'user') else None
+            if User.objects.filter(email=email).exclude(pk=user.pk if user else None).exists():
+                raise forms.ValidationError("Cette adresse email est déjà utilisée par un autre compte.")
+        return email
+    
+    def save(self, commit=True):
+        """Sauvegarder le profil et les informations utilisateur"""
+        profil = super().save(commit=False)
+        
+        # Mettre à jour les informations de l'utilisateur
+        user = profil.user
+        user.first_name = self.cleaned_data.get('first_name', '')
+        user.last_name = self.cleaned_data.get('last_name', '')
+        user.email = self.cleaned_data.get('email', '')
+        
+        if commit:
+            user.save()
+            profil.save()
+        
+        return profil
 
 
 class ArticleForm(forms.ModelForm):

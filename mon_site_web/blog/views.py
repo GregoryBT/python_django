@@ -9,7 +9,7 @@ from django.db.models import Count, Max, Q, Avg, Sum
 from django.utils import timezone
 from datetime import datetime, timedelta
 from functools import wraps
-from .models import Article, Commentaire, Categorie, VueArticle, Profil
+from .models import Article, Commentaire, Categorie, VueArticle, Profil, Like, Bookmark
 from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm, MotDePasseOublieForm, NouveauMotDePasseForm
 from django.core.mail import send_mail
 from django.conf import settings
@@ -147,13 +147,13 @@ def profil_view(request):
     articles_recents = articles_user.order_by('-date_creation')[:5]
     
     if request.method == 'POST':
-        form = ProfilForm(request.POST, request.FILES, instance=request.user, profil_instance=profil_user)
+        form = ProfilForm(request.POST, request.FILES, profil_instance=profil_user, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, 'Votre profil a été mis à jour avec succès !')
             return redirect('profil')
     else:
-        form = ProfilForm(instance=request.user, profil_instance=profil_user)
+        form = ProfilForm(profil_instance=profil_user, instance=request.user)
     
     return render(request, 'blog/profil.html', {
         'form': form,
@@ -541,3 +541,109 @@ class NouveauMotDePasseView(PasswordResetConfirmView):
 class MotDePasseReinitialiseView(PasswordResetCompleteView):
     """Vue de confirmation après réinitialisation réussie"""
     template_name = 'blog/mot_de_passe_reinitialise.html'
+
+
+@login_required
+def toggle_like(request, article_id):
+    """Vue pour liker/unliker un article via AJAX"""
+    if request.method == 'POST':
+        article = get_object_or_404(Article, id=article_id, est_publie=True)
+        like, created = Like.objects.get_or_create(
+            user=request.user,
+            article=article
+        )
+        
+        if not created:
+            # Si le like existe déjà, on le supprime (unlike)
+            like.delete()
+            liked = False
+            message = "Article retiré de vos favoris"
+        else:
+            # Nouveau like
+            liked = True
+            message = "Article ajouté à vos favoris"
+        
+        # Compter le nombre total de likes pour cet article
+        total_likes = article.likes.count()
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            # Réponse AJAX
+            from django.http import JsonResponse
+            return JsonResponse({
+                'liked': liked,
+                'total_likes': total_likes,
+                'message': message
+            })
+        
+        messages.success(request, message)
+        return redirect('detail_article', article_id=article.id)
+    
+    return redirect('detail_article', article_id=article_id)
+
+
+@login_required
+def toggle_bookmark(request, article_id):
+    """Vue pour bookmarker/unbookmarker un article"""
+    if request.method == 'POST':
+        article = get_object_or_404(Article, id=article_id, est_publie=True)
+        bookmark, created = Bookmark.objects.get_or_create(
+            user=request.user,
+            article=article
+        )
+        
+        if not created:
+            # Si le bookmark existe déjà, on le supprime
+            bookmark.delete()
+            bookmarked = False
+            message = "Article retiré de vos favoris"
+        else:
+            # Nouveau bookmark
+            bookmarked = True
+            message = "Article ajouté à vos favoris"
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            # Réponse AJAX
+            from django.http import JsonResponse
+            return JsonResponse({
+                'bookmarked': bookmarked,
+                'message': message
+            })
+        
+        messages.success(request, message)
+        return redirect('detail_article', article_id=article.id)
+    
+    return redirect('detail_article', article_id=article_id)
+
+
+@login_required
+def mes_favoris_view(request):
+    """Vue pour afficher les articles mis en favoris par l'utilisateur"""
+    bookmarks = Bookmark.objects.filter(user=request.user).order_by('-date_creation')
+    
+    # Pagination si nécessaire
+    from django.core.paginator import Paginator
+    paginator = Paginator(bookmarks, 12)  # 12 articles par page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'blog/mes_favoris.html', {
+        'bookmarks': page_obj,
+        'total_favoris': bookmarks.count()
+    })
+
+
+@login_required
+def mes_likes_view(request):
+    """Vue pour afficher les articles likés par l'utilisateur"""
+    likes = Like.objects.filter(user=request.user).order_by('-date_creation')
+    
+    # Pagination si nécessaire
+    from django.core.paginator import Paginator
+    paginator = Paginator(likes, 12)  # 12 articles par page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    
+    return render(request, 'blog/mes_likes.html', {
+        'likes': page_obj,
+        'total_likes': likes.count()
+    })

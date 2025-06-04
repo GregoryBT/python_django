@@ -68,9 +68,9 @@
                 <div class="list-group-item">
                     <div class="d-flex w-100 justify-content-between">
                         <h6 class="mb-1">{{ auteur.username }}</h6>
-                        <small class="text-muted">{{ auteur.nb_articles }} articles</small>
+                        <small class="text-muted">{{ auteur.nb_articles }} {% trans "articles"%}</small>
                     </div>
-                    <small>{{ auteur.total_vues|default:0 }} vues totales</small>
+                    <small>{{ auteur.total_vues|default:0 }} {% trans "vues totales"%}</small>
                 </div>
                 {% endfor %}
             </div>

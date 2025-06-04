@@ -101,9 +101,7 @@
                             {% if commentaire.user_auteur %}
                             <div
                                 class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
-                                {{
-                                commentaire.user_auteur.first_name|first|default:commentaire.user_auteur.username|first|upper
-                                }}
+                                {{ commentaire.user_auteur.first_name|first|default:commentaire.user_auteur.username|first|upper}}
                             </div>
                             <div>
                                 <p class="font-medium text-gray-900 dark:text-white">

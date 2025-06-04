@@ -123,13 +123,17 @@
                     class="w-8 h-8 bg-gray-500 rounded-full flex items-center justify-center text-white font-bold text-sm mr-3">?</span>
                 {% trans "Articles sans catégorie" %}
             </h2>
-            <p class="text-gray-600 dark:text-gray-400 mt-2">{% trans "Articles qui n'ont pas encore été classés dans une catégorie." %}</p>
+            <p class="text-gray-600 dark:text-gray-400 mt-2">
+                {% trans "Articles qui n'ont pas encore été classés dans une catégorie." %}
+            </p>
         </div>
         <div class="text-right">
             <div class="text-3xl font-bold text-gray-500">
                 {{ articles_sans_categorie|default:0 }}
             </div>
-            <div class="text-sm text-gray-500">{% trans "Article" %}{{ articles_sans_categorie|default:0|pluralize }}</div>
+            <div class="text-sm text-gray-500">
+                {% trans "Article" %}{{ articles_sans_categorie|default:0|pluralize }}
+            </div>
         </div>
     </div>
 

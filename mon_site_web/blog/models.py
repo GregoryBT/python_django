@@ -220,3 +220,36 @@ class Commentaire(models.Model):
         ordering = ['-date_creation']
         verbose_name = _("Commentaire")
         verbose_name_plural = _("Commentaires")
+
+
+class Like(models.Model):
+    """Modèle pour gérer les likes des articles par les utilisateurs"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes', verbose_name=_("Utilisateur"))
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='likes', verbose_name=_("Article"))
+    date_creation = models.DateTimeField(default=timezone.now, verbose_name=_("Date de création"))
+    
+    def __str__(self):
+        return f'{self.user.username} aime {self.article.titre}'
+    
+    class Meta:
+        unique_together = ('user', 'article')  # Un utilisateur ne peut liker qu'une fois le même article
+        ordering = ['-date_creation']
+        verbose_name = _("Like")
+        verbose_name_plural = _("Likes")
+
+
+class Bookmark(models.Model):
+    """Modèle pour gérer les favoris/bookmarks des articles par les utilisateurs"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bookmarks', verbose_name=_("Utilisateur"))
+    article = models.ForeignKey(Article, on_delete=models.CASCADE, related_name='bookmarks', verbose_name=_("Article"))
+    date_creation = models.DateTimeField(default=timezone.now, verbose_name=_("Date de création"))
+    note_personnelle = models.TextField(blank=True, max_length=500, help_text=_('Note personnelle sur cet article'), verbose_name=_("Note personnelle"))
+    
+    def __str__(self):
+        return f'{self.user.username} a mis en favoris {self.article.titre}'
+    
+    class Meta:
+        unique_together = ('user', 'article')  # Un utilisateur ne peut bookmarker qu'une fois le même article
+        ordering = ['-date_creation']
+        verbose_name = _("Favori")
+        verbose_name_plural = _("Favoris")
