@@ -80,7 +80,7 @@
     <!-- Contenu de l'article -->
     <div class="p-8">
         <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-            {{ article.contenu|linebreaks }}
+            {{ article.contenu|safe }}
         </div>
     </div>
 

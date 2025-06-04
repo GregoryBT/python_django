@@ -220,7 +220,7 @@
                 </div>
 
                 <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    {{ article.contenu|truncatechars:70 }}
+                    {{ article.contenu|truncatechars:150|safe }}
                 </p>
 
                 <div class="flex items-center justify-between">
@@ -338,7 +338,7 @@
                 </div>
 
                 <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    {{ article.contenu|truncatechars:70 }}
+                    {{ article.contenu|truncatechars:150|safe }}
                 </p>
 
                 <div class="flex items-center justify-between">

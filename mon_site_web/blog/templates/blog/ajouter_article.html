@@ -5,28 +5,50 @@
 
 {% block content %}
 <div class="max-w-4xl mx-auto">
+    <!-- Affichage des messages d'erreur -->
+    {% if messages %}
+        <div class="mb-6">
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
         <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white">📝 {% trans "Ajouter un Nouvel Article" %}</h2>
         </div>
         <div class="p-6">
-            <form method="post" enctype="multipart/form-data" class="space-y-6">
+            <form method="post" enctype="multipart/form-data" class="space-y-6" id="article-form">
                 {% csrf_token %}
 
                 <div>
                     <label for="{{ form.titre.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {% trans "Titre de l'article" %}
+                        {% trans "Titre de l'article" %} <span class="text-red-500">*</span>
                     </label>
                     {{ form.titre }}
+                    {% if form.titre.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ form.titre.errors.0 }}
+                        </div>
+                    {% endif %}
                 </div>
 
                 <div>
                     <label for="id_contenu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {% trans "Contenu de l'article" %}
+                        {% trans "Contenu de l'article" %} <span class="text-red-500">*</span>
                     </label>
-                    <div id="editor-container" style="height: 300px;" class="bg-white">
-                        {{ form.contenu }}
-                    </div>
+                    <!-- Conteneur pour l'éditeur Quill -->
+                    <div id="editor-container" style="height: 300px;" class="bg-white border border-gray-300 rounded-lg"></div>
+                    <!-- Textarea caché pour Django -->
+                    {{ form.contenu }}
+                    {% if form.contenu.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ form.contenu.errors.0 }}
+                        </div>
+                    {% endif %}
                 </div>
 
                 <div>
@@ -34,6 +56,11 @@
                         {% trans "Catégorie" %}
                     </label>
                     {{ form.categorie }}
+                    {% if form.categorie.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ form.categorie.errors.0 }}
+                        </div>
+                    {% endif %}
                     <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                         {% trans "Vous pouvez gérer les catégories dans l'" %}<a href="/admin/" target="_blank" class="text-blue-600 hover:text-blue-700">{% trans "interface d'administration" %}</a>.
                     </div>
@@ -44,6 +71,11 @@
                         {% trans "Image d'illustration (optionnel)" %}
                     </label>
                     {{ form.image }}
+                    {% if form.image.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ form.image.errors.0 }}
+                        </div>
+                    {% endif %}
                     <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                         {% trans "Formats acceptés : JPG, PNG, GIF. Taille maximale recommandée : 2MB." %}
                     </div>
@@ -70,6 +102,11 @@
                         </p>
                         {% endfor %}
                     </div>
+                    {% if form.tags.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ form.tags.errors.0 }}
+                        </div>
+                    {% endif %}
                     <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
                         {% trans "Sélectionnez un ou plusieurs tags pour classer votre article" %}
                     </div>
@@ -78,6 +115,11 @@
                 <div class="flex items-center">
                     {{ form.est_publie }}
                     <label for="id_est_publie" class="ml-2 text-sm text-gray-700 dark:text-gray-300">{% trans "Publier immédiatement" %}</label>
+                    {% if form.est_publie.errors %}
+                        <div class="ml-4 text-sm text-red-600 dark:text-red-400">
+                            {{ form.est_publie.errors.0 }}
+                        </div>
+                    {% endif %}
                 </div>
 
                 <div class="flex justify-end space-x-3">
@@ -98,9 +140,16 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize Quill editor
+    // Récupérer le textarea original
+    var textarea = document.querySelector('#id_contenu');
+    
+    // Masquer le textarea original
+    textarea.style.display = 'none';
+    
+    // Initialiser l'éditeur Quill
     var quill = new Quill('#editor-container', {
         theme: 'snow',
+        placeholder: 'Écrivez le contenu de votre article ici...',
         modules: {
             toolbar: [
                 [{ 'header': [1, 2, 3, false] }],
@@ -115,18 +164,36 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Hide the original textarea
-    var textarea = document.querySelector('#id_contenu');
-    textarea.style.display = 'none';
-    
-    // Set initial content if editing
-    if (textarea.value) {
+    // Charger le contenu initial du textarea dans Quill (si il y en a)
+    if (textarea.value.trim()) {
         quill.root.innerHTML = textarea.value;
     }
     
-    // Update textarea when form is submitted
-    document.querySelector('form').addEventListener('submit', function() {
+    // Synchroniser le contenu de Quill avec le textarea à chaque changement
+    quill.on('text-change', function() {
         textarea.value = quill.root.innerHTML;
+    });
+    
+    // S'assurer que le contenu est synchronisé avant la soumission du formulaire
+    document.querySelector('#article-form').addEventListener('submit', function(e) {
+        // Récupérer le contenu de Quill
+        var content = quill.root.innerHTML;
+        
+        // Vérifier si le contenu est vide (seulement des balises vides)
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = content;
+        var textContent = tempDiv.textContent || tempDiv.innerText || '';
+        
+        if (textContent.trim() === '') {
+            e.preventDefault();
+            alert('Le contenu de l\'article ne peut pas être vide.');
+            return false;
+        }
+        
+        // Mettre à jour le textarea avec le contenu de Quill
+        textarea.value = content;
+        
+        console.log('Contenu soumis:', content); // Pour déboguer
     });
 });
 </script>

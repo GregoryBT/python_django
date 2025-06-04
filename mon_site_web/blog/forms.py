@@ -172,6 +172,33 @@ class ArticleForm(forms.ModelForm):
         self.fields['categorie'].empty_label = "Sélectionnez une catégorie (optionnel)"
         self.fields['tags'].help_text = "Sélectionnez un ou plusieurs tags pour classer votre article"
         self.fields['est_publie'].help_text = "Décochez pour sauvegarder en brouillon"
+        # Rendre le titre et le contenu obligatoires
+        self.fields['titre'].required = True
+        self.fields['contenu'].required = True
+
+    def clean_contenu(self):
+        """Validation personnalisée pour le contenu"""
+        contenu = self.cleaned_data.get('contenu')
+        if contenu:
+            # Supprimer les balises HTML pour vérifier le contenu réel
+            import re
+            contenu_text = re.sub(r'<[^>]+>', '', contenu).strip()
+            if not contenu_text:
+                raise forms.ValidationError("Le contenu de l'article ne peut pas être vide.")
+        else:
+            raise forms.ValidationError("Le contenu de l'article est requis.")
+        return contenu
+
+    def clean_titre(self):
+        """Validation personnalisée pour le titre"""
+        titre = self.cleaned_data.get('titre')
+        if titre:
+            titre = titre.strip()
+            if len(titre) < 5:
+                raise forms.ValidationError("Le titre doit contenir au moins 5 caractères.")
+            if len(titre) > 200:
+                raise forms.ValidationError("Le titre ne peut pas dépasser 200 caractères.")
+        return titre
 
 
 class CommentaireForm(forms.ModelForm):

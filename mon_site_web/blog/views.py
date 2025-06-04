@@ -173,12 +173,20 @@ def ajouter_article(request):
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
-            article = form.save(commit=False)
-            article.user_auteur = request.user  # Assigner l'utilisateur connecté
-            article.save()
-            form.save_m2m()  # Sauvegarder les relations many-to-many (tags)
-            messages.success(request, 'Article créé avec succès !')
-            return redirect('detail_article', article_id=article.id)
+            try:
+                article = form.save(commit=False)
+                article.user_auteur = request.user  # Assigner l'utilisateur connecté
+                article.save()
+                form.save_m2m()  # Sauvegarder les relations many-to-many (tags)
+                messages.success(request, 'Article créé avec succès !')
+                return redirect('detail_article', article_id=article.id)
+            except Exception as e:
+                messages.error(request, f'Erreur lors de la création de l\'article : {str(e)}')
+        else:
+            # Afficher les erreurs du formulaire
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'Erreur dans le champ {field}: {error}')
     else:
         form = ArticleForm()
     

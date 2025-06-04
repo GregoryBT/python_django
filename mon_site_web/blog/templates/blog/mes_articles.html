@@ -120,7 +120,7 @@
                         </div>
 
                         <p class="text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
-                            {{ article.contenu|truncatewords:30 }}
+                            {{ article.contenu|truncatewords:30|safe }}
                         </p>
 
                         <!-- Métadonnées -->
