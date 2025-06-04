@@ -333,11 +333,23 @@
 
         // Fonction pour changer la langue
         function changeLanguage(lang) {
+            // Récupérer l'URL actuelle
+            const currentPath = window.location.pathname;
+            const currentSearch = window.location.search;
+            
+            // Construire la nouvelle URL en gardant le chemin actuel
+            let newUrl;
             if (lang === 'fr') {
-                window.location.href = "/"
+                // Pour le français, supprimer le préfixe de langue s'il existe
+                const pathWithoutLang = currentPath.replace(/^\/en\//, '/');
+                newUrl = pathWithoutLang + currentSearch;
             } else {
-                window.location.href = `/${lang}/`;
+                // Pour l'anglais, ajouter le préfixe de langue
+                const pathWithoutLang = currentPath.replace(/^\/en\//, '/');
+                newUrl = `/${lang}${pathWithoutLang}` + currentSearch;
             }
+            
+            window.location.href = newUrl;
         }
         // Initialisation au chargement de la page
         document.addEventListener('DOMContentLoaded', function () {
