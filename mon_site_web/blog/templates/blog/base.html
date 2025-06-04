@@ -42,23 +42,23 @@
                     <div class="hidden md:ml-8 md:flex md:space-x-8">
                         <a href="{% url 'home' %}"
                             class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
-                            🏠 Accueil
+                            🏠 {% trans "Accueil" %}
                         </a>
                         <a href="{% url 'articles' %}"
                             class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
-                            📄 Articles
+                            📄 {% trans "Articles" %}
                         </a>
                         <a href="{% url 'categories' %}"
                             class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
-                            🏷️ Catégories
+                            🏷️ {% trans "Catégories" %}
                         </a>
                         <a href="{% url 'auteurs' %}"
                             class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
-                            👥 Auteurs
+                            👥 {% trans "Auteurs" %}
                         </a>
                         <a href="{% url 'a_propos' %}"
                             class="border-transparent text-gray-900 dark:text-gray-300 hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors duration-200">
-                            ℹ️ À propos
+                            ℹ️ {% trans "À propos" %}
                         </a>
                     </div>
                 </div>
@@ -114,33 +114,33 @@
                             <div class="py-1">
                                 <div
                                     class="px-4 py-2 text-xs text-gray-500 dark:text-gray-400 border-b border-gray-100 dark:border-gray-600">
-                                    Connecté en tant que {{ user.profil.get_role_display }}
+                                    {% trans "Connecté en tant que" %} {{ user.profil.get_role_display }}
                                 </div>
                                 <a href="{% url 'profil' %}"
                                     class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">👤
-                                    Mon profil</a>
+                                    {% trans "Mon profil" %}</a>
                                 {% if user.profil.peut_creer_article %}
                                 <a href="{% url 'ajouter_article' %}"
                                     class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">✍️
-                                    Écrire un article</a>
+                                    {% trans "Écrire un article" %}</a>
                                 <a href="{% url 'mes_articles' %}"
                                     class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">📝
-                                    Mes articles</a>
+                                    {% trans "Mes articles" %}</a>
                                 {% endif %}
                                 {% if user.profil.peut_moderer %}
                                 <a href="{% url 'moderation' %}"
                                     class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">🛡️
-                                    Modération</a>
+                                    {% trans "Modération" %}</a>
                                 {% endif %}
                                 {% if user.profil.est_admin %}
                                 <a href="/admin/" target="_blank"
                                     class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">🔧
-                                    Administration</a>
+                                    {% trans "Administration" %}</a>
                                 {% endif %}
                                 <div class="border-t border-gray-100 dark:border-gray-600"></div>
                                 <a href="{% url 'deconnexion' %}"
                                     class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">🚪
-                                    Déconnexion</a>
+                                    {% trans "Déconnexion" %}</a>
                             </div>
                         </div>
                     </div>
@@ -148,11 +148,11 @@
                     <div class="flex items-center space-x-2">
                         <a href="{% url 'connexion' %}"
                             class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                            🔐 Connexion
+                            🔐 {% trans "Connexion" %}
                         </a>
                         <a href="{% url 'inscription' %}"
                             class="border border-blue-600 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900 px-4 py-2 rounded-md text-sm font-medium transition-colors duration-200">
-                            📝 Inscription
+                            📝 {% trans "Inscription" %}
                         </a>
                     </div>
                     {% endif %}
@@ -176,19 +176,19 @@
             <div class="px-2 pt-2 pb-3 space-y-1 bg-gray-50 dark:bg-gray-800">
                 <a href="{% url 'home' %}"
                     class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">🏠
-                    Accueil</a>
+                    {% trans "Accueil" %}</a>
                 <a href="{% url 'articles' %}"
                     class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">📄
-                    Articles</a>
+                    {% trans "Articles" %}</a>
                 <a href="{% url 'categories' %}"
                     class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">🏷️
-                    Catégories</a>
+                    {% trans "Catégories" %}</a>
                 <a href="{% url 'auteurs' %}"
                     class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">👥
-                    Auteurs</a>
+                    {% trans "Auteurs" %}</a>
                 <a href="{% url 'a_propos' %}"
                     class="text-gray-900 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 block px-3 py-2 rounded-md text-base font-medium">ℹ️
-                    À propos</a>
+                    {% trans "À propos" %}</a>
             </div>
         </div>
     </nav>
