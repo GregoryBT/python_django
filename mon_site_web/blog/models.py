@@ -279,3 +279,52 @@ class LikeCommentaire(models.Model):
         ordering = ['-date_creation']
         verbose_name = _("Like de commentaire")
         verbose_name_plural = _("Likes de commentaires")
+
+
+class SignalementCommentaire(models.Model):
+    """Modèle pour gérer les signalements de commentaires inappropriés"""
+    MOTIFS = [
+        ('spam', _('Spam')),
+        ('harcelement', _('Harcèlement')),
+        ('contenu_inapproprie', _('Contenu inapproprié')),
+        ('fausses_informations', _('Fausses informations')),
+        ('autre', _('Autre')),
+    ]
+    
+    STATUTS = [
+        ('en_attente', _('En attente')),
+        ('traite', _('Traité')),
+        ('rejete', _('Rejeté')),
+    ]
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='signalements', verbose_name=_("Utilisateur signalant"))
+    commentaire = models.ForeignKey(Commentaire, on_delete=models.CASCADE, related_name='signalements', verbose_name=_("Commentaire signalé"))
+    motif = models.CharField(max_length=50, choices=MOTIFS, verbose_name=_("Motif"))
+    description = models.TextField(blank=True, max_length=500, help_text=_('Description détaillée du problème (optionnel)'), verbose_name=_("Description"))
+    statut = models.CharField(max_length=20, choices=STATUTS, default='en_attente', verbose_name=_("Statut"))
+    date_creation = models.DateTimeField(default=timezone.now, verbose_name=_("Date de signalement"))
+    date_traitement = models.DateTimeField(null=True, blank=True, verbose_name=_("Date de traitement"))
+    moderateur = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='signalements_traites', verbose_name=_("Modérateur"))
+    
+    def __str__(self):
+        return f'Signalement de {self.user.username} pour le commentaire de {self.commentaire.nom_auteur}'
+    
+    def marquer_comme_traite(self, moderateur):
+        """Marque le signalement comme traité"""
+        self.statut = 'traite'
+        self.date_traitement = timezone.now()
+        self.moderateur = moderateur
+        self.save()
+    
+    def marquer_comme_rejete(self, moderateur):
+        """Marque le signalement comme rejeté"""
+        self.statut = 'rejete'
+        self.date_traitement = timezone.now()
+        self.moderateur = moderateur
+        self.save()
+    
+    class Meta:
+        unique_together = ('user', 'commentaire')  # Un utilisateur ne peut signaler qu'une fois le même commentaire
+        ordering = ['-date_creation']
+        verbose_name = _("Signalement de commentaire")
+        verbose_name_plural = _("Signalements de commentaires")

@@ -9,8 +9,8 @@ from django.db.models import Count, Max, Q, Avg, Sum
 from django.utils import timezone
 from datetime import datetime, timedelta
 from functools import wraps
-from .models import Article, Commentaire, Categorie, VueArticle, Profil, Like, Bookmark, LikeCommentaire
-from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm, MotDePasseOublieForm, NouveauMotDePasseForm
+from .models import Article, Commentaire, Categorie, VueArticle, Profil, Like, Bookmark, LikeCommentaire, SignalementCommentaire
+from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm, MotDePasseOublieForm, NouveauMotDePasseForm, SignalementCommentaireForm
 from django.core.mail import send_mail
 from django.conf import settings
 from django.urls import reverse_lazy
@@ -160,6 +160,44 @@ def profil_view(request):
         'profil_user': profil_user,
         'stats': stats,
         'articles_recents': articles_recents,
+    })
+
+
+@login_required
+def modifier_article(request, article_id):
+    """Vue pour modifier un article existant"""
+    article = get_object_or_404(Article, id=article_id)
+    
+    # Vérifier que l'utilisateur peut modifier cet article
+    if not request.user.profil.peut_modifier_article(article):
+        messages.error(request, 'Vous n\'avez pas les permissions pour modifier cet article.')
+        return redirect('detail_article', article_id=article.id)
+    
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, request.FILES, instance=article)
+        if form.is_valid():
+            try:
+                article = form.save(commit=False)
+                # S'assurer que l'auteur reste le même
+                if not article.user_auteur:
+                    article.user_auteur = request.user
+                article.save()
+                form.save_m2m()  # Sauvegarder les relations many-to-many (tags)
+                messages.success(request, 'Article modifié avec succès !')
+                return redirect('detail_article', article_id=article.id)
+            except Exception as e:
+                messages.error(request, f'Erreur lors de la modification de l\'article : {str(e)}')
+        else:
+            # Afficher les erreurs du formulaire
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f'Erreur dans le champ {field}: {error}')
+    else:
+        form = ArticleForm(instance=article)
+    
+    return render(request, 'blog/modifier_article.html', {
+        'form': form,
+        'article': article
     })
 
 
@@ -318,6 +356,9 @@ def moderation_view(request):
     # Commentaires approuvés récents
     commentaires_approuves = Commentaire.objects.filter(est_approuve=True).order_by('-date_creation')[:10]
     
+    # Signalements en attente
+    signalements = SignalementCommentaire.objects.filter(statut='en_attente').order_by('-date_creation')
+    
     # Articles récents
     articles_recents = Article.objects.order_by('-date_creation')[:10]
     
@@ -339,6 +380,7 @@ def moderation_view(request):
     return render(request, 'blog/moderation.html', {
         'commentaires_en_attente': commentaires_en_attente,
         'commentaires_approuves': commentaires_approuves,
+        'signalements': signalements,
         'articles_recents': articles_recents,
         'utilisateurs_actifs': utilisateurs_actifs,
         **stats_admin,
@@ -701,3 +743,101 @@ def toggle_like_commentaire(request, commentaire_id):
         return redirect('detail_article', article_id=commentaire.article.id)
     
     return redirect('home')
+
+
+@login_required
+def signaler_commentaire(request, commentaire_id):
+    """Vue pour signaler un commentaire inapproprié"""
+    commentaire = get_object_or_404(Commentaire, id=commentaire_id, est_approuve=True)
+    
+    # Vérifier si l'utilisateur a déjà signalé ce commentaire
+    signalement_existant = SignalementCommentaire.objects.filter(
+        user=request.user,
+        commentaire=commentaire
+    ).exists()
+    
+    if signalement_existant:
+        messages.warning(request, 'Vous avez déjà signalé ce commentaire.')
+        return redirect('detail_article', article_id=commentaire.article.id)
+    
+    if request.method == 'POST':
+        form = SignalementCommentaireForm(request.POST)
+        if form.is_valid():
+            signalement = form.save(commit=False)
+            signalement.user = request.user
+            signalement.commentaire = commentaire
+            signalement.save()
+            
+            # Notification aux modérateurs (optionnel)
+            moderateurs = User.objects.filter(profil__role='administrateur')
+            for moderateur in moderateurs:
+                if moderateur.email:
+                    sujet = f"Nouveau signalement de commentaire - {commentaire.article.titre}"
+                    message = f"""
+Bonjour {moderateur.get_full_name() or moderateur.username},
+
+Un commentaire a été signalé sur l'article "{commentaire.article.titre}".
+
+Signalé par : {request.user.get_full_name() or request.user.username}
+Motif : {signalement.get_motif_display()}
+Description : {signalement.description}
+
+Commentaire signalé :
+"{commentaire.contenu}"
+
+Auteur du commentaire : {commentaire.get_nom_auteur()}
+
+Veuillez vérifier ce signalement dans l'interface de modération.
+                    """
+                    envoyer_notification_email(moderateur.email, sujet, message)
+            
+            messages.success(request, 'Le commentaire a été signalé. Les modérateurs vont examiner votre signalement.')
+            return redirect('detail_article', article_id=commentaire.article.id)
+        else:
+            messages.error(request, 'Erreur dans le formulaire de signalement.')
+    else:
+        form = SignalementCommentaireForm()
+    
+    return render(request, 'blog/signaler_commentaire.html', {
+        'form': form,
+        'commentaire': commentaire
+    })
+
+
+@user_passes_test(peut_moderer)
+def gerer_signalements(request):
+    """Vue pour gérer les signalements de commentaires (modérateurs uniquement)"""
+    signalements_en_attente = SignalementCommentaire.objects.filter(
+        statut='en_attente'
+    ).order_by('-date_creation')
+    
+    signalements_traites = SignalementCommentaire.objects.filter(
+        statut__in=['traite', 'rejete']
+    ).order_by('-date_traitement')[:20]  # Les 20 derniers traités
+    
+    return render(request, 'blog/gerer_signalements.html', {
+        'signalements_en_attente': signalements_en_attente,
+        'signalements_traites': signalements_traites
+    })
+
+
+@user_passes_test(peut_moderer)
+def traiter_signalement(request, signalement_id):
+    """Vue pour traiter un signalement (approuver/rejeter)"""
+    if request.method == 'POST':
+        signalement = get_object_or_404(SignalementCommentaire, id=signalement_id)
+        action = request.POST.get('action')
+        
+        if action == 'traiter':
+            # Marquer comme traité et supprimer le commentaire
+            signalement.marquer_comme_traite(request.user)
+            signalement.commentaire.delete()
+            messages.success(request, 'Signalement traité : le commentaire a été supprimé.')
+        elif action == 'rejeter':
+            # Marquer comme rejeté mais garder le commentaire
+            signalement.marquer_comme_rejete(request.user)
+            messages.success(request, 'Signalement rejeté : le commentaire reste visible.')
+        
+        return redirect('gerer_signalements')
+    
+    return redirect('gerer_signalements')

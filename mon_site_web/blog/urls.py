@@ -9,6 +9,7 @@ urlpatterns = [
     path('connexion/', views.connexion_view, name='connexion'),
     path('deconnexion/', views.deconnexion_view, name='deconnexion'),
     path('profil/', views.profil_view, name='profil'),
+    path('utilisateur/<str:username>/', views.profil_public_view, name='profil_public'),
     
     # Mot de passe oublié
     path('mot-de-passe-oublie/', views.MotDePasseOublieView.as_view(), name='mot_de_passe_oublie'),
@@ -19,6 +20,7 @@ urlpatterns = [
     # Articles
     path('ajouter/', views.ajouter_article, name='ajouter_article'),
     path('article/<int:article_id>/', views.detail_article, name='detail_article'),
+    path('article/<int:article_id>/modifier/', views.modifier_article, name='modifier_article'),
     path('articles/', views.articles_view, name='articles'),
     path('mes-articles/', views.mes_articles_view, name='mes_articles'),
     
@@ -41,4 +43,9 @@ urlpatterns = [
     path('commentaire/<int:commentaire_id>/like/', views.toggle_like_commentaire, name='toggle_like_commentaire'),
     path('mes-favoris/', views.mes_favoris_view, name='mes_favoris'),
     path('mes-likes/', views.mes_likes_view, name='mes_likes'),
+    
+    # Signalements
+    path('commentaire/<int:commentaire_id>/signaler/', views.signaler_commentaire, name='signaler_commentaire'),
+    path('moderation/signalements/', views.gerer_signalements, name='gerer_signalements'),
+    path('moderation/signalement/<int:signalement_id>/traiter/', views.traiter_signalement, name='traiter_signalement'),
 ]

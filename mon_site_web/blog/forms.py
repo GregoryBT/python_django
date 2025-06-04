@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, PasswordResetForm, SetPasswordForm
 from django.contrib.auth.models import User
-from .models import Article, Commentaire, Categorie, Tag, Profil
+from .models import Article, Commentaire, Categorie, Tag, Profil, SignalementCommentaire
 
 class InscriptionForm(UserCreationForm):
     """Formulaire d'inscription personnalisé"""
@@ -255,3 +255,27 @@ class NouveauMotDePasseForm(SetPasswordForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['new_password1'].help_text = "Votre mot de passe doit contenir au moins 8 caractères et ne peut pas être entièrement numérique."
+
+
+class SignalementCommentaireForm(forms.ModelForm):
+    """Formulaire pour signaler un commentaire inapproprié"""
+    class Meta:
+        model = SignalementCommentaire
+        fields = ['motif', 'description']
+        widgets = {
+            'motif': forms.Select(attrs={
+                'class': 'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent dark:bg-gray-700 dark:text-white',
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent dark:bg-gray-700 dark:text-white resize-none',
+                'rows': 3,
+                'placeholder': 'Décrivez le problème (optionnel)...'
+            }),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['motif'].required = True
+        self.fields['description'].required = False
+        self.fields['motif'].help_text = "Sélectionnez la raison du signalement"
+        self.fields['description'].help_text = "Ajoutez des détails si nécessaire (optionnel)"

@@ -1,0 +1,219 @@
+{% extends 'blog/base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "Modifier l'Article" %} - {{ article.titre }} - {% trans "Mon Blog Django" %}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto">
+    <!-- Affichage des messages d'erreur -->
+    {% if messages %}
+        <div class="mb-6">
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg">
+        <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">✏️ {% trans "Modifier l'Article" %}: {{ article.titre }}</h2>
+        </div>
+        <div class="p-6">
+            <form method="post" enctype="multipart/form-data" class="space-y-6" id="article-form">
+                {% csrf_token %}
+
+                <div>
+                    <label for="{{ form.titre.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Titre de l'article" %} <span class="text-red-500">*</span>
+                    </label>
+                    {{ form.titre }}
+                    {% if form.titre.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ form.titre.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="id_contenu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Contenu de l'article" %} <span class="text-red-500">*</span>
+                    </label>
+                    <!-- Conteneur pour l'éditeur Quill -->
+                    <div id="editor-container" style="height: 300px;" class="bg-white border border-gray-300 rounded-lg"></div>
+                    <!-- Textarea caché pour Django -->
+                    {{ form.contenu }}
+                    {% if form.contenu.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ form.contenu.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <label for="{{ form.categorie.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Catégorie" %}
+                    </label>
+                    {{ form.categorie }}
+                    {% if form.categorie.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ form.categorie.errors.0 }}
+                        </div>
+                    {% endif %}
+                    <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        {% trans "Vous pouvez gérer les catégories dans l'" %}<a href="/admin/" target="_blank" class="text-blue-600 hover:text-blue-700">{% trans "interface d'administration" %}</a>.
+                    </div>
+                </div>
+
+                <div>
+                    <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Image d'illustration (optionnel)" %}
+                    </label>
+                    {% if article.image %}
+                        <div class="mb-3">
+                            <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">{% trans "Image actuelle:" %}</p>
+                            <img src="{{ article.image.url }}" alt="{{ article.titre }}" class="w-32 h-32 object-cover rounded-lg border">
+                        </div>
+                    {% endif %}
+                    {{ form.image }}
+                    {% if form.image.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ form.image.errors.0 }}
+                        </div>
+                    {% endif %}
+                    <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        {% trans "Formats acceptés : JPG, PNG, GIF. Taille maximale recommandée : 2MB." %}
+                        {% if article.image %}
+                            <br>{% trans "Laissez vide pour conserver l'image actuelle." %}
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Tags (optionnel)" %}
+                    </label>
+                    <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-700">
+                        {% for tag in form.tags.field.queryset %}
+                        <div class="inline-block mr-4 mb-2">
+                            <input class="mr-1" type="checkbox" name="tags" value="{{ tag.id }}"
+                                id="tag_{{ tag.id }}" {% if tag in form.instance.tags.all %}checked{% endif %}>
+                            <label for="tag_{{ tag.id }}" class="text-sm"
+                                style="color: {{ tag.couleur }};">
+                                🏷️ {{ tag.nom }}
+                            </label>
+                        </div>
+                        {% empty %}
+                        <p class="text-gray-500 dark:text-gray-400 mb-0">
+                            {% trans "Aucun tag disponible." %}
+                            <a href="/admin/blog/tag/" target="_blank" class="text-blue-600 hover:text-blue-700">{% trans "Créer des tags" %}</a>
+                        </p>
+                        {% endfor %}
+                    </div>
+                    {% if form.tags.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ form.tags.errors.0 }}
+                        </div>
+                    {% endif %}
+                    <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        {% trans "Sélectionnez un ou plusieurs tags pour classer votre article" %}
+                    </div>
+                </div>
+
+                <div class="flex items-center">
+                    {{ form.est_publie }}
+                    <label for="id_est_publie" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                        {% trans "Article publié" %}
+                        {% if not article.est_publie %}
+                            <span class="text-yellow-600">({% trans "actuellement en brouillon" %})</span>
+                        {% endif %}
+                    </label>
+                    {% if form.est_publie.errors %}
+                        <div class="ml-4 text-sm text-red-600 dark:text-red-400">
+                            {{ form.est_publie.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="flex justify-between">
+                    <div class="flex space-x-3">
+                        <a href="{% url 'detail_article' article.id %}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors duration-200">
+                            ❌ {% trans "Annuler" %}
+                        </a>
+                        <a href="{% url 'mes_articles' %}" class="px-4 py-2 bg-blue-300 text-blue-700 rounded-lg hover:bg-blue-400 transition-colors duration-200">
+                            📝 {% trans "Mes articles" %}
+                        </a>
+                    </div>
+                    <button type="submit" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors duration-200">
+                        💾 {% trans "Mettre à jour" %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Récupérer le textarea original
+    var textarea = document.querySelector('#id_contenu');
+    
+    // Masquer le textarea original
+    textarea.style.display = 'none';
+    
+    // Initialiser l'éditeur Quill
+    var quill = new Quill('#editor-container', {
+        theme: 'snow',
+        placeholder: 'Écrivez le contenu de votre article ici...',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                [{ 'script': 'sub'}, { 'script': 'super' }],
+                [{ 'indent': '-1'}, { 'indent': '+1' }],
+                ['link', 'image'],
+                ['clean']
+            ]
+        }
+    });
+    
+    // Charger le contenu initial du textarea dans Quill (contenu existant de l'article)
+    if (textarea.value.trim()) {
+        quill.root.innerHTML = textarea.value;
+    }
+    
+    // Synchroniser le contenu de Quill avec le textarea à chaque changement
+    quill.on('text-change', function() {
+        textarea.value = quill.root.innerHTML;
+    });
+    
+    // S'assurer que le contenu est synchronisé avant la soumission du formulaire
+    document.querySelector('#article-form').addEventListener('submit', function(e) {
+        // Récupérer le contenu de Quill
+        var content = quill.root.innerHTML;
+        
+        // Vérifier si le contenu est vide (seulement des balises vides)
+        var tempDiv = document.createElement('div');
+        tempDiv.innerHTML = content;
+        var textContent = tempDiv.textContent || tempDiv.innerText || '';
+        
+        if (textContent.trim() === '') {
+            e.preventDefault();
+            alert('Le contenu de l\'article ne peut pas être vide.');
+            return false;
+        }
+        
+        // Mettre à jour le textarea avec le contenu de Quill
+        textarea.value = content;
+        
+        console.log('Contenu soumis:', content); // Pour déboguer
+    });
+});
+</script>
+{% endblock %}

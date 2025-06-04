@@ -23,7 +23,7 @@
     </div>
 
     <!-- Statistiques de modération -->
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 mb-8">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
             <div class="flex items-center">
                 <div class="flex-shrink-0">
@@ -34,6 +34,20 @@
                 <div class="ml-4">
                     <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{% trans "En attente" %}</p>
                     <p class="text-2xl font-bold text-red-600 dark:text-red-400">{{ commentaires_en_attente.count }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 border border-gray-200 dark:border-gray-700">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <div class="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white text-sm">🚨</span>
+                    </div>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-600 dark:text-gray-400">{% trans "Signalements" %}</p>
+                    <p class="text-2xl font-bold text-orange-600 dark:text-orange-400">{{ signalements.count }}</p>
                 </div>
             </div>
         </div>
@@ -177,7 +191,106 @@
             {% endif %}
         </div>
 
-        <!-- Articles récents -->
+        <!-- Signalements de commentaires -->
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
+                    <span>🚨</span>
+                    <span>{% trans "Signalements de commentaires" %} ({{ signalements.count }})</span>
+                </h2>
+            </div>
+
+            {% if signalements %}
+            <div class="divide-y divide-gray-200 dark:divide-gray-700 max-h-96 overflow-y-auto">
+                {% for signalement in signalements %}
+                <div class="p-4">
+                    <div class="flex items-start justify-between mb-3">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-semibold">
+                                {{ signalement.user.first_name|first|default:signalement.user.username|first|upper }}
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900 dark:text-white">
+                                    {{ signalement.user.get_full_name|default:signalement.user.username }}
+                                </p>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">
+                                    {% trans "a signalé" %}
+                                </p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-gray-500 dark:text-gray-400">
+                            {{ signalement.date_creation|date:"d/m/Y H:i" }}
+                        </span>
+                    </div>
+
+                    <div class="mb-3">
+                        <p class="text-sm font-medium text-gray-900 dark:text-white">
+                            {% trans "Motif:" %} {{ signalement.get_motif_display }}
+                        </p>
+                        {% if signalement.description %}
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                            {{ signalement.description|truncatewords:15 }}
+                        </p>
+                        {% endif %}
+                    </div>
+
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 mb-3">
+                        <p class="text-sm text-gray-700 dark:text-gray-300">
+                            "{{ signalement.commentaire.contenu|truncatewords:20 }}"
+                        </p>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            {% trans "Par" %} {{ signalement.commentaire.get_nom_auteur }}
+                        </p>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <a href="{% url 'detail_article' signalement.commentaire.article.id %}"
+                            class="text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+                            📄 {{ signalement.commentaire.article.titre|truncatechars:30 }}
+                        </a>
+
+                        <div class="flex items-center space-x-2">
+                            <form method="post" action="{% url 'traiter_signalement' signalement.id %}" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="supprimer_commentaire">
+                                <button type="submit"
+                                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors duration-200"
+                                    onclick="return confirm('{% trans "Supprimer le commentaire signalé ?" %}')">
+                                    🗑️ {% trans "Supprimer" %}
+                                </button>
+                            </form>
+
+                            <form method="post" action="{% url 'traiter_signalement' signalement.id %}" class="inline">
+                                {% csrf_token %}
+                                <input type="hidden" name="action" value="ignorer">
+                                <button type="submit"
+                                    class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors duration-200">
+                                    ❌ {% trans "Ignorer" %}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="p-8 text-center">
+                <div class="w-16 h-16 mx-auto bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mb-4">
+                    <span class="text-2xl">✅</span>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    {% trans "Aucun signalement" %}
+                </h3>
+                <p class="text-gray-600 dark:text-gray-400">
+                    {% trans "Aucun commentaire signalé à traiter." %}
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Grid pour articles récents (nouvelle ligne) -->
+    <div class="mt-8">
         <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white flex items-center space-x-2">
