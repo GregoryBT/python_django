@@ -9,7 +9,7 @@ from django.db.models import Count, Max, Q, Avg, Sum
 from django.utils import timezone
 from datetime import datetime, timedelta
 from functools import wraps
-from .models import Article, Commentaire, Categorie, VueArticle, Profil, Like, Bookmark
+from .models import Article, Commentaire, Categorie, VueArticle, Profil, Like, Bookmark, LikeCommentaire
 from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm, MotDePasseOublieForm, NouveauMotDePasseForm
 from django.core.mail import send_mail
 from django.conf import settings
@@ -229,6 +229,14 @@ def detail_article(request, article_id):
     
     # Commentaires approuvés
     commentaires = article.commentaires.filter(est_approuve=True).order_by('date_creation')
+    
+    # Ajouter l'information des likes aux commentaires pour l'utilisateur connecté
+    if request.user.is_authenticated:
+        for commentaire in commentaires:
+            commentaire.est_like_par_utilisateur_actuel = commentaire.est_like_par_user(request.user)
+    else:
+        for commentaire in commentaires:
+            commentaire.est_like_par_utilisateur_actuel = False
     
     # Formulaire de commentaire
     commentaire_form = None
@@ -647,3 +655,41 @@ def mes_likes_view(request):
         'likes': page_obj,
         'total_likes': likes.count()
     })
+
+
+@login_required
+def toggle_like_commentaire(request, commentaire_id):
+    """Vue pour liker/unliker un commentaire via AJAX"""
+    if request.method == 'POST':
+        commentaire = get_object_or_404(Commentaire, id=commentaire_id, est_approuve=True)
+        like, created = LikeCommentaire.objects.get_or_create(
+            user=request.user,
+            commentaire=commentaire
+        )
+        
+        if not created:
+            # Si le like existe déjà, on le supprime (unlike)
+            like.delete()
+            liked = False
+            message = "Like retiré du commentaire"
+        else:
+            # Nouveau like
+            liked = True
+            message = "Commentaire liké"
+        
+        # Compter le nombre total de likes pour ce commentaire
+        total_likes = commentaire.nombre_likes()
+        
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            # Réponse AJAX
+            from django.http import JsonResponse
+            return JsonResponse({
+                'liked': liked,
+                'total_likes': total_likes,
+                'message': message
+            })
+        
+        messages.success(request, message)
+        return redirect('detail_article', article_id=commentaire.article.id)
+    
+    return redirect('home')

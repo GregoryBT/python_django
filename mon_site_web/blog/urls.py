@@ -38,6 +38,7 @@ urlpatterns = [
     # Likes et Bookmarks
     path('article/<int:article_id>/like/', views.toggle_like, name='toggle_like'),
     path('article/<int:article_id>/bookmark/', views.toggle_bookmark, name='toggle_bookmark'),
+    path('commentaire/<int:commentaire_id>/like/', views.toggle_like_commentaire, name='toggle_like_commentaire'),
     path('mes-favoris/', views.mes_favoris_view, name='mes_favoris'),
     path('mes-likes/', views.mes_likes_view, name='mes_likes'),
 ]

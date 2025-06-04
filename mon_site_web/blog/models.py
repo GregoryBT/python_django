@@ -216,6 +216,16 @@ class Commentaire(models.Model):
             # Sinon, utiliser le champ nom_auteur classique
             return self.nom_auteur or "Auteur inconnu"
 
+    def nombre_likes(self):
+        """Retourne le nombre de likes pour ce commentaire"""
+        return self.likes_commentaire.count()
+
+    def est_like_par_user(self, user):
+        """Vérifie si un utilisateur a liké ce commentaire"""
+        if not user.is_authenticated:
+            return False
+        return self.likes_commentaire.filter(user=user).exists()
+
     class Meta:
         ordering = ['-date_creation']
         verbose_name = _("Commentaire")
@@ -253,3 +263,19 @@ class Bookmark(models.Model):
         ordering = ['-date_creation']
         verbose_name = _("Favori")
         verbose_name_plural = _("Favoris")
+
+
+class LikeCommentaire(models.Model):
+    """Modèle pour gérer les likes des commentaires par les utilisateurs"""
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='likes_commentaires', verbose_name=_("Utilisateur"))
+    commentaire = models.ForeignKey(Commentaire, on_delete=models.CASCADE, related_name='likes_commentaire', verbose_name=_("Commentaire"))
+    date_creation = models.DateTimeField(default=timezone.now, verbose_name=_("Date de création"))
+    
+    def __str__(self):
+        return f'{self.user.username} aime le commentaire de {self.commentaire.nom_auteur}'
+    
+    class Meta:
+        unique_together = ('user', 'commentaire')  # Un utilisateur ne peut liker qu'une fois le même commentaire
+        ordering = ['-date_creation']
+        verbose_name = _("Like de commentaire")
+        verbose_name_plural = _("Likes de commentaires")
