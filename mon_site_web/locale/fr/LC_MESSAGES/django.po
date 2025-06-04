@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-03 11:55+0000\n"
+"POT-Creation-Date: 2025-06-04 13:41+0200\n"
 "PO-Revision-Date: 2025-06-04 12:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: French\n"
@@ -17,779 +17,1871 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-# ==========================================
-# NAVIGATION ET STRUCTURE
-# ==========================================
-
-msgid "Mon Blog Django"
-msgstr "Mon Blog Django"
-
-msgid "Mon Blog"
-msgstr "Mon Blog"
-
-msgid "Accueil"
-msgstr "Accueil"
-
-msgid "Articles"
-msgstr "Articles"
-
-msgid "Catégories"
-msgstr "Catégories"
-
-msgid "Auteurs"
-msgstr "Auteurs"
-
-msgid "À propos"
-msgstr "À propos"
-
-msgid "Navigation"
-msgstr "Navigation"
-
-msgid "Contact"
-msgstr "Contact"
-
-# ==========================================
-# AUTHENTIFICATION
-# ==========================================
-
-msgid "Connexion"
-msgstr "Connexion"
-
-msgid "Inscription"
-msgstr "Inscription"
-
-msgid "Déconnexion"
-msgstr "Déconnexion"
-
-msgid "Se connecter"
-msgstr "Se connecter"
-
-msgid "Créer un compte"
-msgstr "Créer un compte"
-
-msgid "Mot de passe"
-msgstr "Mot de passe"
-
-msgid "Mot de passe oublié"
-msgstr "Mot de passe oublié"
-
-msgid "Nouveau mot de passe"
-msgstr "Nouveau mot de passe"
-
-msgid "Mot de passe réinitialisé"
-msgstr "Mot de passe réinitialisé"
-
-msgid "Confirmer le nouveau mot de passe"
-msgstr "Confirmer le nouveau mot de passe"
-
-msgid "Définir un nouveau mot de passe"
-msgstr "Définir un nouveau mot de passe"
-
-msgid "Email envoyé"
-msgstr "Email envoyé"
-
-msgid "Connecté en tant que"
-msgstr "Connecté en tant que"
-
-msgid "Mot de passe réinitialisé avec succès"
-msgstr "Mot de passe réinitialisé avec succès"
-
-msgid "Votre mot de passe a été modifié avec succès"
-msgstr "Votre mot de passe a été modifié avec succès"
-
-msgid "Choisissez un nouveau mot de passe sécurisé pour votre compte"
-msgstr "Choisissez un nouveau mot de passe sécurisé pour votre compte"
-
-msgid "Retour à la connexion"
-msgstr "Retour à la connexion"
-
-msgid "Changer le mot de passe"
-msgstr "Changer le mot de passe"
-
-# ==========================================
-# PROFIL ET COMPTE
-# ==========================================
-
-msgid "Mon Profil"
-msgstr "Mon Profil"
-
-msgid "Modifier mon profil"
-msgstr "Modifier mon profil"
-
-msgid "Mon profil"
-msgstr "Mon profil"
-
-msgid "Profil"
-msgstr "Profil"
-
-msgid "Avatar"
-msgstr "Avatar"
-
-msgid "Site web"
-msgstr "Site web"
-
-msgid "Prénom"
-msgstr "Prénom"
-
+#: blog/models.py:11 blog/models.py:26
+#: blog/templates/blog/detail_article.html:119
+#: blog/templates/blog/inscription.html:75 blog/templates/blog/profil.html:78
 msgid "Nom"
 msgstr "Nom"
 
-msgid "Adresse email"
-msgstr "Adresse email"
+#: blog/models.py:12
+#, fuzzy
+#| msgid "Inscription"
+msgid "Description"
+msgstr "Inscription"
 
-msgid "Type de compte"
-msgstr "Type de compte"
+#: blog/models.py:13
+msgid "Couleur en format hexadécimal (ex: #007bff)"
+msgstr ""
 
-msgid "Membre depuis"
-msgstr "Membre depuis"
+#: blog/models.py:13 blog/models.py:28
+msgid "Couleur"
+msgstr ""
 
-msgid "Dernière connexion"
-msgstr "Dernière connexion"
-
-msgid "Informations du compte"
-msgstr "Informations du compte"
-
-msgid "Actions rapides"
-msgstr "Actions rapides"
-
-# ==========================================
-# ARTICLES ET CONTENU
-# ==========================================
-
-msgid "Blog Académique Universitaire"
-msgstr "Blog Académique Universitaire"
-
-msgid "Tous les articles"
-msgstr "Tous les articles"
-
-msgid "Articles récents"
-msgstr "Articles récents"
-
-msgid "Mes Articles"
-msgstr "Mes Articles"
-
-msgid "Mes articles"
-msgstr "Mes articles"
-
-msgid "Nouvel Article"
-msgstr "Nouvel Article"
-
-msgid "Nouvel article"
-msgstr "Nouvel article"
-
-msgid "Ajouter un Article"
-msgstr "Ajouter un Article"
-
-msgid "Ajouter un Nouvel Article"
-msgstr "Ajouter un Nouvel Article"
-
-msgid "Créer un article"
-msgstr "Créer un article"
-
-msgid "Écrire un article"
-msgstr "Écrire un article"
-
-msgid "Article"
-msgstr "Article"
-
-msgid "Articles publiés"
-msgstr "Articles publiés"
-
-msgid "Articles total"
-msgstr "Articles total"
-
-msgid "Lire l'article"
-msgstr "Lire l'article"
-
-msgid "Lire la suite"
-msgstr "Lire la suite"
-
-msgid "Voir tous les articles"
-msgstr "Voir tous les articles"
-
-msgid "Contenu de l'article"
-msgstr "Contenu de l'article"
-
-msgid "Titre de l'article"
-msgstr "Titre de l'article"
-
-msgid "Gérez vos articles publiés et vos brouillons"
-msgstr "Gérez vos articles publiés et vos brouillons"
-
-msgid "Tous mes articles"
-msgstr "Tous mes articles"
-
-msgid "Mes articles récents"
-msgstr "Mes articles récents"
-
-msgid "Voir tous mes articles"
-msgstr "Voir tous mes articles"
-
-msgid "Voir l'article"
-msgstr "Voir l'article"
-
-msgid "Modifier l'article"
-msgstr "Modifier l'article"
-
-# ==========================================
-# STATISTIQUES ET MÉTRIQUES
-# ==========================================
-
-msgid "Analytics"
-msgstr "Analytics"
-
-msgid "Analytics Dashboard"
-msgstr "Tableau de bord Analytics"
-
-msgid "Total"
-msgstr "Total"
-
-msgid "Publiés"
-msgstr "Publiés"
-
-msgid "Brouillons"
-msgstr "Brouillons"
-
-msgid "Total des publications"
-msgstr "Total des publications"
-
-msgid "Vues totales"
-msgstr "Vues totales"
-
-msgid "Lectures totales"
-msgstr "Lectures totales"
-
-msgid "Contributeurs uniques"
-msgstr "Contributeurs uniques"
-
-msgid "Auteurs actifs"
-msgstr "Auteurs actifs"
-
-msgid "Moyenne vues/article"
-msgstr "Moyenne vues/article"
-
-msgid "Articles les plus populaires"
-msgstr "Articles les plus populaires"
-
-msgid "Activité récente"
-msgstr "Activité récente"
-
-msgid "Auteurs les plus actifs"
-msgstr "Auteurs les plus actifs"
-
-msgid "Évolution des vues (6 derniers mois)"
-msgstr "Évolution des vues (6 derniers mois)"
-
-msgid "Vues par mois"
-msgstr "Vues par mois"
-
-msgid "Aperçu de l'activité récente et des performances du blog"
-msgstr "Aperçu de l'activité récente et des performances du blog"
-
-msgid "Tableau de bord administrateur"
-msgstr "Tableau de bord administrateur"
-
-msgid "Utilisateurs inscrits"
-msgstr "Utilisateurs inscrits"
-
-msgid "Utilisateurs actifs"
-msgstr "Utilisateurs actifs"
-
-msgid "Vues des articles"
-msgstr "Vues des articles"
-
-# ==========================================
-# COMMENTAIRES ET INTERACTIONS
-# ==========================================
-
-msgid "Commentaires"
-msgstr "Commentaires"
-
-msgid "Commentaires écrits"
-msgstr "Commentaires écrits"
-
-msgid "Total des interactions"
-msgstr "Total des interactions"
-
-msgid "Commentaire"
-msgstr "Commentaire"
+#: blog/models.py:14 blog/models.py:29 blog/models.py:57 blog/models.py:130
+#: blog/models.py:195 blog/models.py:229 blog/models.py:245
+msgid "Date de création"
+msgstr ""
 
 # ==========================================
 # CATÉGORIES ET TAGS
 # ==========================================
-
+#: blog/models.py:21 blog/models.py:127 blog/templates/blog/a_propos.html:30
+#: blog/templates/blog/ajouter_article.html:34
+#: blog/templates/blog/articles.html:56 blog/templates/blog/categories.html:19
 msgid "Catégorie"
 msgstr "Catégorie"
 
-msgid "Articles sans catégorie"
-msgstr "Articles sans catégorie"
+#: blog/models.py:22 blog/templates/blog/base.html:53
+#: blog/templates/blog/base.html:185 blog/templates/blog/base.html:272
+#: blog/templates/blog/categories.html:4 blog/templates/blog/categories.html:9
+#: blog/templates/blog/home.html:534
+msgid "Catégories"
+msgstr "Catégories"
 
-msgid "Sections (+ Sans catégorie)"
-msgstr "Sections (+ Sans catégorie)"
+#: blog/models.py:27 blog/models.py:123
+msgid "Slug"
+msgstr ""
 
-msgid "Filtrer par :"
-msgstr "Filtrer par :"
+#: blog/models.py:28
+msgid "Couleur en format hexadécimal (ex: #6b7280)"
+msgstr ""
 
-msgid "Toutes"
-msgstr "Toutes"
+#: blog/models.py:41
+msgid "Tag"
+msgstr ""
 
-msgid "Explorez nos articles organisés par catégories thématiques."
-msgstr "Explorez nos articles organisés par catégories thématiques."
+#: blog/models.py:42 blog/models.py:128
+#: blog/templates/blog/mes_articles.html:156
+msgid "Tags"
+msgstr ""
 
+# ==========================================
+# RÔLES ET PERMISSIONS
+# ==========================================
+#: blog/models.py:48 blog/models.py:52 blog/models.py:227 blog/models.py:243
+#: blog/templates/blog/inscription.html:136
+msgid "Utilisateur"
+msgstr "Utilisateur"
+
+#: blog/models.py:49 blog/templates/blog/connexion.html:161
+#: blog/templates/blog/inscription.html:137
+msgid "Administrateur"
+msgstr "Administrateur"
+
+#: blog/models.py:53
+msgid "Rôle"
+msgstr ""
+
+#: blog/models.py:54
+#, fuzzy
+#| msgid "Interface utilisateur"
+msgid "Biographie de l'utilisateur"
+msgstr "Interface utilisateur"
+
+#: blog/models.py:54 blog/templates/blog/profil.html:96
+msgid "Biographie"
+msgstr ""
+
+#: blog/models.py:55 blog/templates/blog/profil.html:106
+#, fuzzy
+#| msgid "Mon profil"
+msgid "Photo de profil"
+msgstr "Mon profil"
+
+#: blog/models.py:55 blog/templates/blog/profil.html:13
+msgid "Avatar"
+msgstr "Avatar"
+
+#: blog/models.py:56
+#, fuzzy
+#| msgid "Site web"
+msgid "Site web personnel"
+msgstr "Site web"
+
+#: blog/models.py:56 blog/templates/blog/profil.html:41
+#: blog/templates/blog/profil.html:116
+msgid "Site web"
+msgstr "Site web"
+
+#: blog/models.py:58 blog/templates/blog/profil.html:173
+msgid "Dernière connexion"
+msgstr "Dernière connexion"
+
+#: blog/models.py:103
+msgid "Profil"
+msgstr "Profil"
+
+#: blog/models.py:104
+#, fuzzy
+#| msgid "Profil"
+msgid "Profils"
+msgstr "Profil"
+
+#: blog/models.py:122
+msgid "Titre"
+msgstr ""
+
+#: blog/models.py:124 blog/models.py:194
+#, fuzzy
+#| msgid "Contactez-nous"
+msgid "Contenu"
+msgstr "Contactez-nous"
+
+#: blog/models.py:125 blog/templates/blog/a_propos.html:35
+#: blog/templates/blog/auteurs.html:19 blog/templates/blog/connexion.html:159
+#, fuzzy
+#| msgid "Auteurs"
+msgid "Auteur"
+msgstr "Auteurs"
+
+# ==========================================
+# RÔLES ET PERMISSIONS
+# ==========================================
+#: blog/models.py:126 blog/models.py:193
+#, fuzzy
+#| msgid "Utilisateur"
+msgid "Utilisateur auteur"
+msgstr "Utilisateur"
+
+#: blog/models.py:129
+#, fuzzy
+#| msgid "Image d'illustration (optionnel)"
+msgid "Image d'illustration pour l'article"
+msgstr "Image d'illustration (optionnel)"
+
+#: blog/models.py:129
+msgid "Image"
+msgstr ""
+
+#: blog/models.py:131
+#, fuzzy
+#| msgid "Membre depuis"
+msgid "Nombre de vues"
+msgstr "Membre depuis"
+
+#: blog/models.py:132
+#, fuzzy
+#| msgid "Articles publiés"
+msgid "Article visible publiquement"
+msgstr "Articles publiés"
+
+#: blog/models.py:132
+#, fuzzy
+#| msgid "publié"
+msgid "Est publié"
+msgstr "publié"
+
+#: blog/models.py:168 blog/models.py:174 blog/models.py:191 blog/models.py:228
+#: blog/models.py:244 blog/templates/blog/a_propos.html:20
+#: blog/templates/blog/articles.html:52 blog/templates/blog/articles.html:88
+#: blog/templates/blog/auteurs.html:86 blog/templates/blog/categories.html:84
+#: blog/templates/blog/categories.html:135 blog/templates/blog/home.html:183
+#: blog/templates/blog/home.html:301
+msgid "Article"
+msgstr "Article"
+
+#: blog/models.py:169 blog/templates/blog/articles.html:4
+#: blog/templates/blog/base.html:49 blog/templates/blog/base.html:182
+#: blog/templates/blog/base.html:266
+msgid "Articles"
+msgstr "Articles"
+
+#: blog/models.py:175
+#, fuzzy
+#| msgid "Adresse email"
+msgid "Adresse IP"
+msgstr "Adresse email"
+
+#: blog/models.py:176
+msgid "User Agent"
+msgstr ""
+
+#: blog/models.py:177
+msgid "Date de vue"
+msgstr ""
+
+#: blog/models.py:186
+#, fuzzy
+#| msgid "Vues des articles"
+msgid "Vue d'article"
+msgstr "Vues des articles"
+
+#: blog/models.py:187
+#, fuzzy
+#| msgid "Vues des articles"
+msgid "Vues d'articles"
+msgstr "Vues des articles"
+
+# ==========================================
+# PAGES SPÉCIFIQUES
+# ==========================================
+#: blog/models.py:192
+#, fuzzy
+#| msgid "Nos auteurs"
+msgid "Nom de l'auteur"
+msgstr "Nos auteurs"
+
+#: blog/models.py:196
+msgid "Commentaire approuvé par la modération"
+msgstr ""
+
+#: blog/models.py:196
+#, fuzzy
+#| msgid "trouvé"
+msgid "Est approuvé"
+msgstr "trouvé"
+
+#: blog/models.py:221 blog/templates/blog/a_propos.html:25
+#: blog/templates/blog/detail_article.html:125
+msgid "Commentaire"
+msgstr "Commentaire"
+
+# ==========================================
+# COMMENTAIRES ET INTERACTIONS
+# ==========================================
+#: blog/models.py:222 blog/templates/blog/detail_article.html:105
+#: blog/templates/blog/home.html:135
+msgid "Commentaires"
+msgstr "Commentaires"
+
+#: blog/models.py:237
+msgid "Like"
+msgstr ""
+
+#: blog/models.py:238
+msgid "Likes"
+msgstr ""
+
+#: blog/models.py:246
+msgid "Note personnelle sur cet article"
+msgstr ""
+
+#: blog/models.py:246
+msgid "Note personnelle"
+msgstr ""
+
+#: blog/models.py:254
+msgid "Favori"
+msgstr ""
+
+#: blog/models.py:255
+msgid "Favoris"
+msgstr ""
+
+#: blog/templates/blog/a_propos.html:4 blog/templates/blog/base.html:61
+#: blog/templates/blog/base.html:191 blog/templates/blog/base.html:284
+msgid "À propos"
+msgstr "À propos"
+
+# ==========================================
+# NAVIGATION ET STRUCTURE
+# ==========================================
+#: blog/templates/blog/a_propos.html:4
+#: blog/templates/blog/ajouter_article.html:4
+#: blog/templates/blog/articles.html:4 blog/templates/blog/auteurs.html:4
+#: blog/templates/blog/categories.html:4
+#: blog/templates/blog/detail_article.html:4
+msgid "Mon Blog Django"
+msgstr "Mon Blog Django"
+
+#: blog/templates/blog/a_propos.html:9
+msgid "À propos de Mon Blog Django"
+msgstr "À propos de Mon Blog Django"
+
+#: blog/templates/blog/a_propos.html:11
+msgid ""
+"Une plateforme moderne et élégante pour partager des idées, découvrir du "
+"contenu passionnant et construire une communauté de passionnés."
+msgstr ""
+"Une plateforme moderne et élégante pour partager des idées, découvrir du "
+"contenu passionnant et construire une communauté de passionnés."
+
+#: blog/templates/blog/a_propos.html:20
+msgid "publié"
+msgstr "publié"
+
+#: blog/templates/blog/a_propos.html:45
+msgid "Notre Mission"
+msgstr "Notre Mission"
+
+# ==========================================
+# DESCRIPTIONS ET MISSIONS
+# ==========================================
+#: blog/templates/blog/a_propos.html:48
+msgid ""
+"Mon Blog Django a été créé pour offrir une plateforme simple et moderne où "
+"chacun peut partager ses connaissances, ses expériences et ses passions."
+msgstr ""
+"Mon Blog Django a été créé pour offrir une plateforme simple et moderne où "
+"chacun peut partager ses connaissances, ses expériences et ses passions."
+
+#: blog/templates/blog/a_propos.html:51
+msgid ""
+"Nous croyons en la puissance du partage de connaissances et en la création "
+"d'une communauté bienveillante où les idées peuvent s'épanouir."
+msgstr ""
+"Nous croyons en la puissance du partage de connaissances et en la création "
+"d'une communauté bienveillante où les idées peuvent s'épanouir."
+
+#: blog/templates/blog/a_propos.html:59
+msgid "Nos Valeurs"
+msgstr "Nos Valeurs"
+
+# ==========================================
+# VALEURS ET DESCRIPTIONS
+# ==========================================
+#: blog/templates/blog/a_propos.html:64
+msgid "Simplicité"
+msgstr "Simplicité"
+
+#: blog/templates/blog/a_propos.html:64
+msgid "Interface claire et intuitive"
+msgstr "Interface claire et intuitive"
+
+#: blog/templates/blog/a_propos.html:68
+msgid "Qualité"
+msgstr "Qualité"
+
+#: blog/templates/blog/a_propos.html:68
+msgid "Contenu soigné et pertinent"
+msgstr "Contenu soigné et pertinent"
+
+#: blog/templates/blog/a_propos.html:72
+msgid "Communauté"
+msgstr "Communauté"
+
+#: blog/templates/blog/a_propos.html:72
+msgid "Échanges respectueux"
+msgstr "Échanges respectueux"
+
+#: blog/templates/blog/a_propos.html:76
+msgid "Innovation"
+msgstr "Innovation"
+
+#: blog/templates/blog/a_propos.html:76
+msgid "Technologies modernes"
+msgstr "Technologies modernes"
+
+#: blog/templates/blog/a_propos.html:86
+msgid "Technologies Utilisées"
+msgstr "Technologies Utilisées"
+
+# ==========================================
+# TECHNOLOGIES
+# ==========================================
+#: blog/templates/blog/a_propos.html:92
+msgid "Framework web Python"
+msgstr "Framework web Python"
+
+#: blog/templates/blog/a_propos.html:97
+msgid "Framework CSS moderne"
+msgstr "Framework CSS moderne"
+
+#: blog/templates/blog/a_propos.html:102
+msgid "Base de données"
+msgstr "Base de données"
+
+#: blog/templates/blog/a_propos.html:107
+msgid "Design adaptatif"
+msgstr "Design adaptatif"
+
+#: blog/templates/blog/a_propos.html:116
+msgid "Fonctionnalités"
+msgstr "Fonctionnalités"
+
+# ==========================================
+# FONCTIONNALITÉS
+# ==========================================
+#: blog/templates/blog/a_propos.html:120
+msgid "Gestion de contenu"
+msgstr "Gestion de contenu"
+
+#: blog/templates/blog/a_propos.html:122
+msgid "Création et édition d'articles"
+msgstr "Création et édition d'articles"
+
+#: blog/templates/blog/a_propos.html:123
+msgid "Organisation par catégories"
+msgstr "Organisation par catégories"
+
+#: blog/templates/blog/a_propos.html:124
+msgid "Système de commentaires"
+msgstr "Système de commentaires"
+
+#: blog/templates/blog/a_propos.html:125
+msgid "Gestion des auteurs"
+msgstr "Gestion des auteurs"
+
+#: blog/templates/blog/a_propos.html:129
+msgid "Interface utilisateur"
+msgstr "Interface utilisateur"
+
+#: blog/templates/blog/a_propos.html:131
+msgid "Mode sombre/clair"
+msgstr "Mode sombre/clair"
+
+#: blog/templates/blog/a_propos.html:132
+msgid "Design responsive"
+msgstr "Design responsive"
+
+#: blog/templates/blog/a_propos.html:133
+msgid "Navigation intuitive"
+msgstr "Navigation intuitive"
+
+#: blog/templates/blog/a_propos.html:134
+msgid "Support multilingue"
+msgstr "Support multilingue"
+
+#: blog/templates/blog/a_propos.html:146
+msgid "Contactez-nous"
+msgstr "Contactez-nous"
+
+#: blog/templates/blog/a_propos.html:168
+msgid "Rejoignez-nous"
+msgstr "Rejoignez-nous"
+
+#: blog/templates/blog/a_propos.html:171
+msgid ""
+"Devenez contributeur et partagez vos connaissances avec notre communauté "
+"grandissante."
+msgstr ""
+"Devenez contributeur et partagez vos connaissances avec notre communauté "
+"grandissante."
+
+#: blog/templates/blog/a_propos.html:176 blog/templates/blog/auteurs.html:154
+#: blog/templates/blog/base.html:125 blog/templates/blog/profil.html:193
+msgid "Écrire un article"
+msgstr "Écrire un article"
+
+#: blog/templates/blog/a_propos.html:180
+msgid "Parcourir les articles"
+msgstr "Parcourir les articles"
+
+#: blog/templates/blog/a_propos.html:190
+msgid "Notre Histoire"
+msgstr "Notre Histoire"
+
+# ==========================================
+# HISTORIQUE ET TEMPS
+# ==========================================
+#: blog/templates/blog/a_propos.html:199
+msgid "Lancement du projet"
+msgstr "Lancement du projet"
+
+#: blog/templates/blog/a_propos.html:200
+msgid "Création de Mon Blog Django avec les fonctionnalités de base."
+msgstr "Création de Mon Blog Django avec les fonctionnalités de base."
+
+#: blog/templates/blog/a_propos.html:209
+msgid "Amélioration continue"
+msgstr "Amélioration continue"
+
+#: blog/templates/blog/a_propos.html:210
+msgid "Ajout du mode sombre, système de navigation avancé et optimisations."
+msgstr "Ajout du mode sombre, système de navigation avancé et optimisations."
+
+#: blog/templates/blog/a_propos.html:219
+msgid "L'avenir"
+msgstr "L'avenir"
+
+#: blog/templates/blog/a_propos.html:220
+msgid "Nouvelles fonctionnalités et croissance de la communauté."
+msgstr "Nouvelles fonctionnalités et croissance de la communauté."
+
+#: blog/templates/blog/ajouter_article.html:4
+msgid "Ajouter un Article"
+msgstr "Ajouter un Article"
+
+#: blog/templates/blog/ajouter_article.html:10
+msgid "Ajouter un Nouvel Article"
+msgstr "Ajouter un Nouvel Article"
+
+#: blog/templates/blog/ajouter_article.html:18
+msgid "Titre de l'article"
+msgstr "Titre de l'article"
+
+#: blog/templates/blog/ajouter_article.html:25
+msgid "Contenu de l'article"
+msgstr "Contenu de l'article"
+
+# ==========================================
+# FORMULAIRES ET INTERFACES
+# ==========================================
+#: blog/templates/blog/ajouter_article.html:38
+msgid "Vous pouvez gérer les catégories dans l'"
+msgstr "Vous pouvez gérer les catégories dans l'"
+
+#: blog/templates/blog/ajouter_article.html:38
+msgid "interface d'administration"
+msgstr "interface d'administration"
+
+#: blog/templates/blog/ajouter_article.html:44
+msgid "Image d'illustration (optionnel)"
+msgstr "Image d'illustration (optionnel)"
+
+#: blog/templates/blog/ajouter_article.html:48
+msgid "Formats acceptés : JPG, PNG, GIF. Taille maximale recommandée : 2MB."
+msgstr "Formats acceptés : JPG, PNG, GIF. Taille maximale recommandée : 2MB."
+
+#: blog/templates/blog/ajouter_article.html:54
 msgid "Tags (optionnel)"
 msgstr "Tags (optionnel)"
 
+#: blog/templates/blog/ajouter_article.html:68
 msgid "Aucun tag disponible."
 msgstr "Aucun tag disponible."
 
+#: blog/templates/blog/ajouter_article.html:69
 msgid "Créer des tags"
 msgstr "Créer des tags"
 
+#: blog/templates/blog/ajouter_article.html:74
 msgid "Sélectionnez un ou plusieurs tags pour classer votre article"
 msgstr "Sélectionnez un ou plusieurs tags pour classer votre article"
+
+#: blog/templates/blog/ajouter_article.html:80
+msgid "Publier immédiatement"
+msgstr "Publier immédiatement"
+
+#: blog/templates/blog/ajouter_article.html:85
+msgid "Annuler"
+msgstr "Annuler"
+
+#: blog/templates/blog/ajouter_article.html:88
+msgid "Enregistrer"
+msgstr "Enregistrer"
+
+# ==========================================
+# STATISTIQUES ET MÉTRIQUES
+# ==========================================
+#: blog/templates/blog/analytics.html:4
+msgid "Analytics"
+msgstr "Analytics"
+
+#: blog/templates/blog/analytics.html:8
+msgid "Analytics Dashboard"
+msgstr "Tableau de bord Analytics"
+
+#: blog/templates/blog/analytics.html:16 blog/templates/blog/home.html:73
+#: blog/templates/blog/moderation.html:269 blog/templates/blog/profil.html:139
+msgid "Articles publiés"
+msgstr "Articles publiés"
+
+#: blog/templates/blog/analytics.html:24 blog/templates/blog/home.html:94
+msgid "Auteurs actifs"
+msgstr "Auteurs actifs"
+
+#: blog/templates/blog/analytics.html:32
+#: blog/templates/blog/mes_articles.html:81 blog/templates/blog/profil.html:150
+msgid "Vues totales"
+msgstr "Vues totales"
+
+#: blog/templates/blog/analytics.html:40
+msgid "Moyenne vues/article"
+msgstr "Moyenne vues/article"
+
+#: blog/templates/blog/analytics.html:49 blog/templates/blog/home.html:414
+msgid "Articles les plus populaires"
+msgstr "Articles les plus populaires"
+
+#: blog/templates/blog/analytics.html:57
+#: blog/templates/blog/mes_favoris.html:57
+msgid "Par"
+msgstr "Par"
+
+#: blog/templates/blog/analytics.html:65
+msgid "Auteurs les plus actifs"
+msgstr "Auteurs les plus actifs"
+
+#: blog/templates/blog/analytics.html:71
+msgid "articles"
+msgstr "articles"
+
+#: blog/templates/blog/analytics.html:73
+#, fuzzy
+#| msgid "Vues totales"
+msgid "vues totales"
+msgstr "Vues totales"
+
+#: blog/templates/blog/analytics.html:83
+msgid "Évolution des vues (6 derniers mois)"
+msgstr "Évolution des vues (6 derniers mois)"
+
+#: blog/templates/blog/analytics.html:101
+msgid "Vues par mois"
+msgstr "Vues par mois"
+
+#: blog/templates/blog/articles.html:9
+msgid "Tous les articles"
+msgstr "Tous les articles"
+
+#: blog/templates/blog/articles.html:10
+msgid "Découvrez tous nos articles organisés et triés selon vos préférences."
+msgstr "Découvrez tous nos articles organisés et triés selon vos préférences."
+
+#: blog/templates/blog/articles.html:19
+msgid "Filtrer par :"
+msgstr "Filtrer par :"
+
+#: blog/templates/blog/articles.html:22
+msgid "Toutes"
+msgstr "Toutes"
 
 # ==========================================
 # TRI ET RECHERCHE
 # ==========================================
-
+#: blog/templates/blog/articles.html:35
 msgid "Trier par :"
 msgstr "Trier par :"
 
+#: blog/templates/blog/articles.html:39
 msgid "Plus récents"
 msgstr "Plus récents"
 
+#: blog/templates/blog/articles.html:40
 msgid "Plus anciens"
 msgstr "Plus anciens"
 
+#: blog/templates/blog/articles.html:63 blog/templates/blog/home.html:525
+msgid "Nouvel article"
+msgstr "Nouvel article"
+
+#: blog/templates/blog/articles.html:140 blog/templates/blog/home.html:235
+#: blog/templates/blog/home.html:353 blog/templates/blog/mes_articles.html:135
+msgid "vue"
+msgstr "vue"
+
+#: blog/templates/blog/articles.html:143
+#: blog/templates/blog/detail_article.html:90 blog/templates/blog/home.html:238
+#: blog/templates/blog/home.html:356 blog/templates/blog/mes_articles.html:140
+#, fuzzy
+#| msgid "Commentaire"
+msgid "commentaire"
+msgstr "Commentaire"
+
+#: blog/templates/blog/articles.html:148
+msgid "Lire la suite"
+msgstr "Lire la suite"
+
+# ==========================================
+# ÉTATS ET MESSAGES
+# ==========================================
+#: blog/templates/blog/articles.html:159
+msgid "Aucun article trouvé"
+msgstr "Aucun article trouvé"
+
+#: blog/templates/blog/articles.html:162
+msgid "Aucun article dans cette catégorie pour le moment."
+msgstr "Aucun article dans cette catégorie pour le moment."
+
+#: blog/templates/blog/articles.html:164
+msgid "Il n'y a pas encore d'articles publiés."
+msgstr "Il n'y a pas encore d'articles publiés."
+
+#: blog/templates/blog/articles.html:171
+#: blog/templates/blog/categories.html:143 blog/templates/blog/home.html:262
+#: blog/templates/blog/home.html:374
+msgid "Voir tous les articles"
+msgstr "Voir tous les articles"
+
+#: blog/templates/blog/articles.html:176
+#: blog/templates/blog/categories.html:168 blog/templates/blog/home.html:266
+msgid "Créer un article"
+msgstr "Créer un article"
+
+#: blog/templates/blog/auteurs.html:4 blog/templates/blog/base.html:57
+#: blog/templates/blog/base.html:188 blog/templates/blog/base.html:278
+msgid "Auteurs"
+msgstr "Auteurs"
+
+# ==========================================
+# PAGES SPÉCIFIQUES
+# ==========================================
+#: blog/templates/blog/auteurs.html:9
+msgid "Nos auteurs"
+msgstr "Nos auteurs"
+
+#: blog/templates/blog/auteurs.html:10
+msgid "Découvrez les contributeurs de notre blog et leurs articles."
+msgstr "Découvrez les contributeurs de notre blog et leurs articles."
+
+#: blog/templates/blog/auteurs.html:34 blog/templates/blog/categories.html:33
+msgid "Articles total"
+msgstr "Articles total"
+
+#: blog/templates/blog/auteurs.html:45
+msgid "Auteur le + actif"
+msgstr "Auteur le + actif"
+
+#: blog/templates/blog/auteurs.html:56
+msgid "Contributeurs"
+msgstr "Contributeurs"
+
+#: blog/templates/blog/auteurs.html:78
+msgid "Contributeur"
+msgstr "Contributeur"
+
+#: blog/templates/blog/auteurs.html:97
+msgid "Dernier article"
+msgstr "Dernier article"
+
+#: blog/templates/blog/auteurs.html:106
+msgid "Auteur le plus actif"
+msgstr "Auteur le plus actif"
+
+#: blog/templates/blog/auteurs.html:111
+msgid "Contributeur régulier"
+msgstr "Contributeur régulier"
+
+#: blog/templates/blog/auteurs.html:116
+msgid "Contributeur actif"
+msgstr "Contributeur actif"
+
+#: blog/templates/blog/auteurs.html:121
+msgid "Nouveau contributeur"
+msgstr "Nouveau contributeur"
+
+#: blog/templates/blog/auteurs.html:130
+msgid "Voir ses articles"
+msgstr "Voir ses articles"
+
+#: blog/templates/blog/auteurs.html:135 blog/templates/blog/categories.html:103
+msgid "Vue d'accueil"
+msgstr "Vue d'accueil"
+
+#: blog/templates/blog/auteurs.html:147
+msgid "Rejoignez notre communauté !"
+msgstr "Rejoignez notre communauté !"
+
+#: blog/templates/blog/auteurs.html:149
+msgid ""
+"Vous aussi, partagez vos connaissances et devenez l'un de nos auteurs "
+"contributeurs."
+msgstr ""
+"Vous aussi, partagez vos connaissances et devenez l'un de nos auteurs "
+"contributeurs."
+
+#: blog/templates/blog/auteurs.html:158 blog/templates/blog/auteurs.html:179
+#: blog/templates/blog/categories.html:147
+#: blog/templates/blog/detail_article.html:95
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:94
+#: blog/templates/blog/mot_de_passe_reinitialise.html:55
+msgid "Retour à l'accueil"
+msgstr "Retour à l'accueil"
+
+#: blog/templates/blog/auteurs.html:168
+msgid "Aucun auteur pour le moment"
+msgstr "Aucun auteur pour le moment"
+
+#: blog/templates/blog/auteurs.html:170
+msgid "Soyez le premier à contribuer en créant un article !"
+msgstr "Soyez le premier à contribuer en créant un article !"
+
+#: blog/templates/blog/auteurs.html:175
+msgid "Créer le premier article"
+msgstr "Créer le premier article"
+
+#: blog/templates/blog/base.html:37 blog/templates/blog/base.html:235
+#: blog/templates/blog/base.html:302
+msgid "Mon Blog"
+msgstr "Mon Blog"
+
+#: blog/templates/blog/base.html:45 blog/templates/blog/base.html:179
+#: blog/templates/blog/base.html:260 blog/templates/blog/detail_article.html:10
+msgid "Accueil"
+msgstr "Accueil"
+
+#: blog/templates/blog/base.html:117
+msgid "Connecté en tant que"
+msgstr "Connecté en tant que"
+
+#: blog/templates/blog/base.html:121
+msgid "Mon profil"
+msgstr "Mon profil"
+
+#: blog/templates/blog/base.html:128 blog/templates/blog/profil.html:197
+msgid "Mes articles"
+msgstr "Mes articles"
+
+#: blog/templates/blog/base.html:133 blog/templates/blog/moderation.html:4
+#: blog/templates/blog/profil.html:203
+msgid "Modération"
+msgstr "Modération"
+
+#: blog/templates/blog/base.html:138
+msgid "Administration"
+msgstr "Administration"
+
+#: blog/templates/blog/base.html:143
+msgid "Déconnexion"
+msgstr "Déconnexion"
+
+# ==========================================
+# AUTHENTIFICATION
+# ==========================================
+#: blog/templates/blog/base.html:151 blog/templates/blog/connexion.html:4
+msgid "Connexion"
+msgstr "Connexion"
+
+#: blog/templates/blog/base.html:155 blog/templates/blog/inscription.html:4
+msgid "Inscription"
+msgstr "Inscription"
+
+#: blog/templates/blog/base.html:236
+msgid "Un blog moderne créé avec Django et Tailwind CSS."
+msgstr "Un blog moderne créé avec Django et Tailwind CSS."
+
+#: blog/templates/blog/base.html:255
+msgid "Navigation"
+msgstr "Navigation"
+
+#: blog/templates/blog/base.html:292
+msgid "Contact"
+msgstr "Contact"
+
+# ==========================================
+# TEXTES GÉNÉRIQUES
+# ==========================================
+#: blog/templates/blog/base.html:302
+msgid "Tous droits réservés."
+msgstr "Tous droits réservés."
+
+#: blog/templates/blog/categories.html:10
+msgid "Explorez nos articles organisés par catégories thématiques."
+msgstr "Explorez nos articles organisés par catégories thématiques."
+
+#: blog/templates/blog/categories.html:44
+msgid "Sections (+ Sans catégorie)"
+msgstr "Sections (+ Sans catégorie)"
+
+#: blog/templates/blog/categories.html:74
+#, fuzzy
+#| msgid "Aucun tag disponible."
+msgid "Aucune description disponible."
+msgstr "Aucun tag disponible."
+
+#: blog/templates/blog/categories.html:99
+#, fuzzy
+#| msgid "Voir ses articles"
+msgid "Voir les articles"
+msgstr "Voir ses articles"
+
+#: blog/templates/blog/categories.html:108
+#: blog/templates/blog/mes_articles.html:198
+msgid "Aucun article pour le moment"
+msgstr "Aucun article pour le moment"
+
+#: blog/templates/blog/categories.html:124
+msgid "Articles sans catégorie"
+msgstr "Articles sans catégorie"
+
+#: blog/templates/blog/categories.html:127
+msgid "Articles qui n'ont pas encore été classés dans une catégorie."
+msgstr "Articles qui n'ont pas encore été classés dans une catégorie."
+
+#: blog/templates/blog/categories.html:157
+#, fuzzy
+#| msgid "Aucune activité récente"
+msgid "Aucune catégorie créée"
+msgstr "Aucune activité récente"
+
+#: blog/templates/blog/categories.html:159
+msgid ""
+"Commencez par créer des catégories pour organiser vos articles par thèmes"
+msgstr ""
+
+#: blog/templates/blog/categories.html:164
+#, fuzzy
+#| msgid "Créer un article"
+msgid "Créer une catégorie"
+msgstr "Créer un article"
+
+# ==========================================
+# ARTICLES ET CONTENU
+# ==========================================
+#: blog/templates/blog/connexion.html:4 blog/templates/blog/home.html:23
+#: blog/templates/blog/inscription.html:4
+#: blog/templates/blog/mes_articles.html:4
+#: blog/templates/blog/mes_favoris.html:4 blog/templates/blog/mes_likes.html:4
+#: blog/templates/blog/moderation.html:4
+#: blog/templates/blog/mot_de_passe_oublie_email.html:65
+#: blog/templates/blog/profil.html:4
+msgid "Blog Académique Universitaire"
+msgstr "Blog Académique Universitaire"
+
+#: blog/templates/blog/connexion.html:14 blog/templates/blog/connexion.html:136
+#: blog/templates/blog/inscription.html:226
+#: blog/templates/blog/mot_de_passe_oublie.html:101
+msgid "Se connecter"
+msgstr "Se connecter"
+
+#: blog/templates/blog/connexion.html:17
+msgid "Accédez à votre compte académique"
+msgstr "Accédez à votre compte académique"
+
+#: blog/templates/blog/connexion.html:37
+#, fuzzy
+#| msgid "Dernière connexion"
+msgid "Erreur de connexion"
+msgstr "Dernière connexion"
+
+# ==========================================
+# RÔLES ET PERMISSIONS
+# ==========================================
+#: blog/templates/blog/connexion.html:52
+#: blog/templates/blog/inscription.html:28
+#, fuzzy
+#| msgid "Utilisateur"
+msgid "Nom d'utilisateur"
+msgstr "Utilisateur"
+
+#: blog/templates/blog/connexion.html:59
+#, fuzzy
+#| msgid "Votre nom"
+msgid "Votre nom d\\"
+msgstr "Votre nom"
+
+#: blog/templates/blog/connexion.html:81
+#: blog/templates/blog/inscription.html:151
+msgid "Mot de passe"
+msgstr "Mot de passe"
+
+#: blog/templates/blog/connexion.html:88
+#, fuzzy
+#| msgid "Votre nouveau mot de passe"
+msgid "Votre mot de passe"
+msgstr "Votre nouveau mot de passe"
+
+#: blog/templates/blog/connexion.html:112
+msgid "Se souvenir de moi"
+msgstr ""
+
+#: blog/templates/blog/connexion.html:119
+#, fuzzy
+#| msgid "Mot de passe oublié"
+msgid "Mot de passe oublié ?"
+msgstr "Mot de passe oublié"
+
+#: blog/templates/blog/connexion.html:143
+#, fuzzy
+#| msgid "Type de compte"
+msgid "Pas encore de compte ?"
+msgstr "Type de compte"
+
+#: blog/templates/blog/connexion.html:146
+msgid "S'inscrire maintenant"
+msgstr ""
+
+#: blog/templates/blog/connexion.html:155
+#, fuzzy
+#| msgid "Type de compte"
+msgid "Types de comptes disponibles"
+msgstr "Type de compte"
+
+#: blog/templates/blog/connexion.html:158
+msgid "Lecteur"
+msgstr ""
+
+#: blog/templates/blog/connexion.html:158
+#, fuzzy
+#| msgid "Voir tous les articles"
+msgid "Lire et commenter les articles"
+msgstr "Voir tous les articles"
+
+#: blog/templates/blog/connexion.html:159
+#, fuzzy
+#| msgid "Écrire un article"
+msgid "Écrire et publier des articles"
+msgstr "Écrire un article"
+
+#: blog/templates/blog/connexion.html:160
+#, fuzzy
+#| msgid "Modération"
+msgid "Modérateur"
+msgstr "Modération"
+
+#: blog/templates/blog/connexion.html:160
+#, fuzzy
+#| msgid "Créer le premier article"
+msgid "Modérer les commentaires et articles"
+msgstr "Créer le premier article"
+
+# ==========================================
+# FONCTIONNALITÉS
+# ==========================================
+#: blog/templates/blog/connexion.html:161
+#, fuzzy
+#| msgid "Gestion de contenu"
+msgid "Gestion complète du site"
+msgstr "Gestion de contenu"
+
+#: blog/templates/blog/detail_article.html:114
+#, fuzzy
+#| msgid "Ajouter un Article"
+msgid "Ajouter un commentaire"
+msgstr "Ajouter un Article"
+
+#: blog/templates/blog/detail_article.html:136
+#, fuzzy
+#| msgid "Système de commentaires"
+msgid "Publier le commentaire"
+msgstr "Système de commentaires"
+
+#: blog/templates/blog/detail_article.html:169
+#, fuzzy
+#| msgid "Aucun article pour le moment"
+msgid "Aucun commentaire pour le moment."
+msgstr "Aucun article pour le moment"
+
+#: blog/templates/blog/detail_article.html:170
+#, fuzzy
+#| msgid "Soyez le premier à contribuer en créant un article !"
+msgid "Soyez le premier à commenter cet article !"
+msgstr "Soyez le premier à contribuer en créant un article !"
+
+#: blog/templates/blog/home.html:28
+msgid ""
+"Découvrez des articles de recherche, des analyses, et des réflexions "
+"académiques"
+msgstr ""
+"Découvrez des articles de recherche, des analyses, et des réflexions "
+"académiques"
+
+#: blog/templates/blog/home.html:40
 msgid "Rechercher"
 msgstr "Rechercher"
 
+#: blog/templates/blog/home.html:47
 msgid "Recherches populaires :"
 msgstr "Recherches populaires :"
 
+#: blog/templates/blog/home.html:50
 msgid "Python"
 msgstr "Python"
 
+#: blog/templates/blog/home.html:54
 msgid "Intelligence Artificielle"
 msgstr "Intelligence Artificielle"
 
+#: blog/templates/blog/home.html:58
 msgid "Recherche"
 msgstr "Recherche"
 
+#: blog/templates/blog/home.html:79
+msgid "Total des publications"
+msgstr "Total des publications"
+
+#: blog/templates/blog/home.html:100
+msgid "Contributeurs uniques"
+msgstr "Contributeurs uniques"
+
+#: blog/templates/blog/home.html:115
+msgid "Lectures totales"
+msgstr "Lectures totales"
+
+#: blog/templates/blog/home.html:120
+msgid "Vues des articles"
+msgstr "Vues des articles"
+
+#: blog/templates/blog/home.html:140
+msgid "Total des interactions"
+msgstr "Total des interactions"
+
+#: blog/templates/blog/home.html:157
 msgid "Résultats de recherche pour"
 msgstr "Résultats de recherche pour"
 
+#: blog/templates/blog/home.html:160
+msgid "résultat"
+msgstr "résultat"
+
+#: blog/templates/blog/home.html:160
+msgid "trouvé"
+msgstr "trouvé"
+
+#: blog/templates/blog/home.html:243 blog/templates/blog/home.html:361
+msgid "Lire l'article"
+msgstr "Lire l'article"
+
+#: blog/templates/blog/home.html:255
 msgid "Aucun résultat trouvé"
 msgstr "Aucun résultat trouvé"
 
+#: blog/templates/blog/home.html:257
 msgid "Aucun article ne correspond à votre recherche"
 msgstr "Aucun article ne correspond à votre recherche"
 
-msgid "Découvrez tous nos articles organisés et triés selon vos préférences."
-msgstr "Découvrez tous nos articles organisés et triés selon vos préférences."
+#: blog/templates/blog/home.html:275 blog/templates/blog/moderation.html:78
+#: blog/templates/blog/moderation.html:185
+msgid "Articles récents"
+msgstr "Articles récents"
 
-msgid "Découvrez des articles de recherche, des analyses, et des réflexions académiques"
-msgstr "Découvrez des articles de recherche, des analyses, et des réflexions académiques"
-
+#: blog/templates/blog/home.html:278
 msgid "Découvrez les dernières publications académiques"
 msgstr "Découvrez les dernières publications académiques"
 
 # ==========================================
 # ÉTATS ET MESSAGES
 # ==========================================
-
-msgid "Aucun article trouvé"
+#: blog/templates/blog/home.html:383
+#, fuzzy
+#| msgid "Aucun article trouvé"
+msgid "Aucun article publié"
 msgstr "Aucun article trouvé"
 
+#: blog/templates/blog/home.html:385
+msgid "Soyez le premier à partager vos recherches et analyses académiques !"
+msgstr ""
+
+#: blog/templates/blog/home.html:389
+#, fuzzy
+#| msgid "Créer le premier article"
+msgid "Publier le premier article"
+msgstr "Créer le premier article"
+
+#: blog/templates/blog/home.html:401
+#, fuzzy
+#| msgid "Tableau de bord administrateur"
+msgid "Tableau de Bord"
+msgstr "Tableau de bord administrateur"
+
+#: blog/templates/blog/home.html:404
+msgid "Aperçu de l'activité récente et des performances du blog"
+msgstr "Aperçu de l'activité récente et des performances du blog"
+
+#: blog/templates/blog/home.html:417
+msgid "Voir tous"
+msgstr "Voir tous"
+
+#: blog/templates/blog/home.html:469
+msgid "Aucune donnée de popularité disponible"
+msgstr ""
+
+#: blog/templates/blog/home.html:470
+msgid "Publiez des articles pour voir les statistiques"
+msgstr ""
+
+#: blog/templates/blog/home.html:479
+msgid "Activité récente"
+msgstr "Activité récente"
+
+#: blog/templates/blog/home.html:502
 msgid "Aucune activité récente"
 msgstr "Aucune activité récente"
 
+#: blog/templates/blog/home.html:503
 msgid "L'activité apparaîtra ici"
 msgstr "L'activité apparaîtra ici"
 
-msgid "Aucun auteur pour le moment"
-msgstr "Aucun auteur pour le moment"
-
-msgid "Aucun article pour le moment"
-msgstr "Aucun article pour le moment"
-
-msgid "Brouillon"
-msgstr "Brouillon"
-
-msgid "Aucun article dans cette catégorie pour le moment."
-msgstr "Aucun article dans cette catégorie pour le moment."
-
-msgid "Il n'y a pas encore d'articles publiés."
-msgstr "Il n'y a pas encore d'articles publiés."
-
-msgid "Soyez le premier à contribuer en créant un article !"
-msgstr "Soyez le premier à contribuer en créant un article !"
+#: blog/templates/blog/home.html:514 blog/templates/blog/profil.html:188
+msgid "Actions rapides"
+msgstr "Actions rapides"
 
 # ==========================================
 # ACTIONS ET BOUTONS
 # ==========================================
-
+#: blog/templates/blog/home.html:515
 msgid "Gérez votre blog en un clic"
 msgstr "Gérez votre blog en un clic"
 
-msgid "Voir tous"
-msgstr "Voir tous"
-
-msgid "Voir ses articles"
-msgstr "Voir ses articles"
-
-msgid "Vue d'accueil"
-msgstr "Vue d'accueil"
-
-msgid "Retour à l'accueil"
-msgstr "Retour à l'accueil"
-
-msgid "Annuler"
-msgstr "Annuler"
-
-msgid "Enregistrer"
-msgstr "Enregistrer"
-
-msgid "Publier immédiatement"
-msgstr "Publier immédiatement"
-
+#: blog/templates/blog/home.html:543
 msgid "Admin"
 msgstr "Admin"
 
-msgid "Créer le premier article"
-msgstr "Créer le premier article"
-
-# ==========================================
-# RÔLES ET PERMISSIONS
-# ==========================================
-
-msgid "Utilisateur"
-msgstr "Utilisateur"
-
-msgid "Administrateur"
-msgstr "Administrateur"
-
-msgid "Modération"
-msgstr "Modération"
-
-msgid "Administration"
-msgstr "Administration"
-
-msgid "Contributeur"
-msgstr "Contributeur"
-
-msgid "Auteur le plus actif"
-msgstr "Auteur le plus actif"
-
-msgid "Contributeur régulier"
-msgstr "Contributeur régulier"
-
-msgid "Contributeur actif"
-msgstr "Contributeur actif"
-
-msgid "Nouveau contributeur"
-msgstr "Nouveau contributeur"
-
-msgid "Auteur le + actif"
-msgstr "Auteur le + actif"
-
-msgid "Contributeurs"
-msgstr "Contributeurs"
-
-msgid "Créer et gérer ses propres articles"
-msgstr "Créer et gérer ses propres articles"
-
-msgid "Accès complet à la plateforme"
-msgstr "Accès complet à la plateforme"
-
-msgid "Choisissez un type de compte"
-msgstr "Choisissez un type de compte"
-
-# ==========================================
-# PAGES SPÉCIFIQUES
-# ==========================================
-
-msgid "Nos auteurs"
-msgstr "Nos auteurs"
-
-msgid "Notre Mission"
-msgstr "Notre Mission"
-
-msgid "Nos Valeurs"
-msgstr "Nos Valeurs"
-
-msgid "Technologies Utilisées"
-msgstr "Technologies Utilisées"
-
-msgid "Fonctionnalités"
-msgstr "Fonctionnalités"
-
-msgid "Notre Histoire"
-msgstr "Notre Histoire"
-
-msgid "Rejoignez-nous"
-msgstr "Rejoignez-nous"
-
-msgid "Contactez-nous"
-msgstr "Contactez-nous"
-
-msgid "Découvrez les contributeurs de notre blog et leurs articles."
-msgstr "Découvrez les contributeurs de notre blog et leurs articles."
-
-msgid "À propos de Mon Blog Django"
-msgstr "À propos de Mon Blog Django"
-
-msgid "Une plateforme moderne et élégante pour partager des idées, découvrir du contenu passionnant et construire une communauté de passionnés."
-msgstr "Une plateforme moderne et élégante pour partager des idées, découvrir du contenu passionnant et construire une communauté de passionnés."
-
-msgid "Rejoignez notre communauté !"
-msgstr "Rejoignez notre communauté !"
-
-msgid "Vous aussi, partagez vos connaissances et devenez l'un de nos auteurs contributeurs."
-msgstr "Vous aussi, partagez vos connaissances et devenez l'un de nos auteurs contributeurs."
-
-msgid "Devenez contributeur et partagez vos connaissances avec notre communauté grandissante."
-msgstr "Devenez contributeur et partagez vos connaissances avec notre communauté grandissante."
-
-# ==========================================
-# VALEURS ET DESCRIPTIONS
-# ==========================================
-
-msgid "Simplicité"
-msgstr "Simplicité"
-
-msgid "Interface claire et intuitive"
-msgstr "Interface claire et intuitive"
-
-msgid "Qualité"
-msgstr "Qualité"
-
-msgid "Contenu soigné et pertinent"
-msgstr "Contenu soigné et pertinent"
-
-msgid "Communauté"
-msgstr "Communauté"
-
-msgid "Échanges respectueux"
-msgstr "Échanges respectueux"
-
-msgid "Innovation"
-msgstr "Innovation"
-
-msgid "Technologies modernes"
-msgstr "Technologies modernes"
-
-# ==========================================
-# TECHNOLOGIES
-# ==========================================
-
-msgid "Framework web Python"
-msgstr "Framework web Python"
-
-msgid "Framework CSS moderne"
-msgstr "Framework CSS moderne"
-
-msgid "Base de données"
-msgstr "Base de données"
-
-msgid "Design adaptatif"
-msgstr "Design adaptatif"
-
-# ==========================================
-# FONCTIONNALITÉS
-# ==========================================
-
-msgid "Gestion de contenu"
-msgstr "Gestion de contenu"
-
-msgid "Création et édition d'articles"
-msgstr "Création et édition d'articles"
-
-msgid "Organisation par catégories"
-msgstr "Organisation par catégories"
-
-msgid "Système de commentaires"
-msgstr "Système de commentaires"
-
-msgid "Gestion des auteurs"
-msgstr "Gestion des auteurs"
-
-msgid "Interface utilisateur"
-msgstr "Interface utilisateur"
-
-msgid "Mode sombre/clair"
-msgstr "Mode sombre/clair"
-
-msgid "Design responsive"
-msgstr "Design responsive"
-
-msgid "Navigation intuitive"
-msgstr "Navigation intuitive"
-
-msgid "Support multilingue"
-msgstr "Support multilingue"
-
-# ==========================================
-# EMAIL ET COMMUNICATION
-# ==========================================
-
-msgid "Réinitialisation de votre mot de passe"
-msgstr "Réinitialisation de votre mot de passe"
-
-msgid "Réinitialisation de votre mot de passe - Blog Académique Universitaire"
-msgstr "Réinitialisation de votre mot de passe - Blog Académique Universitaire"
-
-msgid "Bonjour"
-msgstr "Bonjour"
-
-msgid "Important :"
-msgstr "Important :"
-
-msgid "Conseil de sécurité :"
-msgstr "Conseil de sécurité :"
-
-msgid "Note importante :"
-msgstr "Note importante :"
-
-msgid "Étapes suivantes :"
-msgstr "Étapes suivantes :"
-
-msgid "Vous avez demandé la réinitialisation de votre mot de passe pour votre compte sur le Blog Académique Universitaire."
-msgstr "Vous avez demandé la réinitialisation de votre mot de passe pour votre compte sur le Blog Académique Universitaire."
-
-msgid "Pour définir un nouveau mot de passe, cliquez sur le bouton ci-dessous :"
-msgstr "Pour définir un nouveau mot de passe, cliquez sur le bouton ci-dessous :"
-
-msgid "Réinitialiser mon mot de passe"
-msgstr "Réinitialiser mon mot de passe"
-
-msgid "Ce lien expire dans 24 heures pour votre sécurité"
-msgstr "Ce lien expire dans 24 heures pour votre sécurité"
-
-msgid "Vérifiez votre boîte de réception"
-msgstr "Vérifiez votre boîte de réception"
-
-msgid "Cliquez sur le lien dans l'email"
-msgstr "Cliquez sur le lien dans l'email"
-
-msgid "Définissez votre nouveau mot de passe"
-msgstr "Définissez votre nouveau mot de passe"
-
-msgid "Connectez-vous avec vos nouveaux identifiants"
-msgstr "Connectez-vous avec vos nouveaux identifiants"
-
-msgid "Si vous ne recevez pas l'email dans les prochaines minutes, vérifiez votre dossier spam ou courrier indésirable."
-msgstr "Si vous ne recevez pas l'email dans les prochaines minutes, vérifiez votre dossier spam ou courrier indésirable."
-
-# ==========================================
-# TEXTES GÉNÉRIQUES
-# ==========================================
-
-msgid "Tous droits réservés."
-msgstr "Tous droits réservés."
-
-msgid "vue"
-msgstr "vue"
-
-msgid "résultat"
-msgstr "résultat"
-
-msgid "trouvé"
-msgstr "trouvé"
-
-msgid "publié"
-msgstr "publié"
-
-msgid "Par"
-msgstr "Par"
-
-msgid "articles"
-msgstr "articles"
-
-msgid "Dernier article"
-msgstr "Dernier article"
+#: blog/templates/blog/inscription.html:14
+msgid "Créer un compte"
+msgstr "Créer un compte"
+
+#: blog/templates/blog/inscription.html:17
+msgid "Rejoignez notre communauté académique"
+msgstr "Rejoignez notre communauté académique"
+
+#: blog/templates/blog/inscription.html:35
+#, fuzzy
+#| msgid "Choisissez un mot de passe"
+msgid "Choisissez un nom d\\"
+msgstr "Choisissez un mot de passe"
+
+#: blog/templates/blog/inscription.html:58 blog/templates/blog/profil.html:71
+msgid "Prénom"
+msgstr "Prénom"
 
 # ==========================================
 # PLACEHOLDERS ET AIDE
 # ==========================================
-
+#: blog/templates/blog/inscription.html:64
 msgid "Votre prénom"
 msgstr "Votre prénom"
 
+#: blog/templates/blog/inscription.html:81
 msgid "Votre nom"
 msgstr "Votre nom"
 
+#: blog/templates/blog/inscription.html:95
+#: blog/templates/blog/mot_de_passe_oublie.html:55
+msgid "Adresse email"
+msgstr "Adresse email"
+
+#: blog/templates/blog/inscription.html:124 blog/templates/blog/profil.html:180
+msgid "Type de compte"
+msgstr "Type de compte"
+
+#: blog/templates/blog/inscription.html:129
+msgid "Choisissez un type de compte"
+msgstr "Choisissez un type de compte"
+
+#: blog/templates/blog/inscription.html:136
+msgid "Créer et gérer ses propres articles"
+msgstr "Créer et gérer ses propres articles"
+
+#: blog/templates/blog/inscription.html:137
+msgid "Accès complet à la plateforme"
+msgstr "Accès complet à la plateforme"
+
+#: blog/templates/blog/inscription.html:158
 msgid "Choisissez un mot de passe"
 msgstr "Choisissez un mot de passe"
 
-msgid "Confirmez votre nouveau mot de passe"
+#: blog/templates/blog/inscription.html:179
+#, fuzzy
+#| msgid "Confirmer le nouveau mot de passe"
+msgid "Confirmer le mot de passe"
+msgstr "Confirmer le nouveau mot de passe"
+
+#: blog/templates/blog/inscription.html:186
+#, fuzzy
+#| msgid "Confirmez votre nouveau mot de passe"
+msgid "Confirmez votre mot de passe"
 msgstr "Confirmez votre nouveau mot de passe"
 
+#: blog/templates/blog/inscription.html:216
+#, fuzzy
+#| msgid "Créer un compte"
+msgid "Créer mon compte"
+msgstr "Créer un compte"
+
+#: blog/templates/blog/inscription.html:223
+msgid "Vous avez déjà un compte ?"
+msgstr ""
+
+#: blog/templates/blog/mes_articles.html:4
+#: blog/templates/blog/mes_articles.html:13
+msgid "Mes Articles"
+msgstr "Mes Articles"
+
+#: blog/templates/blog/mes_articles.html:16
+msgid "Gérez vos articles publiés et vos brouillons"
+msgstr "Gérez vos articles publiés et vos brouillons"
+
+#: blog/templates/blog/mes_articles.html:23
+msgid "Nouvel Article"
+msgstr "Nouvel Article"
+
+#: blog/templates/blog/mes_articles.html:39
+msgid "Total"
+msgstr "Total"
+
+#: blog/templates/blog/mes_articles.html:53
+msgid "Publiés"
+msgstr "Publiés"
+
+#: blog/templates/blog/mes_articles.html:67 blog/templates/blog/profil.html:145
+msgid "Brouillons"
+msgstr "Brouillons"
+
+#: blog/templates/blog/mes_articles.html:93
+msgid "Tous mes articles"
+msgstr "Tous mes articles"
+
+#: blog/templates/blog/mes_articles.html:113
+#, fuzzy
+#| msgid "Publiés"
+msgid "Publié"
+msgstr "Publiés"
+
+#: blog/templates/blog/mes_articles.html:117
+#: blog/templates/blog/moderation.html:203 blog/templates/blog/profil.html:232
+msgid "Brouillon"
+msgstr "Brouillon"
+
+#: blog/templates/blog/mes_articles.html:171
+#, fuzzy
+#| msgid "Voir tous"
+msgid "Voir l\\"
+msgstr "Voir tous"
+
+#: blog/templates/blog/mes_articles.html:176
+#, fuzzy
+#| msgid "Modifier l'article"
+msgid "Modifier l\\"
+msgstr "Modifier l'article"
+
+#: blog/templates/blog/mes_articles.html:181
+msgid "Supprimer l\\"
+msgstr ""
+
+#: blog/templates/blog/mes_articles.html:201
+msgid ""
+"Commencez à écrire votre premier article pour partager vos idées avec la "
+"communauté."
+msgstr ""
+
+#: blog/templates/blog/mes_articles.html:206
+#, fuzzy
+#| msgid "Écrire un article"
+msgid "Écrire mon premier article"
+msgstr "Écrire un article"
+
+#: blog/templates/blog/mes_favoris.html:4
+#, fuzzy
+#| msgid "Mes articles"
+msgid "Mes Favoris"
+msgstr "Mes articles"
+
+#: blog/templates/blog/mes_favoris.html:13
+#, fuzzy
+#| msgid "Mes Articles"
+msgid "Mes Articles Favoris"
+msgstr "Mes Articles"
+
+#: blog/templates/blog/mes_favoris.html:16
+msgid "Articles sauvegardés pour plus tard"
+msgstr ""
+
+#: blog/templates/blog/mes_favoris.html:45
+msgid "Ajouté le"
+msgstr ""
+
+#: blog/templates/blog/mes_favoris.html:80
+#: blog/templates/blog/mes_likes.html:74
+msgid "Lire"
+msgstr ""
+
+#: blog/templates/blog/mes_favoris.html:86
+msgid "Retirer cet article de vos favoris ?"
+msgstr ""
+
+#: blog/templates/blog/mes_favoris.html:87
+msgid "Retirer"
+msgstr ""
+
+#: blog/templates/blog/mes_favoris.html:104
+#: blog/templates/blog/mes_likes.html:98
+msgid "Précédent"
+msgstr ""
+
+#: blog/templates/blog/mes_favoris.html:109
+#: blog/templates/blog/mes_likes.html:103
+msgid "Page"
+msgstr ""
+
+#: blog/templates/blog/mes_favoris.html:109
+#: blog/templates/blog/mes_likes.html:103
+msgid "sur"
+msgstr ""
+
+#: blog/templates/blog/mes_favoris.html:115
+#: blog/templates/blog/mes_likes.html:109
+msgid "Suivant"
+msgstr ""
+
+#: blog/templates/blog/mes_favoris.html:126
+msgid "Aucun favori"
+msgstr ""
+
+#: blog/templates/blog/mes_favoris.html:128
+msgid "Sauvegardez des articles intéressants pour les lire plus tard."
+msgstr ""
+
+#: blog/templates/blog/mes_favoris.html:133
+#: blog/templates/blog/mes_likes.html:127
+#, fuzzy
+#| msgid "Parcourir les articles"
+msgid "Découvrir des articles"
+msgstr "Parcourir les articles"
+
+#: blog/templates/blog/mes_likes.html:4
+#, fuzzy
+#| msgid "Mes Articles"
+msgid "Mes Likes"
+msgstr "Mes Articles"
+
+#: blog/templates/blog/mes_likes.html:13
+#, fuzzy
+#| msgid "Articles publiés"
+msgid "Articles que j'aime"
+msgstr "Articles publiés"
+
+#: blog/templates/blog/mes_likes.html:16
+#, fuzzy
+#| msgid "Articles publiés"
+msgid "Articles que vous avez aimés"
+msgstr "Articles publiés"
+
+#: blog/templates/blog/mes_likes.html:80
+msgid "Retirer votre like de cet article ?"
+msgstr ""
+
+#: blog/templates/blog/mes_likes.html:81
+msgid "Unlike"
+msgstr ""
+
+# ==========================================
+# ÉTATS ET MESSAGES
+# ==========================================
+#: blog/templates/blog/mes_likes.html:120
+#, fuzzy
+#| msgid "Aucun article trouvé"
+msgid "Aucun article liké"
+msgstr "Aucun article trouvé"
+
+#: blog/templates/blog/mes_likes.html:122
+msgid ""
+"Likez des articles pour montrer votre appréciation et les retrouver ici."
+msgstr ""
+
+#: blog/templates/blog/moderation.html:16
+#, fuzzy
+#| msgid "Modération"
+msgid "Panneau de Modération"
+msgstr "Modération"
+
+#: blog/templates/blog/moderation.html:19
+msgid "Gérez les commentaires et surveillez l'activité du blog"
+msgstr ""
+
+#: blog/templates/blog/moderation.html:35
+msgid "En attente"
+msgstr ""
+
+#: blog/templates/blog/moderation.html:49
+#, fuzzy
+#| msgid "trouvé"
+msgid "Approuvés"
+msgstr "trouvé"
+
+#: blog/templates/blog/moderation.html:64
+msgid "Utilisateurs actifs"
+msgstr "Utilisateurs actifs"
+
+# ==========================================
+# COMMENTAIRES ET INTERACTIONS
+# ==========================================
+#: blog/templates/blog/moderation.html:91
+#, fuzzy
+#| msgid "Commentaires"
+msgid "Commentaires en attente"
+msgstr "Commentaires"
+
+# ==========================================
+# RÔLES ET PERMISSIONS
+# ==========================================
+#: blog/templates/blog/moderation.html:121
+#, fuzzy
+#| msgid "Utilisateur"
+msgid "Visiteur"
+msgstr "Utilisateur"
+
+#: blog/templates/blog/moderation.html:146
+msgid "Approuver"
+msgstr ""
+
+#: blog/templates/blog/moderation.html:155
+msgid "Êtes-vous sûr de vouloir supprimer ce commentaire ?"
+msgstr ""
+
+#: blog/templates/blog/moderation.html:156
+msgid "Supprimer"
+msgstr ""
+
+#: blog/templates/blog/moderation.html:171
+msgid "Tout est à jour !"
+msgstr ""
+
+#: blog/templates/blog/moderation.html:174
+msgid "Aucun commentaire en attente de modération."
+msgstr ""
+
+# ==========================================
+# ÉTATS ET MESSAGES
+# ==========================================
+#: blog/templates/blog/moderation.html:241
+#, fuzzy
+#| msgid "Aucun article trouvé"
+msgid "Aucun article récent"
+msgstr "Aucun article trouvé"
+
+#: blog/templates/blog/moderation.html:244
+msgid "Aucun nouvel article à afficher."
+msgstr ""
+
+#: blog/templates/blog/moderation.html:257
+msgid "Tableau de bord administrateur"
+msgstr "Tableau de bord administrateur"
+
+#: blog/templates/blog/moderation.html:265
+msgid "Utilisateurs inscrits"
+msgstr "Utilisateurs inscrits"
+
+#: blog/templates/blog/moderation.html:273
+#, fuzzy
+#| msgid "Commentaires écrits"
+msgid "Commentaires approuvés"
+msgstr "Commentaires écrits"
+
+#: blog/templates/blog/moderation.html:281
+#, fuzzy
+#| msgid "Administration"
+msgid "Administration Django"
+msgstr "Administration"
+
+#: blog/templates/blog/mot_de_passe_oublie.html:4
+#: blog/templates/blog/mot_de_passe_oublie.html:17
+msgid "Mot de passe oublié"
+msgstr "Mot de passe oublié"
+
+#: blog/templates/blog/mot_de_passe_oublie.html:20
+msgid ""
+"Entrez votre adresse email pour recevoir un lien de réinitialisation de mot "
+"de passe."
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie.html:62
 msgid "Votre adresse email"
 msgstr "Votre adresse email"
 
+#: blog/templates/blog/mot_de_passe_oublie.html:91
+msgid "Envoyer le lien"
+msgstr ""
+
+# ==========================================
+# EMAIL ET COMMUNICATION
+# ==========================================
+#: blog/templates/blog/mot_de_passe_oublie.html:99
+#, fuzzy
+#| msgid "Réinitialisation de votre mot de passe"
+msgid "Vous vous souvenez de votre mot de passe ?"
+msgstr "Réinitialisation de votre mot de passe"
+
+#: blog/templates/blog/mot_de_passe_oublie.html:117
+msgid "Comment ça fonctionne ?"
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie.html:121
+msgid "Entrez l'adresse email de votre compte"
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie.html:122
+msgid "Vous recevrez un email avec un lien sécurisé"
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie.html:123
+#, fuzzy
+#| msgid "Définir un nouveau mot de passe"
+msgid "Cliquez sur le lien pour définir un nouveau mot de passe"
+msgstr "Définir un nouveau mot de passe"
+
+#: blog/templates/blog/mot_de_passe_oublie.html:124
+#, fuzzy
+#| msgid "Ce lien expire dans 24 heures pour votre sécurité"
+msgid "Le lien expire après 24 heures pour votre sécurité"
+msgstr "Ce lien expire dans 24 heures pour votre sécurité"
+
+# ==========================================
+# EMAIL ET COMMUNICATION
+# ==========================================
+#: blog/templates/blog/mot_de_passe_oublie_email.html:7
+msgid "Réinitialisation de votre mot de passe"
+msgstr "Réinitialisation de votre mot de passe"
+
+# ==========================================
+# EMAIL ET COMMUNICATION
+# ==========================================
+#: blog/templates/blog/mot_de_passe_oublie_email.html:64
+#, fuzzy
+#| msgid "Réinitialisation de votre mot de passe"
+msgid "Réinitialisation de mot de passe"
+msgstr "Réinitialisation de votre mot de passe"
+
+#: blog/templates/blog/mot_de_passe_oublie_email.html:69
+msgid "Bonjour"
+msgstr "Bonjour"
+
+#: blog/templates/blog/mot_de_passe_oublie_email.html:71
+msgid ""
+"Vous avez demandé la réinitialisation de votre mot de passe pour votre "
+"compte sur le Blog Académique Universitaire."
+msgstr ""
+"Vous avez demandé la réinitialisation de votre mot de passe pour votre "
+"compte sur le Blog Académique Universitaire."
+
+#: blog/templates/blog/mot_de_passe_oublie_email.html:73
+msgid ""
+"Pour définir un nouveau mot de passe, cliquez sur le bouton ci-dessous :"
+msgstr ""
+"Pour définir un nouveau mot de passe, cliquez sur le bouton ci-dessous :"
+
+#: blog/templates/blog/mot_de_passe_oublie_email.html:77
+msgid "Réinitialiser mon mot de passe"
+msgstr "Réinitialiser mon mot de passe"
+
+#: blog/templates/blog/mot_de_passe_oublie_email.html:82
+msgid "Important :"
+msgstr "Important :"
+
+#: blog/templates/blog/mot_de_passe_oublie_email.html:84
+msgid "Ce lien expire dans 24 heures pour votre sécurité"
+msgstr "Ce lien expire dans 24 heures pour votre sécurité"
+
+#: blog/templates/blog/mot_de_passe_oublie_email.html:85
+msgid "Si vous n'avez pas demandé cette réinitialisation, ignorez cet email"
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie_email.html:86
+msgid "Ne partagez jamais ce lien avec personne"
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie_email.html:90
+msgid ""
+"Si le bouton ne fonctionne pas, copiez et collez ce lien dans votre "
+"navigateur :"
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie_email.html:97
+#, fuzzy
+#| msgid ""
+#| "Réinitialisation de votre mot de passe - Blog Académique Universitaire"
+msgid ""
+"Cet email a été envoyé automatiquement par le Blog Académique Universitaire."
+msgstr "Réinitialisation de votre mot de passe - Blog Académique Universitaire"
+
+#: blog/templates/blog/mot_de_passe_oublie_email.html:98
+msgid "Si vous avez des questions, contactez notre équipe de support."
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:4
+msgid "Email envoyé"
+msgstr "Email envoyé"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:17
+#, fuzzy
+#| msgid "Email envoyé"
+msgid "Email envoyé avec succès"
+msgstr "Email envoyé"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:20
+#, fuzzy
+#| msgid "Vérifiez votre boîte de réception"
+msgid "Vérifiez votre boîte de réception pour continuer"
+msgstr "Vérifiez votre boîte de réception"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:34
+msgid "Instructions envoyées"
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:37
+msgid ""
+"Un email contenant les instructions de réinitialisation de votre mot de "
+"passe a été envoyé à votre adresse email."
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:50
+msgid "Étapes suivantes :"
+msgstr "Étapes suivantes :"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:54
+msgid "Vérifiez votre boîte de réception"
+msgstr "Vérifiez votre boîte de réception"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:55
+msgid "Cliquez sur le lien dans l'email"
+msgstr "Cliquez sur le lien dans l'email"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:56
+msgid "Définissez votre nouveau mot de passe"
+msgstr "Définissez votre nouveau mot de passe"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:57
+msgid "Connectez-vous avec vos nouveaux identifiants"
+msgstr "Connectez-vous avec vos nouveaux identifiants"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:73
+msgid "Note importante :"
+msgstr "Note importante :"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:74
+msgid ""
+"Si vous ne recevez pas l'email dans les prochaines minutes, vérifiez votre "
+"dossier spam ou courrier indésirable."
+msgstr ""
+"Si vous ne recevez pas l'email dans les prochaines minutes, vérifiez votre "
+"dossier spam ou courrier indésirable."
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:86
+#: blog/templates/blog/nouveau_mot_de_passe.html:122
+msgid "Retour à la connexion"
+msgstr "Retour à la connexion"
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:104
+msgid "Besoin d'aide ?"
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie_envoye.html:107
+msgid ""
+"Si vous continuez à rencontrer des problèmes, contactez l'équipe de support "
+"du Blog Académique Universitaire."
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_oublie_sujet.txt:1
+msgid "Réinitialisation de votre mot de passe - Blog Académique Universitaire"
+msgstr "Réinitialisation de votre mot de passe - Blog Académique Universitaire"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:4
+msgid "Mot de passe réinitialisé"
+msgstr "Mot de passe réinitialisé"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:17
+msgid "Mot de passe réinitialisé avec succès"
+msgstr "Mot de passe réinitialisé avec succès"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:20
+msgid "Votre mot de passe a été modifié avec succès"
+msgstr "Votre mot de passe a été modifié avec succès"
+
+# ==========================================
+# EMAIL ET COMMUNICATION
+# ==========================================
+#: blog/templates/blog/mot_de_passe_reinitialise.html:34
+#, fuzzy
+#| msgid "Réinitialisation de votre mot de passe"
+msgid "Réinitialisation terminée"
+msgstr "Réinitialisation de votre mot de passe"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:37
+msgid ""
+"Votre nouveau mot de passe a été enregistré. Vous pouvez maintenant vous "
+"connecter avec votre nouveau mot de passe."
+msgstr ""
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:47
+#, fuzzy
+#| msgid "Se connecter"
+msgid "Se connecter maintenant"
+msgstr "Se connecter"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:69
+msgid "Conseil de sécurité :"
+msgstr "Conseil de sécurité :"
+
+#: blog/templates/blog/mot_de_passe_reinitialise.html:70
+msgid ""
+"Assurez-vous de garder votre mot de passe en sécurité et de ne jamais le "
+"partager avec personne."
+msgstr ""
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:4
+#: blog/templates/blog/nouveau_mot_de_passe.html:55
+msgid "Nouveau mot de passe"
+msgstr "Nouveau mot de passe"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:17
+msgid "Définir un nouveau mot de passe"
+msgstr "Définir un nouveau mot de passe"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:20
+msgid "Choisissez un nouveau mot de passe sécurisé pour votre compte"
+msgstr "Choisissez un nouveau mot de passe sécurisé pour votre compte"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:62
 msgid "Votre nouveau mot de passe"
 msgstr "Votre nouveau mot de passe"
 
-msgid "Rejoignez notre communauté académique"
-msgstr "Rejoignez notre communauté académique"
+#: blog/templates/blog/nouveau_mot_de_passe.html:83
+msgid "Confirmer le nouveau mot de passe"
+msgstr "Confirmer le nouveau mot de passe"
 
-msgid "Accédez à votre compte académique"
-msgstr "Accédez à votre compte académique"
+#: blog/templates/blog/nouveau_mot_de_passe.html:90
+msgid "Confirmez votre nouveau mot de passe"
+msgstr "Confirmez votre nouveau mot de passe"
+
+#: blog/templates/blog/nouveau_mot_de_passe.html:114
+msgid "Changer le mot de passe"
+msgstr "Changer le mot de passe"
 
 # ==========================================
-# FORMULAIRES ET INTERFACES
+# PROFIL ET COMPTE
 # ==========================================
+#: blog/templates/blog/profil.html:4
+msgid "Mon Profil"
+msgstr "Mon Profil"
 
-msgid "Vous pouvez gérer les catégories dans l'"
-msgstr "Vous pouvez gérer les catégories dans l'"
+#: blog/templates/blog/profil.html:60
+msgid "Modifier mon profil"
+msgstr "Modifier mon profil"
 
-msgid "interface d'administration"
-msgstr "interface d'administration"
+#: blog/templates/blog/profil.html:87
+msgid "Email"
+msgstr ""
 
-msgid "Image d'illustration (optionnel)"
-msgstr "Image d'illustration (optionnel)"
+#: blog/templates/blog/profil.html:99
+msgid "Parlez-nous de vous, vos domaines d'expertise, etc."
+msgstr ""
 
-msgid "Formats acceptés : JPG, PNG, GIF. Taille maximale recommandée : 2MB."
+#: blog/templates/blog/profil.html:109
+#, fuzzy
+#| msgid "Formats acceptés : JPG, PNG, GIF. Taille maximale recommandée : 2MB."
+msgid "Format recommandé : JPG, PNG. Taille max : 2MB"
 msgstr "Formats acceptés : JPG, PNG, GIF. Taille maximale recommandée : 2MB."
 
-# ==========================================
-# HISTORIQUE ET TEMPS
-# ==========================================
+#: blog/templates/blog/profil.html:125
+msgid "Sauvegarder les modifications"
+msgstr ""
 
-msgid "Lancement du projet"
-msgstr "Lancement du projet"
+#: blog/templates/blog/profil.html:136
+#, fuzzy
+#| msgid "Mes articles"
+msgid "Mes statistiques"
+msgstr "Mes articles"
 
-msgid "Création de Mon Blog Django avec les fonctionnalités de base."
-msgstr "Création de Mon Blog Django avec les fonctionnalités de base."
+#: blog/templates/blog/profil.html:156
+msgid "Commentaires écrits"
+msgstr "Commentaires écrits"
 
-msgid "Amélioration continue"
-msgstr "Amélioration continue"
+#: blog/templates/blog/profil.html:165
+msgid "Informations du compte"
+msgstr "Informations du compte"
 
-msgid "Ajout du mode sombre, système de navigation avancé et optimisations."
-msgstr "Ajout du mode sombre, système de navigation avancé et optimisations."
+#: blog/templates/blog/profil.html:168
+msgid "Membre depuis"
+msgstr "Membre depuis"
 
-msgid "L'avenir"
-msgstr "L'avenir"
+#: blog/templates/blog/profil.html:214
+msgid "Mes articles récents"
+msgstr "Mes articles récents"
 
-msgid "Nouvelles fonctionnalités et croissance de la communauté."
-msgstr "Nouvelles fonctionnalités et croissance de la communauté."
+#: blog/templates/blog/profil.html:244
+msgid "Voir tous mes articles"
+msgstr "Voir tous mes articles"
 
-# ==========================================
-# DESCRIPTIONS ET MISSIONS
-# ==========================================
-
-msgid "Mon Blog Django a été créé pour offrir une plateforme simple et moderne où chacun peut partager ses connaissances, ses expériences et ses passions."
-msgstr "Mon Blog Django a été créé pour offrir une plateforme simple et moderne où chacun peut partager ses connaissances, ses expériences et ses passions."
-
-msgid "Nous croyons en la puissance du partage de connaissances et en la création d'une communauté bienveillante où les idées peuvent s'épanouir."
-msgstr "Nous croyons en la puissance du partage de connaissances et en la création d'une communauté bienveillante où les idées peuvent s'épanouir."
-
-msgid "Un blog moderne créé avec Django et Tailwind CSS."
-msgstr "Un blog moderne créé avec Django et Tailwind CSS."
-
-msgid "Parcourir les articles"
-msgstr "Parcourir les articles"
-
-msgid "Articles qui n'ont pas encore été classés dans une catégorie."
-msgstr "Articles qui n'ont pas encore été classés dans une catégorie."
+#~ msgid "Voir l'article"
+#~ msgstr "Voir l'article"

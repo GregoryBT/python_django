@@ -186,6 +186,15 @@ msgstr "Add New Article"
 msgid "Créer un article"
 msgstr "Create Article"
 
+msgid "Créer une catégorie"
+msgstr "Create a category"
+
+msgid "Commencez par créer des catégories pour organiser vos articles par thèmes"
+msgstr "Start by creating categories to organize your articles by theme"
+
+msgid "Aucune catégorie créée"
+msgstr "No category created"
+
 msgid "Écrire un article"
 msgstr "Write Article"
 
