@@ -1,0 +1,223 @@
+{% extends 'blog/base.html' %}
+{% load i18n %}
+
+{% block title %}{{ user_profile.get_full_name|default:user_profile.username }} - {% trans "Blog Académique Universitaire" %}{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto">
+    <!-- En-tête du profil public -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-8 border border-gray-200 dark:border-gray-700">
+        <div class="flex items-center space-x-6">
+            <div class="flex-shrink-0">
+                {% if profil_user.avatar %}
+                <img src="{{ profil_user.avatar.url }}" alt="{% trans 'Avatar' %}"
+                    class="w-24 h-24 rounded-full object-cover border-4 border-blue-200 dark:border-blue-700">
+                {% else %}
+                <div
+                    class="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-3xl font-bold border-4 border-blue-200 dark:border-blue-700">
+                    {{ user_profile.first_name|first|default:user_profile.username|first|upper }}
+                </div>
+                {% endif %}
+            </div>
+            <div class="flex-1">
+                <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    {{ user_profile.get_full_name|default:user_profile.username }}
+                </h1>
+                <p class="text-xl text-gray-600 dark:text-gray-400 mb-3">@{{ user_profile.username }}</p>
+                <div class="flex items-center space-x-4 mb-4">
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+                        style="background-color: {% if profil_user.role == 'administrateur' %}#ef4444{% else %}#6b7280{% endif %}20; color: {% if profil_user.role == 'administrateur' %}#ef4444{% else %}#6b7280{% endif %};">
+                        {% if profil_user.role == 'administrateur' %}👑{% else %}👤{% endif %}
+                        {{ profil_user.get_role_display }}
+                    </span>
+                    <span class="text-sm text-gray-500 dark:text-gray-400">
+                        {% trans "Membre depuis" %} {{ stats.membre_depuis|date:"F Y" }}
+                    </span>
+                </div>
+                
+                {% if profil_user.bio %}
+                <p class="text-gray-700 dark:text-gray-300 mb-4">{{ profil_user.bio }}</p>
+                {% endif %}
+                
+                {% if profil_user.site_web %}
+                <a href="{{ profil_user.site_web }}" target="_blank"
+                    class="inline-flex items-center text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+                    🌐 {% trans "Site web" %}
+                    <svg class="w-4 h-4 ml-1" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path>
+                        <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-1a1 1 0 10-2 0v1H5V7h1a1 1 0 000-2H5z"></path>
+                    </svg>
+                </a>
+                {% endif %}
+            </div>
+            
+            <!-- Actions si c'est son propre profil -->
+            {% if est_mon_profil %}
+            <div class="flex-shrink-0">
+                <a href="{% url 'profil' %}" 
+                   class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200">
+                    ⚙️ {% trans "Modifier mon profil" %}
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Statistiques publiques -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center border border-gray-200 dark:border-gray-700">
+            <div class="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">{{ stats.articles_publies }}</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "Article" %}{{ stats.articles_publies|pluralize }} {% trans "publié" %}{{ stats.articles_publies|pluralize }}</div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center border border-gray-200 dark:border-gray-700">
+            <div class="text-3xl font-bold text-green-600 dark:text-green-400 mb-2">{{ stats.total_vues }}</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "Vue" %}{{ stats.total_vues|pluralize }} {% trans "au total" %}</div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center border border-gray-200 dark:border-gray-700">
+            <div class="text-3xl font-bold text-purple-600 dark:text-purple-400 mb-2">{{ stats.commentaires_ecrits }}</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "Commentaire" %}{{ stats.commentaires_ecrits|pluralize }} {% trans "écrit" %}{{ stats.commentaires_ecrits|pluralize }}</div>
+        </div>
+        
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 text-center border border-gray-200 dark:border-gray-700">
+            <div class="text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">
+                {% if stats.articles_publies > 0 %}
+                    {% widthratio stats.total_vues 1 stats.articles_publies %}
+                {% else %}
+                    0
+                {% endif %}
+            </div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">{% trans "Vues par article" %}</div>
+        </div>
+    </div>
+
+    <!-- Articles les plus populaires -->
+    {% if articles_populaires %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 mb-8 border border-gray-200 dark:border-gray-700">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+            🔥 {% trans "Articles les plus populaires" %}
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {% for article in articles_populaires %}
+            <div class="border border-gray-200 dark:border-gray-600 rounded-lg overflow-hidden hover:shadow-md transition-shadow duration-200">
+                {% if article.image %}
+                <div class="h-32 overflow-hidden">
+                    <img src="{{ article.image.url }}" alt="{{ article.titre }}" 
+                         class="w-full h-full object-cover">
+                </div>
+                {% endif %}
+                
+                <div class="p-4">
+                    <h3 class="font-semibold text-gray-900 dark:text-white mb-2">
+                        <a href="{% url 'detail_article' article.id %}"
+                            class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                            {{ article.titre|truncatechars:50 }}
+                        </a>
+                    </h3>
+                    
+                    <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                        <span>{{ article.date_creation|date:"d/m/Y" }}</span>
+                        <span class="flex items-center">
+                            👁️ {{ article.nombre_vues }} {% trans "vue" %}{{ article.nombre_vues|pluralize }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Articles récents -->
+    {% if articles_recents %}
+    <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 border border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+                📝 {% trans "Articles récents" %}
+            </h2>
+            {% if stats.articles_publies > 6 %}
+            <a href="{% url 'articles' %}?auteur={{ user_profile.username }}" 
+               class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
+                {% trans "Voir tous" %} →
+            </a>
+            {% endif %}
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for article in articles_recents %}
+            <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+                <div class="flex items-start justify-between mb-3">
+                    {% if article.categorie %}
+                    <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full text-white"
+                          style="background-color: {{ article.categorie.couleur }};">
+                        {{ article.categorie.nom }}
+                    </span>
+                    {% endif %}
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                        {{ article.date_creation|date:"d/m/Y" }}
+                    </span>
+                </div>
+                
+                <h3 class="font-semibold text-gray-900 dark:text-white mb-2">
+                    <a href="{% url 'detail_article' article.id %}"
+                        class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                        {{ article.titre|truncatechars:60 }}
+                    </a>
+                </h3>
+                
+                <p class="text-gray-600 dark:text-gray-400 text-sm mb-3">
+                    {{ article.resume|default:article.contenu|truncatewords:15|safe }}
+                </p>
+                
+                <div class="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                    <div class="flex items-center space-x-3">
+                        <span class="flex items-center">
+                            👁️ {{ article.nombre_vues }}
+                        </span>
+                        <span class="flex items-center">
+                            💬 {{ article.commentaires.count }}
+                        </span>
+                        <span class="flex items-center">
+                            ❤️ {{ article.likes.count }}
+                        </span>
+                    </div>
+                    
+                    <a href="{% url 'detail_article' article.id %}"
+                       class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">
+                        {% trans "Lire" %} →
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <!-- Aucun article publié -->
+    <div class="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
+        <div class="text-6xl mb-4">📝</div>
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            {% if est_mon_profil %}
+                {% trans "Vous n'avez pas encore publié d'articles" %}
+            {% else %}
+                {% trans "Aucun article publié" %}
+            {% endif %}
+        </h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+            {% if est_mon_profil %}
+                {% trans "Commencez par écrire votre premier article et partagez vos connaissances avec la communauté." %}
+            {% else %}
+                {% trans "Cet utilisateur n'a pas encore publié d'articles." %}
+            {% endif %}
+        </p>
+        {% if est_mon_profil and user.profil.peut_creer_article %}
+        <a href="{% url 'ajouter_article' %}" 
+           class="inline-flex items-center space-x-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors duration-200">
+            <span>✍️</span>
+            <span>{% trans "Écrire mon premier article" %}</span>
+        </a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

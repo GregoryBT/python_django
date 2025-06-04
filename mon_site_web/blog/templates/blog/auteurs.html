@@ -74,7 +74,12 @@
                     {{ auteur.auteur|first|upper }}
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ auteur.auteur }}</h3>
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white">
+                        <a href="{% url 'profil_public' auteur.auteur %}" 
+                           class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
+                            {{ auteur.auteur }}
+                        </a>
+                    </h3>
                     <p class="text-gray-500 dark:text-gray-400 text-sm">{% trans "Contributeur" %}</p>
                 </div>
             </div>

@@ -163,6 +163,14 @@ class Article(models.Model):
         """Alias pour get_auteur_display pour compatibilité"""
         return self.get_auteur_display()
 
+    def get_auteur_username(self):
+        """Retourne le nom d'utilisateur de l'auteur pour les liens de profil"""
+        if self.user_auteur:
+            return self.user_auteur.username
+        else:
+            # Si pas d'utilisateur lié, on ne peut pas faire de lien
+            return None
+
     class Meta:
         ordering = ['-date_creation']
         verbose_name = _("Article")
@@ -215,6 +223,12 @@ class Commentaire(models.Model):
         else:
             # Sinon, utiliser le champ nom_auteur classique
             return self.nom_auteur or "Auteur inconnu"
+
+    def get_auteur_username(self):
+        """Retourne le username de l'auteur du commentaire s'il s'agit d'un utilisateur"""
+        if self.user_auteur:
+            return self.user_auteur.username
+        return None
 
     def nombre_likes(self):
         """Retourne le nombre de likes pour ce commentaire"""

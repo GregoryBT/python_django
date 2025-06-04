@@ -54,7 +54,16 @@
                         <h6 class="mb-1">{{ article.titre }}</h6>
                         <small class="text-muted">{{ article.nombre_vues }} vues</small>
                     </div>
-                    <small>{% trans "Par" %} {{ article.auteur.username }}</small>
+                    <small>{% trans "Par" %} 
+                        {% if article.user_auteur %}
+                        <a href="{% url 'profil_public' article.user_auteur.username %}" 
+                           class="text-blue-600 hover:text-blue-700 transition-colors duration-200">
+                            {{ article.auteur }}
+                        </a>
+                        {% else %}
+                        {{ article.auteur }}
+                        {% endif %}
+                    </small>
                 </a>
                 {% endfor %}
             </div>

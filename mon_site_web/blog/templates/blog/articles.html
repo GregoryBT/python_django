@@ -119,7 +119,14 @@
             </h2>
 
             <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-3">
+                {% if article.get_auteur_username %}
+                <a href="{% url 'profil_public' article.get_auteur_username %}" 
+                   class="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200">
+                    {{ article.auteur }}
+                </a>
+                {% else %}
                 <span class="font-medium">{{ article.auteur }}</span>
+                {% endif %}
                 <span class="mx-2">•</span>
                 <span>{{ article.date_creation|date:"d/m/Y à H:i" }}</span>
             </div>

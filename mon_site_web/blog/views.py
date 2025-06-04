@@ -841,3 +841,33 @@ def traiter_signalement(request, signalement_id):
         return redirect('gerer_signalements')
     
     return redirect('gerer_signalements')
+
+
+def profil_public_view(request, username):
+    """Vue du profil public d'un utilisateur"""
+    user = get_object_or_404(User, username=username)
+    profil_user = user.profil
+    
+    # Calculer les statistiques publiques
+    articles_user = Article.objects.filter(user_auteur=user, est_publie=True)
+    stats = {
+        'articles_publies': articles_user.count(),
+        'total_vues': sum(article.nombre_vues for article in articles_user),
+        'commentaires_ecrits': Commentaire.objects.filter(user_auteur=user, est_approuve=True).count(),
+        'membre_depuis': user.date_joined,
+    }
+    
+    # Articles récents (seulement les publiés)
+    articles_recents = articles_user.order_by('-date_creation')[:6]
+    
+    # Articles les plus populaires de cet auteur
+    articles_populaires = articles_user.order_by('-nombre_vues')[:3]
+    
+    return render(request, 'blog/profil_public.html', {
+        'profil_user': profil_user,
+        'user_profile': user,
+        'stats': stats,
+        'articles_recents': articles_recents,
+        'articles_populaires': articles_populaires,
+        'est_mon_profil': request.user == user,
+    })

@@ -118,11 +118,22 @@
                                 {{ commentaire.user_auteur.first_name|first|default:commentaire.user_auteur.username|first|upper}}
                             </div>
                             <div>
+                                {% if commentaire.user_auteur %}
                                 <p class="font-medium text-gray-900 dark:text-white">
-                                    {{ commentaire.user_auteur.get_full_name|default:commentaire.user_auteur.username }}
+                                    <a href="{% url 'profil_public' commentaire.user_auteur.username %}" 
+                                       class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200">
+                                        {{ commentaire.user_auteur.get_full_name|default:commentaire.user_auteur.username }}
+                                    </a>
                                 </p>
+                                {% else %}
+                                <p class="font-medium text-gray-900 dark:text-white">{{ commentaire.nom_auteur }}</p>
+                                {% endif %}
                                 <p class="text-xs text-gray-500 dark:text-gray-400">
+                                    {% if commentaire.user_auteur %}
                                     {{ commentaire.user_auteur.profil.get_role_display }}
+                                    {% else %}
+                                    {% trans "Visiteur" %}
+                                    {% endif %}
                                 </p>
                             </div>
                             {% else %}
