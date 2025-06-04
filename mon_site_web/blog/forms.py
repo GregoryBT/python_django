@@ -159,7 +159,10 @@ class ArticleForm(forms.ModelForm):
         model = Article
         fields = ['titre', 'contenu', 'categorie', 'tags', 'image', 'est_publie']
         widgets = {
-            'titre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Titre de l\'article'}),
+            'titre': forms.TextInput(attrs={
+                'class': 'appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-700',
+                'placeholder': 'Titre de votre article...'
+            }),
             'contenu': forms.Textarea(attrs={'class': 'form-control', 'rows': 10, 'placeholder': 'Contenu de votre article...'}),
             'categorie': forms.Select(attrs={'class': 'form-control'}),
             'tags': forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
