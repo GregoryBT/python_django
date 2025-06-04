@@ -50,14 +50,14 @@
         {% endif %}
 
         <h1 class="text-4xl font-bold text-gray-900 mb-4">{{ article.titre }}</h1>
-        <div class="flex items-center text-gray-600">
-            <div class="flex items-center mr-6">
+        <div class="flex items-center flex-wrap text-gray-600 gap-6">
+            <div class="flex items-center">
                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                     <path fill-rule="evenodd"
                         d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
                         clip-rule="evenodd"></path>
                 </svg>
-                <span class="font-medium">{{ article.auteur }}</span>
+                <span class="font-medium">{{ article.get_auteur_display }}</span>
             </div>
             <div class="flex items-center">
                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
@@ -66,6 +66,13 @@
                         clip-rule="evenodd"></path>
                 </svg>
                 <span>{{ article.date_creation|date:"d/m/Y à H:i" }}</span>
+            </div>
+            <div class="flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                    <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                </svg>
+                <span>{{ article.nombre_vues }} {% trans "vue" %}{{ article.nombre_vues|pluralize }}</span>
             </div>
         </div>
     </div>
@@ -87,7 +94,7 @@
                             d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm0 3a1 1 0 000 2h3a1 1 0 100-2H6z"
                             clip-rule="evenodd"></path>
                     </svg>
-                    {{ commentaires.count }} {% trans "commentaire" %}{{ commentaires.count|pluralize }}
+                    {{ commentaires.count }} {% trans "commentaire" %}
                 </span>
             </div>
             <a href="{% url 'home' %}"
@@ -112,24 +119,47 @@
     <!-- Formulaire d'ajout de commentaire -->
     <div class="p-6 bg-gray-50 border-b border-gray-200">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">✍️ {% trans "Ajouter un commentaire" %}</h3>
-        <form method="post" class="space-y-4">
-            {% csrf_token %}
-            <div>
-                <label for="id_contenu" class="block text-sm font-medium text-gray-700 mb-2">
-                    {% trans "Commentaire" %} <span class="text-red-500">*</span>
-                </label>
-                {{ form.contenu }}
+        {% if user.is_authenticated %}
+            <form method="post" class="space-y-4">
+                {% csrf_token %}
+                <input type="hidden" name="commentaire" value="1">
+                <div>
+                    <label for="id_contenu" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Commentaire" %} <span class="text-red-500">*</span>
+                    </label>
+                    <div class="relative">
+                        {{ commentaire_form.contenu }}
+                        <div class="absolute top-3 left-3 pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm0 3a1 1 0 000 2h3a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                    </div>
+                    {% if commentaire_form.contenu.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ commentaire_form.contenu.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+                <button type="submit"
+                    class="group relative flex justify-center py-3 px-6 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+                    <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                        <svg class="w-5 h-5 text-blue-500 group-hover:text-blue-400" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"/>
+                        </svg>
+                    </span>
+                    {% trans "Publier le commentaire" %}
+                </button>
+            </form>
+        {% else %}
+            <div class="text-center py-6 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p class="text-yellow-800 mb-4">{% trans "Vous devez être connecté pour laisser un commentaire." %}</p>
+                <a href="{% url 'connexion' %}?next={% url 'detail_article' article.id %}" 
+                   class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    {% trans "Se connecter" %}
+                </a>
             </div>
-            <button type="submit"
-                class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium flex items-center">
-                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                    <path
-                        d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
-                    </path>
-                </svg>
-                {% trans "Publier le commentaire" %}
-            </button>
-        </form>
+        {% endif %}
     </div>
 
     <!-- Liste des commentaires -->

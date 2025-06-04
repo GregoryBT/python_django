@@ -8,12 +8,6 @@ class InscriptionForm(UserCreationForm):
     email = forms.EmailField(required=True)
     first_name = forms.CharField(max_length=30, required=True, label="Prénom")
     last_name = forms.CharField(max_length=30, required=True, label="Nom")
-    role = forms.ChoiceField(
-        choices=[('utilisateur', 'Utilisateur'), ('administrateur', 'Administrateur')],
-        initial='utilisateur',
-        label="Type de compte",
-        help_text="Utilisateur : peut créer et gérer ses propres articles. Administrateur : accès complet à la plateforme."
-    )
     
     class Meta:
         model = User
@@ -27,7 +21,6 @@ class InscriptionForm(UserCreationForm):
         self.fields['email'].widget.attrs.update({'class': 'form-control', 'placeholder': 'votre@email.com'})
         self.fields['password1'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Mot de passe'})
         self.fields['password2'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Confirmer le mot de passe'})
-        self.fields['role'].widget.attrs.update({'class': 'form-control'})
         
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -37,9 +30,9 @@ class InscriptionForm(UserCreationForm):
         if commit:
             user.save()
             # Mettre à jour le profil créé automatiquement par le signal
-            # avec le rôle sélectionné
+            # avec le rôle "utilisateur" par défaut
             profil = user.profil
-            profil.role = self.cleaned_data['role']
+            profil.role = 'utilisateur'
             profil.save()
         return user
 
@@ -187,9 +180,9 @@ class CommentaireForm(forms.ModelForm):
         fields = ['contenu']
         widgets = {
             'contenu': forms.Textarea(attrs={
-                'class': 'form-control',
-                'rows': 3,
-                'placeholder': 'Votre commentaire...'
+                'class': 'appearance-none relative block w-full px-3 py-3 pl-10 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-700 resize-none',
+                'rows': 4,
+                'placeholder': 'Partagez votre opinion sur cet article...'
             }),
         }
 
