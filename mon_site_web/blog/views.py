@@ -210,13 +210,13 @@ def detail_article(request, article_id):
         client_ip = get_client_ip(request)
         user_agent = request.META.get('HTTP_USER_AGENT', '')
 
-        # Éviter de compter plusieurs vues de la même IP dans la même heure
-        une_heure_ago = timezone.now() - timedelta(hours=1)
+        # Éviter de compter plusieurs vues de la même IP dans les 5 dernières minutes (au lieu d'1 heure)
+        cinq_minutes_ago = timezone.now() - timedelta(minutes=5)
         
         vue_recente = VueArticle.objects.filter(
             article=article,
             adresse_ip=client_ip,
-            date_vue__gte=une_heure_ago
+            date_vue__gte=cinq_minutes_ago
         ).exists()
 
         if not vue_recente:
