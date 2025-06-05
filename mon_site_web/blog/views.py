@@ -524,9 +524,13 @@ def categories_view(request):
         est_publie=True
     ).count()
     
+    # Calculer le total des articles dans toutes les catégories
+    total_articles_categories = sum(cat.nb_articles for cat in categories)
+    
     return render(request, 'blog/categories.html', {
         'categories': categories,
-        'articles_sans_categorie': articles_sans_categorie
+        'articles_sans_categorie': articles_sans_categorie,
+        'total_articles_categories': total_articles_categories
     })
 
 
@@ -536,11 +540,16 @@ def auteurs_view(request):
         articles__est_publie=True
     ).annotate(
         nb_articles=Count('articles', filter=Q(articles__est_publie=True)),
-        total_vues=Sum('articles__nombre_vues', filter=Q(articles__est_publie=True))
+        total_vues=Sum('articles__nombre_vues', filter=Q(articles__est_publie=True)),
+        dernier_article=Max('articles__date_creation', filter=Q(articles__est_publie=True))
     ).distinct().order_by('-nb_articles')
     
+    # Calculer le total des articles de tous les auteurs
+    total_articles = sum(auteur.nb_articles for auteur in auteurs)
+    
     return render(request, 'blog/auteurs.html', {
-        'auteurs': auteurs
+        'auteurs': auteurs,
+        'total_articles': total_articles
     })
 
 

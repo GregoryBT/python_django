@@ -24,12 +24,7 @@
     <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white">
         <div class="flex items-center justify-between">
             <div>
-                <div class="text-3xl font-bold">
-                    {% for cat in categories %}
-                    {% if cat.nb_articles > 0 %}
-                    {{ cat.nb_articles }}
-                    {% if not forloop.last%} + {% endif %}{% endif %}{% empty %}0{% endfor %}
-                </div>
+                <div class="text-3xl font-bold">{{ total_articles_categories }}</div>
                 <div class="text-green-100">{% trans "Articles total" %}</div>
             </div>
             <div class="text-4xl opacity-80">📄</div>
