@@ -171,6 +171,36 @@ class Article(models.Model):
             # Si pas d'utilisateur lié, on ne peut pas faire de lien
             return None
 
+    def calculer_temps_lecture(self):
+        """Calcule le temps de lecture estimé en minutes (100 mots = 1 minute)"""
+        import re
+        from django.utils.html import strip_tags
+        
+        # Nettoyer le contenu HTML et compter les mots
+        contenu_propre = strip_tags(self.contenu)
+        # Remplacer les caractères de ponctuation et espaces multiples
+        contenu_propre = re.sub(r'[^\w\s]', ' ', contenu_propre)
+        contenu_propre = re.sub(r'\s+', ' ', contenu_propre).strip()
+        
+        # Compter les mots (diviser par les espaces)
+        if not contenu_propre:
+            return 1  # Minimum 1 minute
+        
+        mots = len(contenu_propre.split())
+        
+        # Calculer le temps en minutes (100 mots = 1 minute)
+        temps_minutes = max(1, round(mots / 100))
+        
+        return temps_minutes
+
+    def get_temps_lecture_display(self):
+        """Retourne le temps de lecture formaté pour l'affichage"""
+        temps = self.calculer_temps_lecture()
+        if temps == 1:
+            return "1 min"
+        else:
+            return f"{temps} min"
+
     class Meta:
         ordering = ['-date_creation']
         verbose_name = _("Article")

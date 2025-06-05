@@ -238,6 +238,9 @@
                         <span class="flex items-center">
                             💬 {{ article.commentaires.count }}
                         </span>
+                        <span class="flex items-center">
+                            🕒 {{ article.get_temps_lecture_display }}
+                        </span>
                     </div>
                     <a href="{% url 'detail_article' article.id %}"
                         class="bg-blue-600 text-white px-2 py-1 rounded text-xs hover:bg-blue-700 transition-colors duration-200 font-medium">
@@ -308,7 +311,7 @@
     </div>
 
     {% if articles %}
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {% for article in articles %}
         <article
             class="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
@@ -389,6 +392,9 @@
                         </span>
                         <span class="flex items-center">
                             💬 {{ article.commentaires.count }}
+                        </span>
+                        <span class="flex items-center">
+                            🕒 {{ article.get_temps_lecture_display }}
                         </span>
                     </div>
                     <a href="{% url 'detail_article' article.id %}"
