@@ -70,7 +70,7 @@ Une plateforme de blog moderne développée avec Django, conçue pour la communa
 
 ### Prérequis
 
-- Python 3.8+
+- Python 3.10+
 - PostgreSQL 12+
 - pip (gestionnaire de paquets Python)
 - Git
