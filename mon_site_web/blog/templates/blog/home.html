@@ -162,12 +162,12 @@
     </div>
 
     {% if articles %}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div class="grid grid-cols-3 gap-4">
         {% for article in articles %}
         <article
-            class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-200 dark:border-gray-700">
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
             <!-- Image de l'article ou placeholder -->
-            <div class="h-48 overflow-hidden">
+            <div class="h-32 overflow-hidden">
                 {% if article.image %}
                 <img src="{{ article.image.url }}" alt="{{ article.titre }}"
                     class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
@@ -175,104 +175,113 @@
                 <div
                     class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
                     <div class="text-center text-gray-400 dark:text-gray-500">
-                        <svg class="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-8 h-8 mx-auto mb-1" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-sm font-medium">📄 {% trans "Article"%}</span>
+                        <span class="text-xs font-medium">📄 {% trans "Article"%}</span>
                     </div>
                 </div>
                 {% endif %}
             </div>
 
-            <div class="p-6">
-                {% if article.categorie %}
-                <span class="inline-block px-3 py-1 text-xs font-semibold text-white rounded-full mb-4"
-                    style="background-color: {{ article.categorie.couleur }};">
-                    {{ article.categorie.nom }}
-                </span>
-                {% endif %}
+            <div class="p-3">
 
-                <!-- Tags -->
-                {% if article.tags.all %}
-                <div class="mb-3">
-                    {% for tag in article.tags.all %}
-                    <span class="inline-block px-2 py-1 text-xs font-medium rounded-md mr-1 mb-1"
-                        style="background-color: {{ tag.couleur }}20; color: {{ tag.couleur }}; border: 1px solid {{ tag.couleur }};">
-                        🏷️ {{ tag.nom }}
-                    </span>
-                    {% endfor %}
-                </div>
-                {% endif %}
-
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 leading-tight">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-2 leading-tight line-clamp-2">
                     <a href="{% url 'detail_article' article.id %}"
                         class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
                         {{ article.titre }}
                     </a>
                 </h3>
 
-                <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
                     {% if article.get_auteur_username %}
                     <a href="{% url 'profil_public' article.get_auteur_username %}" 
-                       class="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200">
-                        {{ article.auteur }}
+                       class="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200 truncate">
+                        {{ article.auteur|truncatechars:12 }}
                     </a>
                     {% else %}
-                    <span class="font-medium">{{ article.auteur }}</span>
+                    <span class="font-medium truncate">{{ article.auteur|truncatechars:12 }}</span>
                     {% endif %}
-                    <span class="mx-2">•</span>
-                    <span>{{ article.date_creation|date:"d/m/Y" }}</span>
+                    <span class="mx-1">•</span>
+                    <span>{{ article.date_creation|date:"d/m" }}</span>
                 </div>
 
-                <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    {{ article.contenu|truncatechars:150|safe }}
+                <p class="leading-relaxed line-clamp-2">
+                    {{ article.contenu|striptags|truncatechars:80 }}
                 </p>
 
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div class="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400">
                         <span class="flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
                                 <path fill-rule="evenodd"
                                     d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
                                     clip-rule="evenodd"></path>
                             </svg>
-                            {{ article.nombre_vues }} {% trans "vue"%}{{ article.nombre_vues|pluralize }}
+                            {{ article.nombre_vues }}
                         </span>
                         <span class="flex items-center">
-                            💬 {{ article.commentaires.count }} {% trans "commentaire"%}{{ article.commentaires.count|pluralize }}
+                            💬 {{ article.commentaires.count }}
                         </span>
                     </div>
                     <a href="{% url 'detail_article' article.id %}"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium">
-                        {% trans "Lire l'article" %}
+                        class="bg-blue-600 text-white px-2 py-1 rounded text-xs hover:bg-blue-700 transition-colors duration-200 font-medium">
+                        {% trans "Lire" %}
                     </a>
                 </div>
             </div>
         </article>
         {% endfor %}
     </div>
+
+    <!-- Pagination -->
+    {% if articles.has_other_pages %}
+    <div class="flex justify-center mt-12">
+        <nav class="flex items-center space-x-2">
+            {% if articles.has_previous %}
+                <a href="?page={{ articles.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" 
+                   class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors duration-200">
+                    ← {% trans "Précédent" %}
+                </a>
+            {% endif %}
+
+            <span class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                {% trans "Page" %} {{ articles.number }} {% trans "sur" %} {{ articles.paginator.num_pages }}
+            </span>
+
+            {% if articles.has_next %}
+                <a href="?page={{ articles.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" 
+                   class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors duration-200">
+                    {% trans "Suivant" %} →
+                </a>
+            {% endif %}
+        </nav>
+    </div>
+    {% endif %}
+
+    <!-- Bouton voir tous les articles -->
+    <div class="text-center mt-8">
+        <a href="{% url 'articles' %}"
+            class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-semibold text-lg shadow-lg">
+            {% trans "Voir tous les articles" %} ({{ articles.paginator.count }})
+        </a>
+    </div>
     {% else %}
-    <!-- Aucun résultat trouvé -->
+    <!-- Aucun résultat de recherche -->
     <div
-        class="bg-gray-50 dark:bg-gray-800 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
+        class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-12 text-center">
         <div class="text-6xl mb-4">🔍</div>
-        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{% trans "Aucun résultat trouvé"%}</h3>
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">{% trans "Aucun résultat trouvé" %}</h3>
         <p class="text-gray-600 dark:text-gray-400 mb-6">
-            {% trans "Aucun article ne correspond à votre recherche"%} "{{ search_query }}".
+            {% trans "Essayez avec d'autres mots-clés ou consultez tous les articles" %}
         </p>
-        <div class="space-x-4">
-            <a href="{% url 'home' %}"
-                class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium">
-                {% trans "Voir tous les articles"%}
-            </a>
-            <a href="{% url 'ajouter_article' %}"
-                class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors duration-200 font-medium">
-                {% trans "Créer un article"%}
-            </a>
-        </div>
+        <a href="{% url 'articles' %}"
+            class="bg-blue-600 text-white px-8 py-4 rounded-xl hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg">
+            📄 {% trans "Voir tous les articles" %}
+        </a>
     </div>
     {% endif %}
     {% else %}
@@ -287,12 +296,12 @@
     </div>
 
     {% if articles %}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {% for article in articles|slice:":6" %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4">
+        {% for article in articles %}
         <article
-            class="bg-white dark:bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden border border-gray-200 dark:border-gray-700">
+            class="bg-white dark:bg-gray-800 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-200 dark:border-gray-700">
             <!-- Image de l'article ou placeholder -->
-            <div class="h-48 overflow-hidden">
+            <div class="h-32 overflow-hidden">
                 {% if article.image %}
                 <img src="{{ article.image.url }}" alt="{{ article.titre }}"
                     class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
@@ -300,20 +309,20 @@
                 <div
                     class="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
                     <div class="text-center text-gray-400 dark:text-gray-500">
-                        <svg class="w-16 h-16 mx-auto mb-2" fill="currentColor" viewBox="0 0 20 20">
+                        <svg class="w-8 h-8 mx-auto mb-1" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
                                 clip-rule="evenodd"></path>
                         </svg>
-                        <span class="text-sm font-medium">📄 {% trans "Article" %}</span>
+                        <span class="text-xs font-medium">📄 {% trans "Article" %}</span>
                     </div>
                 </div>
                 {% endif %}
             </div>
 
-            <div class="p-6">
+            <div class="p-3">
                 {% if article.categorie %}
-                <span class="inline-block px-3 py-1 text-xs font-semibold text-white rounded-full mb-4"
+                <span class="inline-block px-2 py-1 text-xs font-semibold text-white rounded-full mb-2"
                     style="background-color: {{ article.categorie.couleur }};">
                     {{ article.categorie.nom }}
                 </span>
@@ -321,58 +330,58 @@
 
                 <!-- Tags -->
                 {% if article.tags.all %}
-                <div class="mb-3">
+                <div class="mb-2">
                     {% for tag in article.tags.all %}
-                    <span class="inline-block px-2 py-1 text-xs font-medium rounded-md mr-1 mb-1"
+                    <span class="inline-block px-1 py-0.5 text-xs font-medium rounded mr-1 mb-1"
                         style="background-color: {{ tag.couleur }}20; color: {{ tag.couleur }}; border: 1px solid {{ tag.couleur }};">
-                        🏷️ {{ tag.nom }}
+                        {{ tag.nom }}
                     </span>
                     {% endfor %}
                 </div>
                 {% endif %}
 
-                <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-3 leading-tight">
+                <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-2 leading-tight line-clamp-2">
                     <a href="{% url 'detail_article' article.id %}"
                         class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">
                         {{ article.titre }}
                     </a>
                 </h3>
 
-                <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4">
+                <div class="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-2">
                     {% if article.get_auteur_username %}
                     <a href="{% url 'profil_public' article.get_auteur_username %}" 
-                       class="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200">
-                        {{ article.auteur }}
+                       class="font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors duration-200 truncate">
+                        {{ article.auteur|truncatechars:12 }}
                     </a>
                     {% else %}
-                    <span class="font-medium">{{ article.auteur }}</span>
+                    <span class="font-medium truncate">{{ article.auteur|truncatechars:12 }}</span>
                     {% endif %}
-                    <span class="mx-2">•</span>
-                    <span>{{ article.date_creation|date:"d/m/Y" }}</span>
+                    <span class="mx-1">•</span>
+                    <span>{{ article.date_creation|date:"d/m" }}</span>
                 </div>
 
-                <p class="text-gray-700 dark:text-gray-300 mb-6 leading-relaxed">
-                    {{ article.contenu|truncatechars:150|safe }}
+                <p class="text-xs text-gray-700 dark:text-gray-300 mb-3 leading-relaxed line-clamp-2">
+                    {{ article.contenu|striptags|truncatechars:80 }}
                 </p>
 
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
+                    <div class="flex items-center space-x-2 text-xs text-gray-500 dark:text-gray-400">
                         <span class="flex items-center">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
                                 <path fill-rule="evenodd"
                                     d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
                                     clip-rule="evenodd"></path>
                             </svg>
-                            {{ article.nombre_vues }} {% trans "vue" %}{{ article.nombre_vues|pluralize }}
+                            {{ article.nombre_vues }}
                         </span>
                         <span class="flex items-center">
-                            💬 {{ article.commentaires.count }} {% trans "commentaire" %}{{ article.commentaires.count|pluralize }}
+                            💬 {{ article.commentaires.count }}
                         </span>
                     </div>
                     <a href="{% url 'detail_article' article.id %}"
-                        class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium">
-                        {% trans "Lire l'article" %}
+                        class="bg-blue-600 text-white px-2 py-1 rounded text-xs hover:bg-blue-700 transition-colors duration-200 font-medium">
+                        {% trans "Lire" %}
                     </a>
                 </div>
             </div>
@@ -380,15 +389,38 @@
         {% endfor %}
     </div>
 
-    <!-- Bouton voir plus -->
-    {% if articles.count > 6 %}
-    <div class="text-center mt-12">
-        <a href="{% url 'articles' %}"
-            class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-semibold text-lg shadow-lg">
-            {% trans "Voir tous les articles" %} ({{ articles.count }})
-        </a>
+    <!-- Pagination -->
+    {% if articles.has_other_pages %}
+    <div class="flex justify-center mt-12">
+        <nav class="flex items-center space-x-2">
+            {% if articles.has_previous %}
+                <a href="?page={{ articles.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" 
+                   class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors duration-200">
+                    ← {% trans "Précédent" %}
+                </a>
+            {% endif %}
+
+            <span class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                {% trans "Page" %} {{ articles.number }} {% trans "sur" %} {{ articles.paginator.num_pages }}
+            </span>
+
+            {% if articles.has_next %}
+                <a href="?page={{ articles.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}" 
+                   class="px-4 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 dark:bg-gray-800 dark:border-gray-600 dark:text-gray-400 dark:hover:bg-gray-700 transition-colors duration-200">
+                    {% trans "Suivant" %} →
+                </a>
+            {% endif %}
+        </nav>
     </div>
     {% endif %}
+
+    <!-- Bouton voir tous les articles -->
+    <div class="text-center mt-8">
+        <a href="{% url 'articles' %}"
+            class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-semibold text-lg shadow-lg">
+            {% trans "Voir tous les articles" %} ({{ articles.paginator.count }})
+        </a>
+    </div>
     {% else %}
     <!-- Aucun article -->
     <div

@@ -9,6 +9,7 @@ from django.db.models import Count, Max, Q, Avg, Sum
 from django.utils import timezone
 from datetime import datetime, timedelta
 from functools import wraps
+from django.core.paginator import Paginator
 from .models import Article, Commentaire, Categorie, VueArticle, Profil, Like, Bookmark, LikeCommentaire, SignalementCommentaire
 from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm, MotDePasseOublieForm, NouveauMotDePasseForm, SignalementCommentaireForm
 from django.core.mail import send_mail
@@ -17,7 +18,7 @@ from django.urls import reverse_lazy
 
 
 def home(request):
-    """Vue de la page d'accueil avec fonctionnalité de recherche"""
+    """Vue de la page d'accueil avec fonctionnalité de recherche et pagination"""
     search_query = request.GET.get('search')
     articles = Article.objects.filter(est_publie=True).order_by('-date_creation')
     
@@ -27,6 +28,11 @@ def home(request):
             Q(titre__icontains=search_query) | 
             Q(auteur__icontains=search_query)
         )
+    
+    # Pagination - 6 articles par page
+    paginator = Paginator(articles, 6)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     
     # Calcul de la date d'il y a un mois
     un_mois_avant = timezone.now() - timedelta(days=30)
@@ -73,7 +79,7 @@ def home(request):
     }
     
     return render(request, 'blog/home.html', {
-        'articles': articles,
+        'articles': page_obj,  # Utiliser l'objet page au lieu de articles
         'search_query': search_query,
         'stats': stats
     })
@@ -243,6 +249,14 @@ def detail_article(request, article_id):
             messages.error(request, 'Cet article n\'est pas disponible.')
             return redirect('home')
     
+    # Ajouter les informations de permissions à l'article pour l'utilisateur connecté
+    if request.user.is_authenticated:
+        article.peut_modifier = request.user.profil.peut_modifier_article(article)
+        article.peut_supprimer = request.user.profil.peut_supprimer_article(article)
+    else:
+        article.peut_modifier = False
+        article.peut_supprimer = False
+    
     # Tracker les vues uniquement pour les articles publiés
     if article.est_publie:
         def get_client_ip(request):
@@ -327,6 +341,11 @@ def mes_articles_view(request):
         return redirect('home')
     
     articles = Article.objects.filter(user_auteur=request.user).order_by('-date_creation')
+    
+    # Ajouter les informations de permissions à chaque article
+    for article in articles:
+        article.peut_modifier = request.user.profil.peut_modifier_article(article)
+        article.peut_supprimer = request.user.profil.peut_supprimer_article(article)
     
     # Calculer les statistiques
     stats = {
@@ -679,7 +698,6 @@ def mes_favoris_view(request):
     bookmarks = Bookmark.objects.filter(user=request.user).order_by('-date_creation')
     
     # Pagination si nécessaire
-    from django.core.paginator import Paginator
     paginator = Paginator(bookmarks, 12)  # 12 articles par page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -696,7 +714,6 @@ def mes_likes_view(request):
     likes = Like.objects.filter(user=request.user).order_by('-date_creation')
     
     # Pagination si nécessaire
-    from django.core.paginator import Paginator
     paginator = Paginator(likes, 12)  # 12 articles par page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -870,4 +887,25 @@ def profil_public_view(request, username):
         'articles_recents': articles_recents,
         'articles_populaires': articles_populaires,
         'est_mon_profil': request.user == user,
+    })
+
+
+@login_required
+def supprimer_article(request, article_id):
+    """Vue pour supprimer un article existant"""
+    article = get_object_or_404(Article, id=article_id)
+    
+    # Vérifier que l'utilisateur peut supprimer cet article
+    if not request.user.profil.peut_supprimer_article(article):
+        messages.error(request, 'Vous n\'avez pas les permissions pour supprimer cet article.')
+        return redirect('detail_article', article_id=article.id)
+    
+    if request.method == 'POST':
+        titre_article = article.titre
+        article.delete()
+        messages.success(request, f'L\'article "{titre_article}" a été supprimé avec succès.')
+        return redirect('mes_articles')
+    
+    return render(request, 'blog/confirmer_suppression_article.html', {
+        'article': article
     })
