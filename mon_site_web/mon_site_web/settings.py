@@ -215,3 +215,6 @@ EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL = 'Blog Académique Universitaire <noreply@blog-universitaire.com>'
 EMAIL_TIMEOUT = 60
 
+# Configuration Google Gemini AI
+GEMINI_API_KEY = config('GEMINI_API_KEY', default='')
+

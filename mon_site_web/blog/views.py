@@ -12,9 +12,13 @@ from functools import wraps
 from django.core.paginator import Paginator
 from .models import Article, Commentaire, Categorie, VueArticle, Profil, Like, Bookmark, LikeCommentaire, SignalementCommentaire
 from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm, MotDePasseOublieForm, NouveauMotDePasseForm, SignalementCommentaireForm
+from .services import GeminiService
 from django.core.mail import send_mail
 from django.conf import settings
 from django.urls import reverse_lazy
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+import json
 
 
 def home(request):
@@ -909,3 +913,78 @@ def supprimer_article(request, article_id):
     return render(request, 'blog/confirmer_suppression_article.html', {
         'article': article
     })
+
+
+@login_required
+@require_http_methods(["POST"])
+def generer_avec_gemini(request):
+    """Vue AJAX pour générer un article avec Gemini"""
+    try:
+        # Vérifier que l'utilisateur peut créer des articles
+        if not request.user.profil.peut_creer_article():
+            return JsonResponse({
+                'success': False,
+                'error': 'Vous n\'avez pas les permissions pour créer des articles.'
+            }, status=403)
+        
+        # Récupérer le sujet depuis la requête
+        data = json.loads(request.body)
+        sujet = data.get('sujet', '').strip()
+        
+        if not sujet:
+            return JsonResponse({
+                'success': False,
+                'error': 'Veuillez fournir un sujet pour générer l\'article.'
+            }, status=400)
+        
+        if len(sujet) < 3:
+            return JsonResponse({
+                'success': False,
+                'error': 'Le sujet doit contenir au moins 3 caractères.'
+            }, status=400)
+        
+        # Initialiser le service Gemini
+        gemini_service = GeminiService()
+        
+        if not gemini_service.is_available():
+            return JsonResponse({
+                'success': False,
+                'error': 'Le service Gemini n\'est pas configuré. Veuillez contacter l\'administrateur.'
+            }, status=500)
+        
+        # Générer l'article avec Gemini
+        try:
+            article_data = gemini_service.generer_article(sujet)
+            
+            # Préparer la réponse avec les données générées
+            response_data = {
+                'success': True,
+                'data': {
+                    'titre': article_data['titre'],
+                    'contenu': article_data['contenu'],
+                    'categorie_id': article_data['categorie'].id if article_data['categorie'] else None,
+                    'categorie_nom': article_data['categorie'].nom if article_data['categorie'] else None,
+                    'tags': [{'id': tag.id, 'nom': tag.nom} for tag in article_data['tags']],
+                    'sujet_original': article_data['sujet_original']
+                }
+            }
+            
+            return JsonResponse(response_data)
+            
+        except Exception as e:
+            return JsonResponse({
+                'success': False,
+                'error': f'Erreur lors de la génération de l\'article : {str(e)}'
+            }, status=500)
+    
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Format de données invalide.'
+        }, status=400)
+    
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': f'Erreur inattendue : {str(e)}'
+        }, status=500)

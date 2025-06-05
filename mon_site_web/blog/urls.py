@@ -49,4 +49,7 @@ urlpatterns = [
     path('commentaire/<int:commentaire_id>/signaler/', views.signaler_commentaire, name='signaler_commentaire'),
     path('moderation/signalements/', views.gerer_signalements, name='gerer_signalements'),
     path('moderation/signalement/<int:signalement_id>/traiter/', views.traiter_signalement, name='traiter_signalement'),
+    
+    # Gemini AI
+    path('generer-avec-gemini/', views.generer_avec_gemini, name='generer_avec_gemini'),
 ]

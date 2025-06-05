@@ -141,6 +141,9 @@
                     <a href="{% url 'home' %}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors duration-200">
                         ❌ {% trans "Annuler" %}
                     </a>
+                    <button type="button" id="btn-gemini" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors duration-200">
+                        🤖 {% trans "Demander à Gemini" %}
+                    </button>
                     <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200">
                         💾 {% trans "Enregistrer" %}
                     </button>
@@ -150,19 +153,92 @@
     </div>
 </div>
 
+<!-- Modal pour Gemini -->
+<div id="gemini-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white dark:bg-gray-800">
+        <div class="mt-3">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-medium text-gray-900 dark:text-white">🤖 Générer avec Gemini</h3>
+                <button id="close-modal" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="mb-4">
+                <label for="sujet-gemini" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    {% trans "Sujet de l'article" %}
+                </label>
+                <input type="text" id="sujet-gemini" 
+                       class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-700 dark:text-white"
+                       placeholder="Ex: L'intelligence artificielle dans l'éducation">
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    {% trans "Décrivez le sujet que vous souhaitez que Gemini développe" %}
+                </p>
+            </div>
+            
+            <div id="gemini-error" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-red-700 hidden">
+                <div class="flex">
+                    <svg class="w-5 h-5 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span id="gemini-error-message"></span>
+                </div>
+            </div>
+            
+            <div id="gemini-success" class="mb-4 p-3 bg-green-50 border border-green-200 rounded-md text-green-700 hidden">
+                <div class="flex">
+                    <svg class="w-5 h-5 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+                    </svg>
+                    <span>{% trans "Article généré avec succès ! Les champs ont été remplis automatiquement." %}</span>
+                </div>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button id="cancel-gemini" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors">
+                    {% trans "Annuler" %}
+                </button>
+                <button id="generate-gemini" class="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors flex items-center">
+                    <span id="generate-text">{% trans "Générer" %}</span>
+                    <span id="generate-loading" class="hidden ml-2">
+                        <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Récupérer le textarea original
+    // Variables globales
     var textarea = document.querySelector('#id_contenu');
+    var quill;
+    var geminiModal = document.getElementById('gemini-modal');
+    var btnGemini = document.getElementById('btn-gemini');
+    var closeModal = document.getElementById('close-modal');
+    var cancelGemini = document.getElementById('cancel-gemini');
+    var generateGemini = document.getElementById('generate-gemini');
+    var sujetInput = document.getElementById('sujet-gemini');
+    var errorDiv = document.getElementById('gemini-error');
+    var successDiv = document.getElementById('gemini-success');
+    var errorMessage = document.getElementById('gemini-error-message');
+    var generateText = document.getElementById('generate-text');
+    var generateLoading = document.getElementById('generate-loading');
     
     // Masquer le textarea original
     textarea.style.display = 'none';
     
     // Initialiser l'éditeur Quill
-    var quill = new Quill('#editor-container', {
+    quill = new Quill('#editor-container', {
         theme: 'snow',
         placeholder: 'Écrivez le contenu de votre article ici...',
         modules: {
@@ -187,6 +263,153 @@ document.addEventListener('DOMContentLoaded', function() {
     // Synchroniser le contenu de Quill avec le textarea à chaque changement
     quill.on('text-change', function() {
         textarea.value = quill.root.innerHTML;
+    });
+    
+    // Gestion du bouton Gemini
+    btnGemini.addEventListener('click', function() {
+        geminiModal.classList.remove('hidden');
+        sujetInput.focus();
+        hideMessages();
+    });
+    
+    // Fermer la modal
+    function closeGeminiModal() {
+        geminiModal.classList.add('hidden');
+        sujetInput.value = '';
+        hideMessages();
+    }
+    
+    closeModal.addEventListener('click', closeGeminiModal);
+    cancelGemini.addEventListener('click', closeGeminiModal);
+    
+    // Fermer la modal en cliquant à l'extérieur
+    geminiModal.addEventListener('click', function(e) {
+        if (e.target === geminiModal) {
+            closeGeminiModal();
+        }
+    });
+    
+    // Fonction pour masquer les messages
+    function hideMessages() {
+        errorDiv.classList.add('hidden');
+        successDiv.classList.add('hidden');
+    }
+    
+    // Fonction pour afficher une erreur
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorDiv.classList.remove('hidden');
+        successDiv.classList.add('hidden');
+    }
+    
+    // Fonction pour afficher le succès
+    function showSuccess() {
+        successDiv.classList.remove('hidden');
+        errorDiv.classList.add('hidden');
+    }
+    
+    // Fonction pour activer/désactiver le bouton de génération
+    function setGenerating(isGenerating) {
+        if (isGenerating) {
+            generateText.classList.add('hidden');
+            generateLoading.classList.remove('hidden');
+            generateGemini.disabled = true;
+            generateGemini.classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+            generateText.classList.remove('hidden');
+            generateLoading.classList.add('hidden');
+            generateGemini.disabled = false;
+            generateGemini.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+    }
+    
+    // Générer avec Gemini
+    generateGemini.addEventListener('click', function() {
+        var sujet = sujetInput.value.trim();
+        
+        if (!sujet) {
+            showError('Veuillez saisir un sujet pour générer l\'article.');
+            return;
+        }
+        
+        if (sujet.length < 3) {
+            showError('Le sujet doit contenir au moins 3 caractères.');
+            return;
+        }
+        
+        hideMessages();
+        setGenerating(true);
+        
+        // Requête AJAX vers Django
+        fetch('{% url "generer_avec_gemini" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                'sujet': sujet
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            setGenerating(false);
+            
+            if (data.success) {
+                // Remplir les champs du formulaire avec les données générées
+                var titreField = document.getElementById('id_titre');
+                var categorieField = document.getElementById('id_categorie');
+                var nouveauxTagsField = document.getElementById('id_nouveaux_tags');
+                
+                // Remplir le titre
+                if (titreField) {
+                    titreField.value = data.data.titre;
+                }
+                
+                // Remplir le contenu avec Quill
+                if (quill && data.data.contenu) {
+                    quill.root.innerHTML = data.data.contenu;
+                    textarea.value = data.data.contenu;
+                }
+                
+                // Sélectionner la catégorie
+                if (categorieField && data.data.categorie_id) {
+                    categorieField.value = data.data.categorie_id;
+                }
+                
+                // Cocher les tags générés
+                if (data.data.tags && data.data.tags.length > 0) {
+                    data.data.tags.forEach(function(tag) {
+                        var checkbox = document.getElementById('tag_' + tag.id);
+                        if (checkbox) {
+                            checkbox.checked = true;
+                        }
+                    });
+                }
+                
+                showSuccess();
+                
+                // Fermer la modal après 2 secondes
+                setTimeout(function() {
+                    closeGeminiModal();
+                }, 2000);
+            } else {
+                showError(data.error || 'Erreur lors de la génération de l\'article.');
+            }
+        })
+        .catch(error => {
+            setGenerating(false);
+            console.error('Erreur:', error);
+            showError('Erreur de connexion. Veuillez réessayer.');
+        });
+    });
+    
+    // Permettre la génération en appuyant sur Entrée
+    sujetInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            generateGemini.click();
+        }
     });
     
     // S'assurer que le contenu est synchronisé avant la soumission du formulaire
