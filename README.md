@@ -94,6 +94,9 @@ source venv/bin/activate
 
 # Sur Windows :
 venv\Scripts\activate
+
+# Aller dans le dossier "Mon Site Web"
+cd mon_site_web
 ```
 
 ### 3. Installer les dépendances
