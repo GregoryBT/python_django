@@ -12,7 +12,7 @@ from functools import wraps
 from django.core.paginator import Paginator
 from .models import Article, Commentaire, Categorie, VueArticle, Profil, Like, Bookmark, LikeCommentaire, SignalementCommentaire
 from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm, MotDePasseOublieForm, NouveauMotDePasseForm, SignalementCommentaireForm
-from .services import GeminiService
+from .services import GeminiService, DalleService
 from django.core.mail import send_mail
 from django.conf import settings
 from django.urls import reverse_lazy
@@ -224,6 +224,32 @@ def ajouter_article(request):
             try:
                 article = form.save(commit=False)
                 article.user_auteur = request.user  # Assigner l'utilisateur connecté
+                
+                # Gérer l'image temporaire générée par DALL-E si elle existe
+                temp_image_path = request.POST.get('temp_image_path')
+                if temp_image_path and not article.image:
+                    try:
+                        from django.core.files.storage import default_storage
+                        from django.core.files.base import ContentFile
+                        
+                        if default_storage.exists(temp_image_path):
+                            # Lire l'image temporaire
+                            with default_storage.open(temp_image_path, 'rb') as temp_file:
+                                image_content = temp_file.read()
+                            
+                            # Créer un nom de fichier pour l'article
+                            import os
+                            filename = os.path.basename(temp_image_path).replace('temp_dalle_', 'article_')
+                            
+                            # Sauvegarder l'image dans le champ image de l'article
+                            article.image.save(filename, ContentFile(image_content), save=False)
+                            
+                            # Supprimer l'image temporaire
+                            default_storage.delete(temp_image_path)
+                    except Exception as e:
+                        print(f"Erreur lors de l'application de l'image temporaire: {str(e)}")
+                        # Continuer sans image si erreur
+                
                 article.save()
                 form.save_m2m()  # Sauvegarder les relations many-to-many (tags)
                 messages.success(request, 'Article créé avec succès !')
@@ -753,7 +779,6 @@ def toggle_like_commentaire(request, commentaire_id):
         
         if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
             # Réponse AJAX
-            from django.http import JsonResponse
             return JsonResponse({
                 'liked': liked,
                 'total_likes': total_likes,
@@ -930,6 +955,7 @@ def generer_avec_gemini(request):
         # Récupérer le sujet depuis la requête
         data = json.loads(request.body)
         sujet = data.get('sujet', '').strip()
+        generer_image = data.get('generer_image', False)
         
         if not sujet:
             return JsonResponse({
@@ -956,6 +982,22 @@ def generer_avec_gemini(request):
         try:
             article_data = gemini_service.generer_article(sujet)
             
+            # Générer une image avec DALL-E si demandé
+            temp_image_path = None
+            if generer_image:
+                try:
+                    dalle_service = DalleService()
+                    if dalle_service.is_available():
+                        # Utiliser le titre généré par Gemini pour créer l'image
+                        image_file, temp_path = dalle_service.generer_image(article_data['titre'])
+                        temp_image_path = temp_path
+                    else:
+                        # Service DALL-E non disponible, continuer sans image
+                        pass
+                except Exception as dalle_error:
+                    # En cas d'erreur avec DALL-E, continuer sans image mais log l'erreur
+                    print(f"Erreur lors de la génération d'image DALL-E: {str(dalle_error)}")
+            
             # Préparer la réponse avec les données générées
             response_data = {
                 'success': True,
@@ -965,7 +1007,9 @@ def generer_avec_gemini(request):
                     'categorie_id': article_data['categorie'].id if article_data['categorie'] else None,
                     'categorie_nom': article_data['categorie'].nom if article_data['categorie'] else None,
                     'tags': [{'id': tag.id, 'nom': tag.nom} for tag in article_data['tags']],
-                    'sujet_original': article_data['sujet_original']
+                    'sujet_original': article_data['sujet_original'],
+                    'image_generee': temp_image_path is not None,
+                    'temp_image_path': temp_image_path
                 }
             }
             
@@ -988,3 +1032,21 @@ def generer_avec_gemini(request):
             'success': False,
             'error': f'Erreur inattendue : {str(e)}'
         }, status=500)
+
+
+@login_required
+def recuperer_image_temporaire(request, temp_path):
+    """Vue pour récupérer une image temporaire générée par DALL-E"""
+    try:
+        from django.core.files.storage import default_storage
+        from django.http import HttpResponse
+        
+        if default_storage.exists(temp_path):
+            with default_storage.open(temp_path, 'rb') as f:
+                response = HttpResponse(f.read(), content_type='image/png')
+                response['Content-Disposition'] = f'attachment; filename="{temp_path.split("/")[-1]}"'
+                return response
+        else:
+            return JsonResponse({'error': 'Image temporaire introuvable'}, status=404)
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)

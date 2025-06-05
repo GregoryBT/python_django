@@ -1,10 +1,96 @@
 import json
 import random
 import re
+import os
+import requests
 from django.conf import settings
 from django.utils.text import slugify
+from django.core.files.base import ContentFile
 from .models import Categorie, Tag
 import google.generativeai as genai
+
+
+class DalleService:
+    """Service pour interagir avec l'API DALL-E d'OpenAI"""
+    
+    def __init__(self):
+        self.api_key = getattr(settings, 'OPENAI_API_KEY', None)
+        self.api_url = "https://api.openai.com/v1/images/generations"
+    
+    def is_available(self):
+        """Vérifie si le service DALL-E est disponible"""
+        return self.api_key is not None
+    
+    def generer_image(self, titre_article, description_prompt=None):
+        """
+        Génère une image avec DALL-E basée sur le titre de l'article
+        
+        Args:
+            titre_article (str): Le titre de l'article
+            description_prompt (str, optional): Description supplémentaire pour l'image
+        
+        Returns:
+            tuple: (ContentFile, str) - Fichier image généré et nom du fichier temporaire
+        """
+        if not self.is_available():
+            raise Exception("Service DALL-E non configuré")
+        
+        # Créer un prompt pour DALL-E basé sur le titre
+        if description_prompt:
+            prompt = f"Create a professional, clean and academic illustration for an article titled '{titre_article}'. {description_prompt}"
+        else:
+            prompt = f"Create a professional, clean and academic illustration for an article titled '{titre_article}'. The image should be relevant to the topic, modern, and suitable for a blog post."
+        
+        # Limiter la longueur du prompt (DALL-E a une limite de 1000 caractères)
+        prompt = prompt[:1000]
+        
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        data = {
+            "model": "dall-e-3",
+            "prompt": prompt,
+            "n": 1,
+            "size": "1024x1024",
+            "quality": "standard",
+            "response_format": "url"
+        }
+        
+        try:
+            response = requests.post(self.api_url, headers=headers, json=data, timeout=60)
+            response.raise_for_status()
+            
+            result = response.json()
+            image_url = result['data'][0]['url']
+            
+            # Télécharger l'image depuis l'URL
+            image_response = requests.get(image_url, timeout=30)
+            image_response.raise_for_status()
+            
+            # Créer un nom de fichier basé sur le titre
+            filename = f"dalle_{slugify(titre_article)[:50]}.png"
+            
+            # Créer un ContentFile pour Django
+            image_file = ContentFile(image_response.content, name=filename)
+            
+            # Sauvegarder temporairement l'image
+            from django.core.files.storage import default_storage
+            import uuid
+            
+            temp_filename = f"temp_dalle_{uuid.uuid4().hex[:8]}_{filename}"
+            temp_path = default_storage.save(f"temp/{temp_filename}", image_file)
+            
+            return image_file, temp_path
+            
+        except requests.exceptions.RequestException as e:
+            raise Exception(f"Erreur lors de la requête vers DALL-E: {str(e)}")
+        except KeyError as e:
+            raise Exception(f"Format de réponse inattendu de DALL-E: {str(e)}")
+        except Exception as e:
+            raise Exception(f"Erreur lors de la génération d'image: {str(e)}")
+
 
 class GeminiService:
     """Service pour interagir avec l'API Google Gemini"""

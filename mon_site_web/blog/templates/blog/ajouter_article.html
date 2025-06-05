@@ -178,6 +178,19 @@
                 </p>
             </div>
             
+            <div class="mb-4">
+                <div class="flex items-center">
+                    <input type="checkbox" id="generer-image-dalle" 
+                           class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 dark:border-gray-600 rounded">
+                    <label for="generer-image-dalle" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                        🎨 {% trans "Générer une image avec DALL-E" %}
+                    </label>
+                </div>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400 ml-6">
+                    {% trans "Une image d'illustration sera générée automatiquement et ajoutée à l'article" %}
+                </p>
+            </div>
+            
             <div id="gemini-error" class="mb-4 p-3 bg-red-50 border border-red-200 rounded-md text-red-700 hidden">
                 <div class="flex">
                     <svg class="w-5 h-5 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
@@ -326,6 +339,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Générer avec Gemini
     generateGemini.addEventListener('click', function() {
         var sujet = sujetInput.value.trim();
+        var genererImageDalle = document.getElementById('generer-image-dalle').checked;
         
         if (!sujet) {
             showError('Veuillez saisir un sujet pour générer l\'article.');
@@ -349,7 +363,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 'X-Requested-With': 'XMLHttpRequest'
             },
             body: JSON.stringify({
-                'sujet': sujet
+                'sujet': sujet,
+                'generer_image': genererImageDalle
             })
         })
         .then(response => response.json())
@@ -388,7 +403,57 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
                 
-                showSuccess();
+                // Gérer l'image générée avec DALL-E
+                if (data.data.temp_image_path) {
+                    // Créer un champ caché pour stocker le chemin de l'image temporaire
+                    var tempImageInput = document.getElementById('temp-image-path');
+                    if (!tempImageInput) {
+                        tempImageInput = document.createElement('input');
+                        tempImageInput.type = 'hidden';
+                        tempImageInput.id = 'temp-image-path';
+                        tempImageInput.name = 'temp_image_path';
+                        document.getElementById('article-form').appendChild(tempImageInput);
+                    }
+                    tempImageInput.value = data.data.temp_image_path;
+                    
+                    // Afficher un aperçu de l'image générée
+                    var imageField = document.getElementById('id_image');
+                    if (imageField) {
+                        // Créer ou mettre à jour un aperçu de l'image
+                        var preview = document.getElementById('image-preview');
+                        if (!preview) {
+                            preview = document.createElement('div');
+                            preview.id = 'image-preview';
+                            preview.style.cssText = 'margin-top: 10px; padding: 10px; border: 2px solid #e5e7eb; border-radius: 8px; background-color: #f9fafb;';
+                            imageField.parentNode.appendChild(preview);
+                        }
+                        
+                        preview.innerHTML = `
+                            <div class="flex items-center space-x-3">
+                                <img src="/image-temporaire/${data.data.temp_image_path}/" 
+                                     alt="Aperçu de l'image générée" 
+                                     style="max-width: 150px; max-height: 150px; border-radius: 6px;">
+                                <div>
+                                    <p class="text-sm font-medium text-green-600">✅ Image générée avec DALL-E</p>
+                                    <p class="text-xs text-gray-500">Cette image sera automatiquement ajoutée à votre article lors de la sauvegarde.</p>
+                                </div>
+                            </div>
+                        `;
+                        preview.style.display = 'block';
+                    }
+                }
+                
+                // Afficher un message spécial si une image a été générée
+                if (data.data.image_generee) {
+                    showSuccess();
+                    // Mettre à jour le message de succès pour mentionner l'image
+                    var successMessage = document.querySelector('#gemini-success span');
+                    if (successMessage) {
+                        successMessage.textContent = 'Article et image générés avec succès ! Les champs ont été remplis automatiquement.';
+                    }
+                } else {
+                    showSuccess();
+                }
                 
                 // Fermer la modal après 2 secondes
                 setTimeout(function() {

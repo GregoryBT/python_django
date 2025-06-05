@@ -218,3 +218,6 @@ EMAIL_TIMEOUT = 60
 # Configuration Google Gemini AI
 GEMINI_API_KEY = config('GEMINI_API_KEY', default='')
 
+# Configuration OpenAI DALL-E
+OPENAI_API_KEY = config('OPENAI_API_KEY', default='')
+
