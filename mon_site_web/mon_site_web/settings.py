@@ -143,6 +143,7 @@ USE_TZ = True
 LANGUAGES = [
     ('fr', 'Français'),
     ('en', 'Anglais'),
+    ('es', 'Español'),
 ]
 
 # Configuration des formats de date français
