@@ -469,12 +469,19 @@ def supprimer_commentaire(request, commentaire_id):
 
 def articles_view(request):
     """Vue pour afficher tous les articles"""
-    articles = Article.objects.filter(est_publie=True).order_by('-date_creation')
+    articles = Article.objects.filter(est_publie=True)
     
     # Filtrage par catégorie
     categorie_id = request.GET.get('categorie')
+    categorie_selectionnee = None
     if categorie_id:
         articles = articles.filter(categorie_id=categorie_id)
+        categorie_selectionnee = categorie_id
+    
+    # Tri
+    sort_param = request.GET.get('sort', '-date_creation')
+    sort_actuel = sort_param
+    articles = articles.order_by(sort_param)
     
     # Recherche
     search = request.GET.get('search')
@@ -498,8 +505,9 @@ def articles_view(request):
     return render(request, 'blog/articles.html', {
         'articles': articles,
         'categories': categories,
+        'categorie_selectionnee': categorie_selectionnee,
+        'sort_actuel': sort_actuel,
         'search': search,
-        'selected_category': categorie_id
     })
 
 
