@@ -84,7 +84,7 @@
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {% trans "Tags (optionnel)" %}
+                        {% trans "Tags existants (optionnel)" %}
                     </label>
                     <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 bg-gray-50 dark:bg-gray-700">
                         {% for tag in form.tags.field.queryset %}
@@ -99,7 +99,6 @@
                         {% empty %}
                         <p class="text-gray-500 dark:text-gray-400 mb-0">
                             {% trans "Aucun tag disponible." %}
-                            <a href="/admin/blog/tag/" target="_blank" class="text-blue-600 hover:text-blue-700">{% trans "Créer des tags" %}</a>
                         </p>
                         {% endfor %}
                     </div>
@@ -109,7 +108,22 @@
                         </div>
                     {% endif %}
                     <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        {% trans "Sélectionnez un ou plusieurs tags pour classer votre article" %}
+                        {% trans "Sélectionnez un ou plusieurs tags existants pour classer votre article" %}
+                    </div>
+                </div>
+
+                <div>
+                    <label for="{{ form.nouveaux_tags.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                        {% trans "Créer de nouveaux tags" %}
+                    </label>
+                    {{ form.nouveaux_tags }}
+                    {% if form.nouveaux_tags.errors %}
+                        <div class="mt-1 text-sm text-red-600 dark:text-red-400">
+                            {{ form.nouveaux_tags.errors.0 }}
+                        </div>
+                    {% endif %}
+                    <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                        {{ form.nouveaux_tags.help_text }}
                     </div>
                 </div>
 

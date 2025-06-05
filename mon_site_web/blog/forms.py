@@ -155,9 +155,20 @@ class ProfilForm(forms.ModelForm):
 
 
 class ArticleForm(forms.ModelForm):
+    # Nouveau champ pour la saisie de nouveaux tags
+    nouveaux_tags = forms.CharField(
+        required=False,
+        label="Nouveaux tags",
+        widget=forms.TextInput(attrs={
+            'class': 'appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-700',
+            'placeholder': 'Séparez les tags par des virgules (ex: python, django, web)'
+        }),
+        help_text="Saisissez de nouveaux tags séparés par des virgules. Ils seront créés automatiquement."
+    )
+    
     class Meta:
         model = Article
-        fields = ['titre', 'contenu', 'categorie', 'tags', 'image', 'est_publie']
+        fields = ['titre', 'contenu', 'categorie', 'tags', 'nouveaux_tags', 'image', 'est_publie']
         widgets = {
             'titre': forms.TextInput(attrs={
                 'class': 'appearance-none relative block w-full px-3 py-3 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm bg-white dark:bg-gray-700',
@@ -173,11 +184,33 @@ class ArticleForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['categorie'].empty_label = "Sélectionnez une catégorie (optionnel)"
-        self.fields['tags'].help_text = "Sélectionnez un ou plusieurs tags pour classer votre article"
+        self.fields['tags'].help_text = "Sélectionnez des tags existants"
         self.fields['est_publie'].help_text = "Décochez pour sauvegarder en brouillon"
         # Rendre le titre et le contenu obligatoires
         self.fields['titre'].required = True
         self.fields['contenu'].required = True
+
+    def clean_nouveaux_tags(self):
+        """Validation et nettoyage des nouveaux tags"""
+        nouveaux_tags = self.cleaned_data.get('nouveaux_tags', '')
+        if nouveaux_tags:
+            # Nettoyer et valider les tags
+            tags_list = [tag.strip() for tag in nouveaux_tags.split(',')]
+            tags_list = [tag for tag in tags_list if tag]  # Supprimer les chaînes vides
+            
+            # Valider chaque tag
+            for tag in tags_list:
+                if len(tag) < 2:
+                    raise forms.ValidationError(f"Le tag '{tag}' est trop court (minimum 2 caractères).")
+                if len(tag) > 50:
+                    raise forms.ValidationError(f"Le tag '{tag}' est trop long (maximum 50 caractères).")
+                # Vérifier que le tag ne contient que des caractères alphanumériques, espaces, tirets et underscores
+                import re
+                if not re.match(r'^[a-zA-Z0-9\s\-_]+$', tag):
+                    raise forms.ValidationError(f"Le tag '{tag}' contient des caractères non autorisés. Utilisez seulement des lettres, chiffres, espaces, tirets et underscores.")
+            
+            return tags_list
+        return []
 
     def clean_contenu(self):
         """Validation personnalisée pour le contenu"""
@@ -202,6 +235,46 @@ class ArticleForm(forms.ModelForm):
             if len(titre) > 200:
                 raise forms.ValidationError("Le titre ne peut pas dépasser 200 caractères.")
         return titre
+
+    def save(self, commit=True):
+        """Sauvegarder l'article et créer les nouveaux tags"""
+        from django.utils.text import slugify
+        import random
+        
+        article = super().save(commit=False)
+        
+        if commit:
+            article.save()
+            
+            # Traiter les nouveaux tags
+            nouveaux_tags = self.cleaned_data.get('nouveaux_tags', [])
+            if nouveaux_tags:
+                tags_crees = []
+                couleurs_disponibles = [
+                    '#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16',
+                    '#22c55e', '#10b981', '#14b8a6', '#06b6d4', '#0ea5e9',
+                    '#3b82f6', '#6366f1', '#8b5cf6', '#a855f7', '#d946ef',
+                    '#ec4899', '#f43f5e', '#6b7280', '#374151', '#1f2937'
+                ]
+                
+                for tag_nom in nouveaux_tags:
+                    # Vérifier si le tag existe déjà
+                    tag, created = Tag.objects.get_or_create(
+                        nom=tag_nom,
+                        defaults={
+                            'slug': slugify(tag_nom),
+                            'couleur': random.choice(couleurs_disponibles)
+                        }
+                    )
+                    tags_crees.append(tag)
+                
+                # Ajouter les nouveaux tags à l'article
+                article.tags.add(*tags_crees)
+            
+            # Sauvegarder les relations many-to-many pour les tags existants sélectionnés
+            self.save_m2m()
+        
+        return article
 
 
 class CommentaireForm(forms.ModelForm):
