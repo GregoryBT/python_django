@@ -189,6 +189,9 @@ class ArticleForm(forms.ModelForm):
         # Rendre le titre et le contenu obligatoires
         self.fields['titre'].required = True
         self.fields['contenu'].required = True
+        
+        # Trier les tags par ordre alphabétique
+        self.fields['tags'].queryset = Tag.objects.all().order_by('nom')
 
     def clean_nouveaux_tags(self):
         """Validation et nettoyage des nouveaux tags"""

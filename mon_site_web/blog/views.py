@@ -250,8 +250,8 @@ def ajouter_article(request):
                         print(f"Erreur lors de l'application de l'image temporaire: {str(e)}")
                         # Continuer sans image si erreur
                 
-                article.save()
-                form.save_m2m()  # Sauvegarder les relations many-to-many (tags)
+                # Sauvegarder l'article avec tous ses tags (la méthode save() du formulaire gère déjà les relations M2M)
+                article = form.save(commit=True)
                 messages.success(request, 'Article créé avec succès !')
                 return redirect('detail_article', article_id=article.id)
             except Exception as e:

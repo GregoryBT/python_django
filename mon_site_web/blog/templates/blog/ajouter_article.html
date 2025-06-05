@@ -428,7 +428,51 @@ document.addEventListener('DOMContentLoaded', function() {
                     data.data.tags.forEach(function(tag) {
                         var checkbox = document.getElementById('tag_' + tag.id);
                         if (checkbox) {
+                            // Tag existant, le cocher
                             checkbox.checked = true;
+                        } else {
+                            // Nouveau tag créé par Gemini, l'ajouter à la liste dans l'ordre alphabétique
+                            var tagsContainer = document.getElementById('tags-container');
+                            var noTagsMessage = tagsContainer.querySelector('p');
+                            
+                            // Masquer le message "Aucun tag disponible" s'il existe
+                            if (noTagsMessage && noTagsMessage.textContent.includes('Aucun tag disponible')) {
+                                noTagsMessage.style.display = 'none';
+                            }
+                            
+                            // Créer un nouvel élément tag
+                            var tagItem = document.createElement('div');
+                            tagItem.className = 'inline-block mr-4 mb-2 tag-item';
+                            tagItem.setAttribute('data-tag-name', tag.nom.toLowerCase());
+                            tagItem.innerHTML = `
+                                <input class="mr-1" type="checkbox" name="tags" value="${tag.id}" id="tag_${tag.id}" checked>
+                                <label for="tag_${tag.id}" class="text-sm cursor-pointer hover:opacity-75 transition-opacity" style="color: ${tag.couleur || '#6b7280'};">
+                                    🏷️ ${tag.nom}
+                                </label>
+                            `;
+                            
+                            // Insérer le tag à la bonne position alphabétique
+                            var existingTags = Array.from(tagsContainer.querySelectorAll('.tag-item'));
+                            var inserted = false;
+                            
+                            for (var i = 0; i < existingTags.length; i++) {
+                                var existingTagName = existingTags[i].getAttribute('data-tag-name');
+                                if (tag.nom.toLowerCase() < existingTagName) {
+                                    tagsContainer.insertBefore(tagItem, existingTags[i]);
+                                    inserted = true;
+                                    break;
+                                }
+                            }
+                            
+                            // Si pas inséré (plus grand que tous les tags existants), ajouter avant le message "no-tags-found"
+                            if (!inserted) {
+                                var noTagsFoundDiv = document.getElementById('no-tags-found');
+                                if (noTagsFoundDiv) {
+                                    tagsContainer.insertBefore(tagItem, noTagsFoundDiv);
+                                } else {
+                                    tagsContainer.appendChild(tagItem);
+                                }
+                            }
                         }
                     });
                 }
@@ -604,7 +648,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 data.data.forEach(function(tag) {
                     // Ne pas ajouter le tag s'il existe déjà
-                    if (!existingTagNames.includes(tag.nom)) {
+                    if (!existingTagNames.includes(tag.nom.toLowerCase())) {
                         var tagItem = document.createElement('div');
                         tagItem.className = 'inline-block mr-4 mb-2 tag-item';
                         tagItem.setAttribute('data-tag-name', tag.nom.toLowerCase());
@@ -614,7 +658,29 @@ document.addEventListener('DOMContentLoaded', function() {
                                 🏷️ ${tag.nom}
                             </label>
                         `;
-                        tagsContainer.appendChild(tagItem);
+                        
+                        // Insérer le tag à la bonne position alphabétique
+                        var existingTags = Array.from(tagsContainer.querySelectorAll('.tag-item'));
+                        var inserted = false;
+                        
+                        for (var i = 0; i < existingTags.length; i++) {
+                            var existingTagName = existingTags[i].getAttribute('data-tag-name');
+                            if (tag.nom.toLowerCase() < existingTagName) {
+                                tagsContainer.insertBefore(tagItem, existingTags[i]);
+                                inserted = true;
+                                break;
+                            }
+                        }
+                        
+                        // Si pas inséré (plus grand que tous les tags existants), ajouter avant le message "no-tags-found"
+                        if (!inserted) {
+                            var noTagsFoundDiv = document.getElementById('no-tags-found');
+                            if (noTagsFoundDiv) {
+                                tagsContainer.insertBefore(tagItem, noTagsFoundDiv);
+                            } else {
+                                tagsContainer.appendChild(tagItem);
+                            }
+                        }
                     }
                 });
                 

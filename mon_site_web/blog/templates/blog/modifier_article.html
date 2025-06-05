@@ -311,7 +311,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    // Ajouter le nouveau tag à la liste des tags existants
+                    // Ajouter le nouveau tag à la liste des tags existants dans l'ordre alphabétique
                     var newTagItem = document.createElement('div');
                     newTagItem.className = 'inline-block mr-4 mb-2 tag-item';
                     newTagItem.setAttribute('data-tag-name', tagName.toLowerCase());
@@ -321,7 +321,29 @@ document.addEventListener('DOMContentLoaded', function() {
                             🏷️ ${tagName}
                         </label>
                     `;
-                    tagsContainer.appendChild(newTagItem);
+                    
+                    // Insérer le tag à la bonne position alphabétique
+                    var existingTags = Array.from(tagsContainer.querySelectorAll('.tag-item'));
+                    var inserted = false;
+                    
+                    for (var i = 0; i < existingTags.length; i++) {
+                        var existingTagName = existingTags[i].getAttribute('data-tag-name');
+                        if (tagName.toLowerCase() < existingTagName) {
+                            tagsContainer.insertBefore(newTagItem, existingTags[i]);
+                            inserted = true;
+                            break;
+                        }
+                    }
+                    
+                    // Si pas inséré (plus grand que tous les tags existants), ajouter avant le message "no-tags-found"
+                    if (!inserted) {
+                        var noTagsFoundDiv = document.getElementById('no-tags-found');
+                        if (noTagsFoundDiv) {
+                            tagsContainer.insertBefore(newTagItem, noTagsFoundDiv);
+                        } else {
+                            tagsContainer.appendChild(newTagItem);
+                        }
+                    }
                     
                     // Afficher le message de succès
                     tagCreationMessage.textContent = '{% trans "Tag créé avec succès." %}';
