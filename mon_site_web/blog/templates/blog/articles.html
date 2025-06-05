@@ -71,8 +71,8 @@
     {% for article in articles %}
     <article
         class="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
-        <!-- Image de l'article ou placeholder -->
-        <div class="h-48 overflow-hidden">
+        <!-- Image de l'article ou placeholder avec métadonnées superposées -->c métadonnées superposées -->
+        <div class="h-48 overflow-hidden relative">elative">
             {% if article.image %}
             <img src="{{ article.image.url }}" alt="{{ article.titre }}"
                 class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
@@ -89,16 +89,81 @@
                 </div>
             </div>
             {% endif %}
+            
+            <!-- Overlay avec gradient pour améliorer la lisibilité -->            <!-- Overlay avec gradient pour améliorer la lisibilité -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>bsolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+            
+            <!-- Métadonnées superposées -->
+            <div class="absolute inset-0 flex flex-col justify-between p-4">>
+                <!-- Métadonnées en haut à droite -->droite -->
+                <div class="flex justify-end">v class="flex justify-end">
+                    <div class="flex flex-col space-y-2">v class="flex flex-col space-y-2">
+                        <!-- Temps de lecture -->                        <!-- Temps de lecture -->
+                        <div class="bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">div class="bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">s="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path>
+                            </svg>
+                            {{ article.get_temps_lecture_display }}
+                        </div>
+                        
+                        <!-- Nombre de vues --> <!-- Nombre de vues -->
+                        <div class="bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center"> class="bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">          <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>         <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                            </svg>
+                            {{ article.nombre_vues }}
+                        </div>
+                    </div>
+                </div>v>
+                
+                <!-- Métadonnées en bas -->                <!-- Métadonnées en bas -->
+                <div class="flex justify-between items-end">
+                    <!-- Likes et commentaires à gauche -->che -->
+                    <div class="flex space-x-2">
+                        <!-- Bouton Like pour l'article -->
+                        {% if user.is_authenticated %}thenticated %}
+                        <form method="post" action="{% url 'toggle_like' article.id %}" class="inline-block">    <form method="post" action="{% url 'toggle_like' article.id %}" class="inline-block">
+                            {% csrf_token %}  {% csrf_token %}
+                            <button type="submit" class="like-article-btn bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center transition-all duration-200 hover:bg-red-500/80-btn bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center transition-all duration-200 hover:bg-red-500/80
+                                {% if article.est_like %}bg-red-500/80{% endif %}"      {% if article.est_like %}bg-red-500/80{% endif %}" 
+                                data-article-id="{{ article.id }}">e-id="{{ article.id }}">
+                                <svg class="w-3 h-3 mr-1" fill="{% if article.est_like %}currentColor{% else %}none{% endif %}" stroke="currentColor" viewBox="0 0 24 24">le.est_like %}currentColor{% else %}none{% endif %}" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>                                </svg>
+                                <span class="like-count">{{ article.likes.count }}</span>nt }}</span>
+                            </button>
+                        </form>        </form>
+                        {% else %}                        {% else %}
+                        <div class="bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">ur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"> 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>ound" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                            </svg>
+                            <span>{{ article.likes.count }}</span>
+                        </div>
+                        {% endif %}
+                        
+                        <!-- Nombre de commentaires -->
+                        <div class="bg-black/60 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-medium flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path>ath fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd"></path>
+                            </svg>
+                            {{ article.commentaires.count }}ticle.commentaires.count }}
+                        </div>iv>
+                    </div>
+                    
+                    <!-- Catégorie à droite -->
+                    {% if article.categorie %}
+                    <div class="bg-black/60 backdrop-blur-sm px-2 py-1 rounded-full text-xs font-medium" 
+                         style="color: {{ article.categorie.couleur }}; border: 1px solid {{ article.categorie.couleur }};">
+                        {{ article.categorie.nom }}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
 
         <div class="p-6">
-            {% if article.categorie %}
-            <span class="inline-block px-3 py-1 text-xs font-semibold text-white rounded-full mb-3"
-                style="background-color: {{ article.categorie.couleur }};">
-                {{ article.categorie.nom }}
-            </span>
-            {% endif %}
-
             <!-- Tags -->
             {% if article.tags.all %}
             <div class="mb-3">
@@ -135,46 +200,7 @@
                 {{ article.contenu|striptags|truncatechars:150 }}
             </p>
 
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-                    <!-- Bouton Like pour l'article -->
-                    {% if user.is_authenticated %}
-                    <form method="post" action="{% url 'toggle_like' article.id %}" class="inline-block">
-                        {% csrf_token %}
-                        <button type="submit" class="like-article-btn flex items-center space-x-1 px-2 py-1 rounded transition-colors duration-200 
-                            {% if article.est_like %}text-red-600 hover:text-red-700{% else %}text-gray-500 hover:text-red-600{% endif %}" 
-                            data-article-id="{{ article.id }}">
-                            <svg class="w-4 h-4" fill="{% if article.est_like %}currentColor{% else %}none{% endif %}" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                            </svg>
-                            <span class="like-count">{{ article.likes.count }}</span>
-                        </button>
-                    </form>
-                    {% else %}
-                    <span class="flex items-center space-x-1">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                        </svg>
-                        <span>{{ article.likes.count }}</span>
-                    </span>
-                    {% endif %}
-
-                    <span class="flex items-center">
-                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
-                            <path fill-rule="evenodd"
-                                d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                                clip-rule="evenodd"></path>
-                        </svg>
-                        {{ article.nombre_vues }} {% trans "vue" %}{{ article.nombre_vues|pluralize }}
-                    </span>
-                    <span class="flex items-center">
-                        💬 {{ article.commentaires.count }} {% trans "commentaire" %}{{ article.commentaires.count|pluralize }}
-                    </span>
-                    <span class="flex items-center">
-                        🕒 {{ article.get_temps_lecture_display }}
-                    </span>
-                </div>
+            <div class="flex items-center justify-end">
                 <a href="{% url 'detail_article' article.id %}"
                     class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium">
                     {% trans "Lire la suite" %}

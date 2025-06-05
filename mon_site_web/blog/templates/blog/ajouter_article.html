@@ -138,15 +138,23 @@
                     <label for="{{ form.nouveaux_tags.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         {% trans "Créer de nouveaux tags" %}
                     </label>
-                    {{ form.nouveaux_tags }}
+                    <div class="flex gap-2 mb-2">
+                        {{ form.nouveaux_tags }}
+                        <button type="button" id="btn-creer-tag" class="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-200 text-sm whitespace-nowrap">
+                            ➕ {% trans "Créer" %}
+                        </button>
+                    </div>
                     {% if form.nouveaux_tags.errors %}
                         <div class="mt-1 text-sm text-red-600 dark:text-red-400">
                             {{ form.nouveaux_tags.errors.0 }}
                         </div>
                     {% endif %}
                     <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        {{ form.nouveaux_tags.help_text }}
+                        {% trans "Tapez le nom d'un tag et cliquez sur 'Créer' pour l'ajouter immédiatement à la liste des tags disponibles" %}
                     </div>
+                    
+                    <!-- Message de succès/erreur pour la création de tags -->
+                    <div id="tag-creation-message" class="mt-2 hidden"></div>
                 </div>
 
                 <div class="flex items-center">
@@ -548,6 +556,90 @@ document.addEventListener('DOMContentLoaded', function() {
         } else {
             noTagsFoundMessage.classList.remove('hidden');
         }
+    });
+    
+    // Création immédiate de nouveaux tags
+    var btnCreerTag = document.getElementById('btn-creer-tag');
+    var tagCreationMessage = document.getElementById('tag-creation-message');
+    
+    btnCreerTag.addEventListener('click', function() {
+        var nouveauxTagsField = document.getElementById('id_nouveaux_tags');
+        var tagNames = nouveauxTagsField.value.trim();
+        
+        if (!tagNames) {
+            tagCreationMessage.textContent = 'Veuillez entrer un ou plusieurs noms de tags.';
+            tagCreationMessage.classList.remove('hidden', 'text-green-700');
+            tagCreationMessage.classList.add('text-red-600');
+            return;
+        }
+        
+        // Séparer les noms de tags par des virgules et supprimer les espaces
+        var tagsArray = tagNames.split(',').map(function(tag) {
+            return tag.trim();
+        });
+        
+        // Requête AJAX pour créer les nouveaux tags
+        fetch('{% url "creer_tags" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({
+                'tags': tagsArray
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Vider le champ de saisie
+                nouveauxTagsField.value = '';
+                
+                // Ajouter les nouveaux tags à la liste sans recharger la page
+                var currentTags = Array.from(tagsContainer.querySelectorAll('.tag-item'));
+                var existingTagNames = currentTags.map(function(tag) {
+                    return tag.getAttribute('data-tag-name');
+                });
+                
+                data.data.forEach(function(tag) {
+                    // Ne pas ajouter le tag s'il existe déjà
+                    if (!existingTagNames.includes(tag.nom)) {
+                        var tagItem = document.createElement('div');
+                        tagItem.className = 'inline-block mr-4 mb-2 tag-item';
+                        tagItem.setAttribute('data-tag-name', tag.nom.toLowerCase());
+                        tagItem.innerHTML = `
+                            <input class="mr-1" type="checkbox" name="tags" value="${tag.id}" id="tag_${tag.id}" checked>
+                            <label for="tag_${tag.id}" class="text-sm cursor-pointer hover:opacity-75 transition-opacity" style="color: ${tag.couleur};">
+                                🏷️ ${tag.nom}
+                            </label>
+                        `;
+                        tagsContainer.appendChild(tagItem);
+                    }
+                });
+                
+                // Afficher le message de succès
+                tagCreationMessage.textContent = 'Tags créés avec succès !';
+                tagCreationMessage.classList.remove('hidden', 'text-red-600');
+                tagCreationMessage.classList.add('text-green-700');
+                
+                // Masquer le message après 2 secondes
+                setTimeout(function() {
+                    tagCreationMessage.classList.add('hidden');
+                }, 2000);
+            } else {
+                // Afficher le message d'erreur
+                tagCreationMessage.textContent = data.error || 'Erreur lors de la création des tags.';
+                tagCreationMessage.classList.remove('hidden', 'text-green-700');
+                tagCreationMessage.classList.add('text-red-600');
+            }
+        })
+        .catch(error => {
+            console.error('Erreur:', error);
+            tagCreationMessage.textContent = 'Erreur de connexion. Veuillez réessayer.';
+            tagCreationMessage.classList.remove('hidden', 'text-green-700');
+            tagCreationMessage.classList.add('text-red-600');
+        });
     });
 });
 </script>

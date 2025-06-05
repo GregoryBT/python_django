@@ -53,4 +53,8 @@ urlpatterns = [
     # Gemini AI
     path('generer-avec-gemini/', views.generer_avec_gemini, name='generer_avec_gemini'),
     path('image-temporaire/<path:temp_path>/', views.recuperer_image_temporaire, name='recuperer_image_temporaire'),
+    
+    # Tags
+    path('creer-tag/', views.creer_tag, name='creer_tag'),
+    path('creer-tags/', views.creer_tags, name='creer_tags'),
 ]

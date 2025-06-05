@@ -35,61 +35,95 @@ class DalleService:
         if not self.is_available():
             raise Exception("Service DALL-E non configuré")
         
-        # Créer un prompt pour DALL-E basé sur le titre
+        # Créer un prompt simple et efficace
         if description_prompt:
-            prompt = f"Create a professional, clean and academic illustration for an article titled '{titre_article}'. {description_prompt}"
+            prompt = f"Professional illustration: {titre_article}. {description_prompt}"
         else:
-            prompt = f"Create a professional, clean and academic illustration for an article titled '{titre_article}'. The image should be relevant to the topic, modern, and suitable for a blog post."
+            prompt = f"Professional illustration for: {titre_article}"
         
-        # Limiter la longueur du prompt (DALL-E a une limite de 1000 caractères)
-        prompt = prompt[:1000]
+        # Nettoyer et limiter le prompt
+        prompt = prompt.replace('"', '').replace("'", "")  # Supprimer les guillemets
+        prompt = prompt[:400]  # Limiter davantage pour éviter les erreurs
         
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "Content-Type": "application/json"
         }
         
-        data = {
-            "model": "dall-e-3",
-            "prompt": prompt,
-            "n": 1,
-            "size": "1024x1024",
-            "quality": "standard",
-            "response_format": "url"
-        }
+        # Essayer différentes configurations en cas d'échec
+        configurations = [
+            {"prompt": prompt, "n": 1, "size": "256x256"},  # Plus petit d'abord
+            {"prompt": prompt, "n": 1, "size": "512x512"},  # Taille moyenne
+            {"prompt": f"Simple illustration: {titre_article[:100]}", "n": 1, "size": "256x256"}  # Fallback simple
+        ]
         
-        try:
-            response = requests.post(self.api_url, headers=headers, json=data, timeout=60)
-            response.raise_for_status()
-            
-            result = response.json()
-            image_url = result['data'][0]['url']
-            
-            # Télécharger l'image depuis l'URL
-            image_response = requests.get(image_url, timeout=30)
-            image_response.raise_for_status()
-            
-            # Créer un nom de fichier basé sur le titre
-            filename = f"dalle_{slugify(titre_article)[:50]}.png"
-            
-            # Créer un ContentFile pour Django
-            image_file = ContentFile(image_response.content, name=filename)
-            
-            # Sauvegarder temporairement l'image
-            from django.core.files.storage import default_storage
-            import uuid
-            
-            temp_filename = f"temp_dalle_{uuid.uuid4().hex[:8]}_{filename}"
-            temp_path = default_storage.save(f"temp/{temp_filename}", image_file)
-            
-            return image_file, temp_path
-            
-        except requests.exceptions.RequestException as e:
-            raise Exception(f"Erreur lors de la requête vers DALL-E: {str(e)}")
-        except KeyError as e:
-            raise Exception(f"Format de réponse inattendu de DALL-E: {str(e)}")
-        except Exception as e:
-            raise Exception(f"Erreur lors de la génération d'image: {str(e)}")
+        for i, config in enumerate(configurations):
+            try:
+                print(f"Tentative {i+1}/3 avec DALL-E - Taille: {config['size']}")
+                print(f"Prompt: {config['prompt']}")
+                
+                response = requests.post(self.api_url, headers=headers, json=config, timeout=60)
+                
+                print(f"Code de statut: {response.status_code}")
+                
+                if response.status_code == 200:
+                    result = response.json()
+                    
+                    if 'data' not in result or not result['data']:
+                        print("Réponse invalide de DALL-E")
+                        continue
+                    
+                    image_url = result['data'][0]['url']
+                    print(f"Image générée avec succès: {image_url}")
+                    
+                    # Télécharger l'image
+                    image_response = requests.get(image_url, timeout=30)
+                    image_response.raise_for_status()
+                    
+                    # Créer le fichier
+                    filename = f"dalle_{slugify(titre_article)[:30]}.png"
+                    image_file = ContentFile(image_response.content, name=filename)
+                    
+                    # Sauvegarder temporairement
+                    from django.core.files.storage import default_storage
+                    import uuid
+                    
+                    temp_filename = f"temp_dalle_{uuid.uuid4().hex[:8]}_{filename}"
+                    temp_path = default_storage.save(f"temp/{temp_filename}", image_file)
+                    
+                    print(f"Image sauvegardée: {temp_path}")
+                    return image_file, temp_path
+                
+                else:
+                    # Analyser l'erreur
+                    try:
+                        error_data = response.json()
+                        error_message = error_data.get('error', {}).get('message', 'Erreur inconnue')
+                        error_code = error_data.get('error', {}).get('code', 'unknown')
+                        print(f"Erreur API ({response.status_code}): {error_code} - {error_message}")
+                        
+                        # Si c'est une erreur de prompt content, essayer avec un prompt plus simple
+                        if 'content_policy' in error_message.lower() or 'safety' in error_message.lower():
+                            print("Erreur de politique de contenu, tentative avec prompt générique...")
+                            continue
+                        elif response.status_code == 429:
+                            print("Limite de taux atteinte, attente...")
+                            import time
+                            time.sleep(2)
+                            continue
+                        
+                    except (json.JSONDecodeError, AttributeError):
+                        print(f"Erreur non structurée: {response.text}")
+                
+            except requests.exceptions.RequestException as e:
+                print(f"Erreur de requête (tentative {i+1}): {str(e)}")
+                continue
+            except Exception as e:
+                print(f"Erreur inattendue (tentative {i+1}): {str(e)}")
+                continue
+        
+        # Si toutes les tentatives ont échoué
+        raise Exception("Impossible de générer une image avec DALL-E après plusieurs tentatives")
 
 
 class GeminiService:
@@ -273,14 +307,31 @@ Exemple de structure HTML pour le contenu :
         for tag_nom in tags_list[:5]:  # Limiter à 5 tags maximum
             if isinstance(tag_nom, str) and len(tag_nom.strip()) > 0:
                 tag_nom = tag_nom.strip()[:50]  # Limiter à 50 caractères
-                tag, created = Tag.objects.get_or_create(
-                    nom=tag_nom,
-                    defaults={
-                        'slug': slugify(tag_nom),
-                        'couleur': random.choice(couleurs_disponibles)
-                    }
-                )
-                tags_objets.append(tag)
+                
+                # Rechercher par nom exact d'abord (insensible à la casse)
+                tag = Tag.objects.filter(nom__iexact=tag_nom).first()
+                
+                if tag:
+                    # Tag trouvé, le réutiliser
+                    tags_objets.append(tag)
+                else:
+                    # Tag non trouvé, en créer un nouveau avec slug unique
+                    base_slug = slugify(tag_nom)
+                    slug = base_slug
+                    counter = 1
+                    
+                    # Vérifier si le slug existe déjà et créer un slug unique si nécessaire
+                    while Tag.objects.filter(slug=slug).exists():
+                        slug = f"{base_slug}-{counter}"
+                        counter += 1
+                    
+                    # Créer le nouveau tag avec le slug unique
+                    tag = Tag.objects.create(
+                        nom=tag_nom,
+                        slug=slug,
+                        couleur=random.choice(couleurs_disponibles)
+                    )
+                    tags_objets.append(tag)
         
         return tags_objets
     

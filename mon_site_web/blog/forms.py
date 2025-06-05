@@ -258,15 +258,30 @@ class ArticleForm(forms.ModelForm):
                 ]
                 
                 for tag_nom in nouveaux_tags:
-                    # Vérifier si le tag existe déjà
-                    tag, created = Tag.objects.get_or_create(
-                        nom=tag_nom,
-                        defaults={
-                            'slug': slugify(tag_nom),
-                            'couleur': random.choice(couleurs_disponibles)
-                        }
-                    )
-                    tags_crees.append(tag)
+                    # Rechercher par nom exact d'abord (insensible à la casse)
+                    tag = Tag.objects.filter(nom__iexact=tag_nom).first()
+                    
+                    if tag:
+                        # Tag trouvé, le réutiliser
+                        tags_crees.append(tag)
+                    else:
+                        # Tag non trouvé, en créer un nouveau avec slug unique
+                        base_slug = slugify(tag_nom)
+                        slug = base_slug
+                        counter = 1
+                        
+                        # Vérifier si le slug existe déjà et créer un slug unique si nécessaire
+                        while Tag.objects.filter(slug=slug).exists():
+                            slug = f"{base_slug}-{counter}"
+                            counter += 1
+                        
+                        # Créer le nouveau tag avec le slug unique
+                        tag = Tag.objects.create(
+                            nom=tag_nom,
+                            slug=slug,
+                            couleur=random.choice(couleurs_disponibles)
+                        )
+                        tags_crees.append(tag)
                 
                 # Ajouter les nouveaux tags à l'article
                 article.tags.add(*tags_crees)

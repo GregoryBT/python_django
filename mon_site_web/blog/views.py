@@ -10,7 +10,7 @@ from django.utils import timezone
 from datetime import datetime, timedelta
 from functools import wraps
 from django.core.paginator import Paginator
-from .models import Article, Commentaire, Categorie, VueArticle, Profil, Like, Bookmark, LikeCommentaire, SignalementCommentaire
+from .models import Article, Commentaire, Categorie, VueArticle, Profil, Like, Bookmark, LikeCommentaire, SignalementCommentaire, Tag
 from .forms import ArticleForm, CommentaireForm, InscriptionForm, ConnexionForm, ProfilForm, MotDePasseOublieForm, NouveauMotDePasseForm, SignalementCommentaireForm
 from .services import GeminiService, DalleService
 from django.core.mail import send_mail
@@ -1085,3 +1085,129 @@ def recuperer_image_temporaire(request, temp_path):
             return JsonResponse({'error': 'Image temporaire introuvable'}, status=404)
     except Exception as e:
         return JsonResponse({'error': str(e)}, status=500)
+
+
+@login_required
+@require_http_methods(["POST"])
+def creer_tag(request):
+    """Vue AJAX pour créer un tag"""
+    try:
+        if not request.user.profil.peut_creer_article():
+            return JsonResponse({
+                'success': False,
+                'error': 'Vous n\'avez pas les permissions pour créer des tags.'
+            }, status=403)
+        
+        data = json.loads(request.body)
+        nom_tag = data.get('nom', '').strip()
+        
+        if not nom_tag:
+            return JsonResponse({
+                'success': False,
+                'error': 'Le nom du tag ne peut pas être vide.'
+            }, status=400)
+        
+        # Vérifier si le tag existe déjà
+        tag_existant = Tag.objects.filter(nom__iexact=nom_tag).first()
+        if tag_existant:
+            return JsonResponse({
+                'success': False,
+                'error': 'Un tag avec ce nom existe déjà.',
+                'tag_id': tag_existant.id,
+                'tag_nom': tag_existant.nom
+            }, status=400)
+        
+        # Créer le tag
+        tag = Tag(nom=nom_tag)
+        tag.save()
+        
+        return JsonResponse({
+            'success': True,
+            'tag_id': tag.id,
+            'tag_nom': tag.nom
+        })
+    
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Format de données invalide.'
+        }, status=400)
+    
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': f'Erreur inattendue : {str(e)}'
+        }, status=500)
+
+
+@login_required
+@require_http_methods(["POST"])
+def creer_tags(request):
+    """Vue AJAX pour créer plusieurs tags en une fois"""
+    try:
+        if not request.user.profil.peut_creer_article():
+            return JsonResponse({
+                'success': False,
+                'error': 'Vous n\'avez pas les permissions pour créer des tags.'
+            }, status=403)
+        
+        data = json.loads(request.body)
+        tags_noms = data.get('tags', [])
+        
+        if not tags_noms:
+            return JsonResponse({
+                'success': False,
+                'error': 'Aucun tag à créer.'
+            }, status=400)
+        
+        created_tags = []
+        errors = []
+        
+        for nom_tag in tags_noms:
+            nom_tag = nom_tag.strip()
+            if not nom_tag:
+                continue
+                
+            # Vérifier si le tag existe déjà
+            tag_existant = Tag.objects.filter(nom__iexact=nom_tag).first()
+            if tag_existant:
+                created_tags.append({
+                    'id': tag_existant.id,
+                    'nom': tag_existant.nom,
+                    'couleur': tag_existant.couleur
+                })
+            else:
+                # Créer le nouveau tag
+                try:
+                    tag = Tag(nom=nom_tag)
+                    tag.save()
+                    created_tags.append({
+                        'id': tag.id,
+                        'nom': tag.nom,
+                        'couleur': tag.couleur
+                    })
+                except Exception as e:
+                    errors.append(f'Erreur lors de la création du tag "{nom_tag}": {str(e)}')
+        
+        if errors:
+            return JsonResponse({
+                'success': False,
+                'error': '; '.join(errors)
+            }, status=400)
+        
+        return JsonResponse({
+            'success': True,
+            'data': created_tags
+        })
+    
+    except json.JSONDecodeError:
+        return JsonResponse({
+            'success': False,
+            'error': 'Format de données invalide.'
+        }, status=400)
+    
+    except Exception as e:
+        return JsonResponse({
+            'success': False,
+            'error': f'Erreur inattendue : {str(e)}'
+        }, status=500)

@@ -146,15 +146,23 @@
                     <label for="{{ form.nouveaux_tags.id_for_label }}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                         {% trans "Créer de nouveaux tags" %}
                     </label>
-                    {{ form.nouveaux_tags }}
+                    <div class="flex gap-2 mb-2">
+                        {{ form.nouveaux_tags }}
+                        <button type="button" id="btn-creer-tag" class="px-3 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors duration-200 text-sm whitespace-nowrap">
+                            ➕ {% trans "Créer" %}
+                        </button>
+                    </div>
                     {% if form.nouveaux_tags.errors %}
                         <div class="mt-1 text-sm text-red-600 dark:text-red-400">
                             {{ form.nouveaux_tags.errors.0 }}
                         </div>
                     {% endif %}
                     <div class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                        {{ form.nouveaux_tags.help_text }}
+                        {% trans "Tapez le nom d'un tag et cliquez sur 'Créer' pour l'ajouter immédiatement à la liste des tags disponibles" %}
                     </div>
+                    
+                    <!-- Message de succès/erreur pour la création de tags -->
+                    <div id="tag-creation-message" class="mt-2 hidden"></div>
                 </div>
 
                 <div class="flex items-center">
@@ -275,6 +283,68 @@ document.addEventListener('DOMContentLoaded', function() {
         // Afficher ou masquer le message "Aucun tag trouvé"
         noTagsFoundMessage.style.display = hasVisibleTags ? 'none' : 'block';
     });
+    
+    // Création immédiate de tags
+    var btnCreerTag = document.getElementById('btn-creer-tag');
+    var nouvelTagInput = document.getElementById('id_nouveaux_tags');
+    var tagCreationMessage = document.getElementById('tag-creation-message');
+    
+    if (btnCreerTag) {
+        btnCreerTag.addEventListener('click', function() {
+            var tagName = nouvelTagInput.value.trim();
+            
+            if (tagName === '') {
+                alert('Veuillez entrer un nom de tag.');
+                return;
+            }
+            
+            // Création du tag via une requête AJAX
+            fetch('{% url "creer_tag" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ nom: tagName })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Ajouter le nouveau tag à la liste des tags existants
+                    var newTagItem = document.createElement('div');
+                    newTagItem.className = 'inline-block mr-4 mb-2 tag-item';
+                    newTagItem.setAttribute('data-tag-name', tagName.toLowerCase());
+                    newTagItem.innerHTML = `
+                        <input class="mr-1" type="checkbox" name="tags" value="${data.tag_id}" id="tag_${data.tag_id}" checked>
+                        <label for="tag_${data.tag_id}" class="text-sm cursor-pointer hover:opacity-75 transition-opacity" style="color: #4caf50;">
+                            🏷️ ${tagName}
+                        </label>
+                    `;
+                    tagsContainer.appendChild(newTagItem);
+                    
+                    // Afficher le message de succès
+                    tagCreationMessage.textContent = '{% trans "Tag créé avec succès." %}';
+                    tagCreationMessage.className = 'text-green-600 dark:text-green-400 text-sm';
+                    tagCreationMessage.style.display = 'block';
+                    
+                    // Réinitialiser le champ de saisie
+                    nouvelTagInput.value = '';
+                } else {
+                    // Afficher le message d'erreur
+                    tagCreationMessage.textContent = '{% trans "Erreur lors de la création du tag." %}';
+                    tagCreationMessage.className = 'text-red-600 dark:text-red-400 text-sm';
+                    tagCreationMessage.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                tagCreationMessage.textContent = '{% trans "Erreur lors de la création du tag." %}';
+                tagCreationMessage.className = 'text-red-600 dark:text-red-400 text-sm';
+                tagCreationMessage.style.display = 'block';
+            });
+        });
+    }
 });
 </script>
 {% endblock %}
