@@ -283,9 +283,11 @@ def detail_article(request, article_id):
     if request.user.is_authenticated:
         article.peut_modifier = request.user.profil.peut_modifier_article(article)
         article.peut_supprimer = request.user.profil.peut_supprimer_article(article)
+        article.est_like = article.est_like_par_user(request.user)
     else:
         article.peut_modifier = False
         article.peut_supprimer = False
+        article.est_like = False
     
     # Tracker les vues uniquement pour les articles publiés
     if article.est_publie:
@@ -481,6 +483,14 @@ def articles_view(request):
             Q(titre__icontains=search) |
             Q(contenu__icontains=search)
         )
+    
+    # Ajouter l'information de like pour l'utilisateur connecté
+    if request.user.is_authenticated:
+        for article in articles:
+            article.est_like = article.est_like_par_user(request.user)
+    else:
+        for article in articles:
+            article.est_like = False
     
     # Toutes les catégories pour le filtre
     categories = Categorie.objects.all()

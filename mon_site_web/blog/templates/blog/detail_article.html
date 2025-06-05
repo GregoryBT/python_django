@@ -118,7 +118,30 @@
     <!-- Actions de l'article -->
     <div class="px-8 py-4 bg-gray-50 border-t border-gray-200">
         <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-6">
+                <!-- Bouton Like -->
+                {% if user.is_authenticated %}
+                <form method="post" action="{% url 'toggle_like' article.id %}" class="inline-block mr-4">
+                    {% csrf_token %}
+                    <button type="submit" class="like-article-btn flex items-center space-x-2 px-4 py-2 rounded-lg transition-all duration-200 
+                        {% if article.est_like %}bg-red-50 text-red-600 hover:bg-red-100{% else %}bg-gray-100 text-gray-600 hover:bg-gray-200{% endif %}" 
+                        data-article-id="{{ article.id }}">
+                        <svg class="w-5 h-5" fill="{% if article.est_like %}currentColor{% else %}none{% endif %}" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                        <span class="like-text">{% if article.est_like %}Aimé{% else %}J'aime{% endif %}</span>
+                        <span class="like-count">{{ article.likes.count }}</span>
+                    </button>
+                </form>
+                {% else %}
+                <div class="flex items-center space-x-2 text-gray-600">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                    </svg>
+                    <span>{{ article.likes.count }} J'aime</span>
+                </div>
+                {% endif %}
+
                 <span class="text-gray-600 flex items-center">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd"
@@ -299,6 +322,82 @@ function confirmerSuppression(titreArticle, articleId) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Gestion des likes d'articles via AJAX
+    const likeArticleBtn = document.querySelector('.like-article-btn');
+    
+    if (likeArticleBtn) {
+        likeArticleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const form = this.closest('form');
+            const articleId = this.dataset.articleId;
+            const url = form.action;
+            const csrfToken = form.querySelector('[name=csrfmiddlewaretoken]').value;
+            
+            // Désactiver le bouton temporairement
+            this.disabled = true;
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrfToken
+                },
+                body: `csrfmiddlewaretoken=${csrfToken}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Mettre à jour l'interface
+                const svg = this.querySelector('svg');
+                const likeCount = this.querySelector('.like-count');
+                const likeText = this.querySelector('.like-text');
+                
+                // Mettre à jour le compteur
+                likeCount.textContent = data.total_likes;
+                
+                // Mettre à jour l'apparence du bouton
+                if (data.liked) {
+                    this.classList.remove('bg-gray-100', 'text-gray-600', 'hover:bg-gray-200');
+                    this.classList.add('bg-red-50', 'text-red-600', 'hover:bg-red-100');
+                    svg.setAttribute('fill', 'currentColor');
+                    likeText.textContent = 'Aimé';
+                } else {
+                    this.classList.remove('bg-red-50', 'text-red-600', 'hover:bg-red-100');
+                    this.classList.add('bg-gray-100', 'text-gray-600', 'hover:bg-gray-200');
+                    svg.setAttribute('fill', 'none');
+                    likeText.textContent = 'J\'aime';
+                }
+                
+                // Afficher un message de feedback subtil
+                const feedbackMsg = document.createElement('div');
+                feedbackMsg.className = 'fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 transition-opacity duration-300';
+                feedbackMsg.textContent = data.message;
+                document.body.appendChild(feedbackMsg);
+                
+                // Supprimer le message après 2 secondes
+                setTimeout(() => {
+                    feedbackMsg.style.opacity = '0';
+                    setTimeout(() => feedbackMsg.remove(), 300);
+                }, 2000);
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+                // Afficher un message d'erreur
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'fixed top-4 right-4 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg z-50';
+                errorMsg.textContent = 'Une erreur est survenue. Veuillez réessayer.';
+                document.body.appendChild(errorMsg);
+                
+                setTimeout(() => errorMsg.remove(), 3000);
+            })
+            .finally(() => {
+                // Réactiver le bouton
+                this.disabled = false;
+            });
+        });
+    }
+
     // Gestion des likes de commentaires via AJAX
     const likeCommentBtns = document.querySelectorAll('.like-comment-btn');
     

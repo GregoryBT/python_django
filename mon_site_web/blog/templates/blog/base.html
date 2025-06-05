@@ -126,6 +126,12 @@
                                 <a href="{% url 'mes_articles' %}"
                                     class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">📝
                                     {% trans "Mes articles" %}</a>
+                                <a href="{% url 'mes_likes' %}"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">❤️
+                                    {% trans "Mes likes" %}</a>
+                                <a href="{% url 'mes_favoris' %}"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">⭐
+                                    {% trans "Mes favoris" %}</a>
                                 {% endif %}
                                 {% if user.profil.peut_moderer %}
                                 <a href="{% url 'moderation' %}"

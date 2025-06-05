@@ -201,6 +201,12 @@ class Article(models.Model):
         else:
             return f"{temps} min"
 
+    def est_like_par_user(self, user):
+        """Vérifie si un utilisateur a liké cet article"""
+        if not user.is_authenticated:
+            return False
+        return self.likes.filter(user=user).exists()
+
     class Meta:
         ordering = ['-date_creation']
         verbose_name = _("Article")
