@@ -513,12 +513,20 @@ def articles_view(request):
 
 def categories_view(request):
     """Vue pour afficher toutes les catégories"""
+    # Récupérer toutes les catégories avec le nombre d'articles publiés
     categories = Categorie.objects.annotate(
         nb_articles=Count('articles', filter=Q(articles__est_publie=True))
-    ).filter(nb_articles__gt=0)
+    ).order_by('-nb_articles', 'nom')
+    
+    # Compter les articles sans catégorie
+    articles_sans_categorie = Article.objects.filter(
+        categorie__isnull=True, 
+        est_publie=True
+    ).count()
     
     return render(request, 'blog/categories.html', {
-        'categories': categories
+        'categories': categories,
+        'articles_sans_categorie': articles_sans_categorie
     })
 
 
