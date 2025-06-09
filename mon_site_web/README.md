@@ -14,6 +14,7 @@ Une plateforme de blog moderne développée avec Django, conçue pour la communa
 - [🚀 Lancement de l'application](#-lancement-de-lapplication)
 - [🎯 Utilisation](#-utilisation)
 - [🔐 Système de rôles](#-système-de-rôles)
+- [🗺️ Routes disponibles](#️-routes-disponibles)
 - [📊 Tests](#-tests)
 - [🌍 Internationalisation](#-internationalisation)
 - [🐳 Docker (optionnel)](#-docker-optionnel)
@@ -281,6 +282,114 @@ python manage.py runserver
 - ✅ Suppression de tout contenu
 - ✅ Accès aux statistiques complètes
 
+## 🗺️ Routes disponibles
+
+### 🏠 Pages principales
+| Route | Nom | Description | Méthode | Authentification |
+|-------|-----|-------------|---------|------------------|
+| `/` | `home` | Page d'accueil avec articles récents | GET | Non |
+| `/admin/` | Django Admin | Interface d'administration | GET/POST | Admin |
+| `/articles/` | `articles` | Liste de tous les articles publiés | GET | Non |
+| `/categories/` | `categories` | Liste des catégories | GET | Non |
+| `/auteurs/` | `auteurs` | Liste des auteurs | GET | Non |
+| `/a-propos/` | `a_propos` | Page à propos | GET | Non |
+
+### 🔐 Authentification
+| Route | Nom | Description | Méthode | Authentification |
+|-------|-----|-------------|---------|------------------|
+| `/inscription/` | `inscription` | Formulaire d'inscription | GET/POST | Non |
+| `/connexion/` | `connexion` | Formulaire de connexion | GET/POST | Non |
+| `/deconnexion/` | `deconnexion` | Déconnexion utilisateur | POST | Oui |
+| `/profil/` | `profil` | Profil utilisateur connecté | GET/POST | Oui |
+| `/utilisateur/<username>/` | `profil_public` | Profil public d'un utilisateur | GET | Non |
+
+### 🔑 Gestion des mots de passe
+| Route | Nom | Description | Méthode | Authentification |
+|-------|-----|-------------|---------|------------------|
+| `/mot-de-passe-oublie/` | `mot_de_passe_oublie` | Demande de réinitialisation | GET/POST | Non |
+| `/mot-de-passe-oublie/envoye/` | `mot_de_passe_oublie_envoye` | Confirmation envoi email | GET | Non |
+| `/reset/<uidb64>/<token>/` | `nouveau_mot_de_passe` | Nouveau mot de passe | GET/POST | Non |
+| `/mot-de-passe-reinitialise/` | `mot_de_passe_reinitialise` | Confirmation réinitialisation | GET | Non |
+
+### 📝 Gestion des articles
+| Route | Nom | Description | Méthode | Authentification |
+|-------|-----|-------------|---------|------------------|
+| `/ajouter/` | `ajouter_article` | Créer un nouvel article | GET/POST | Oui |
+| `/article/<int:article_id>/` | `detail_article` | Détail d'un article | GET/POST | Non |
+| `/article/<int:article_id>/modifier/` | `modifier_article` | Modifier un article | GET/POST | Oui (Auteur) |
+| `/article/<int:article_id>/supprimer/` | `supprimer_article` | Supprimer un article | POST | Oui (Auteur) |
+| `/mes-articles/` | `mes_articles` | Articles de l'utilisateur | GET | Oui |
+
+### 👥 Modération
+| Route | Nom | Description | Méthode | Authentification |
+|-------|-----|-------------|---------|------------------|
+| `/moderation/` | `moderation` | Panel de modération | GET | Admin |
+| `/moderation/approuver/<int:commentaire_id>/` | `approuver_commentaire` | Approuver un commentaire | POST | Admin |
+| `/moderation/supprimer/<int:commentaire_id>/` | `supprimer_commentaire` | Supprimer un commentaire | POST | Admin |
+| `/moderation/signalements/` | `gerer_signalements` | Gérer les signalements | GET | Admin |
+| `/moderation/signalement/<int:signalement_id>/traiter/` | `traiter_signalement` | Traiter un signalement | POST | Admin |
+
+### 📊 Analytics
+| Route | Nom | Description | Méthode | Authentification |
+|-------|-----|-------------|---------|------------------|
+| `/analytics/` | `analytics` | Statistiques et analytics | GET | Admin |
+
+### ❤️ Interactions sociales
+| Route | Nom | Description | Méthode | Authentification |
+|-------|-----|-------------|---------|------------------|
+| `/article/<int:article_id>/like/` | `toggle_like` | Liker/Unliker un article | POST | Oui |
+| `/article/<int:article_id>/bookmark/` | `toggle_bookmark` | Sauvegarder en favoris | POST | Oui |
+| `/commentaire/<int:commentaire_id>/like/` | `toggle_like_commentaire` | Liker un commentaire | POST | Oui |
+| `/mes-favoris/` | `mes_favoris` | Articles favoris | GET | Oui |
+| `/mes-likes/` | `mes_likes` | Articles likés | GET | Oui |
+
+### 🚨 Signalements
+| Route | Nom | Description | Méthode | Authentification |
+|-------|-----|-------------|---------|------------------|
+| `/commentaire/<int:commentaire_id>/signaler/` | `signaler_commentaire` | Signaler un commentaire | POST | Oui |
+
+### 🤖 Intelligence Artificielle
+| Route | Nom | Description | Méthode | Authentification |
+|-------|-----|-------------|---------|------------------|
+| `/generer-avec-gemini/` | `generer_avec_gemini` | Génération de contenu IA | POST | Oui |
+| `/image-temporaire/<path:temp_path>/` | `recuperer_image_temporaire` | Récupérer image temporaire | GET | Oui |
+
+### 🏷️ Gestion des tags
+| Route | Nom | Description | Méthode | Authentification |
+|-------|-----|-------------|---------|------------------|
+| `/creer-tag/` | `creer_tag` | Créer un nouveau tag | POST | Oui |
+| `/creer-tags/` | `creer_tags` | Créer plusieurs tags | POST | Oui |
+
+### 🌍 Internationalisation
+| Route | Nom | Description | Méthode | Authentification |
+|-------|-----|-------------|---------|------------------|
+| `/i18n/setlang/` | Django i18n | Changer la langue | POST | Non |
+
+### 📁 Fichiers médias (développement)
+| Route | Description | Méthode | Authentification |
+|-------|-------------|---------|------------------|
+| `/media/<path:path>` | Servir les fichiers médias | GET | Non |
+
+### 🔧 Paramètres des URLs
+
+#### Paramètres dynamiques
+- `<int:article_id>` : ID de l'article (nombre entier)
+- `<int:commentaire_id>` : ID du commentaire (nombre entier)
+- `<int:signalement_id>` : ID du signalement (nombre entier)
+- `<str:username>` : Nom d'utilisateur (chaîne)
+- `<uidb64>` : ID utilisateur encodé en base64
+- `<token>` : Token de réinitialisation de mot de passe
+- `<path:temp_path>` : Chemin vers fichier temporaire
+- `<path:path>` : Chemin vers fichier média
+
+#### Préfixes de langue
+Les routes principales supportent les préfixes de langue :
+- `/` : Français (par défaut)
+- `/en/` : Anglais
+- `/es/` : Espagnol
+
+**Exemple :** `/en/articles/` pour la liste des articles en anglais
+
 ## 📊 Tests
 
 ### Lancer tous les tests
@@ -344,6 +453,7 @@ LANGUAGES = [
     ('fr', 'Français'),
     ('en', 'Anglais'),
     ('es', 'Español'),
+    ('de', 'Deutsch'),  # Nouvelle langue
 ]
 ```
 
@@ -352,89 +462,7 @@ LANGUAGES = [
 python manage.py makemessages -l de
 ```
 
-## 🐳 Docker (optionnel)
-
-### Dockerfile
-
-```dockerfile
-FROM python:3.11-slim
-
-WORKDIR /app
-
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-COPY . .
-
-EXPOSE 8000
-
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
-```
-
-### docker-compose.yml
-
-```yaml
-version: '3.8'
-
-services:
-  web:
-    build: .
-    ports:
-      - "8000:8000"
-    environment:
-      - DEBUG=True
-    depends_on:
-      - db
-    volumes:
-      - .:/app
-
-  db:
-    image: postgres:13
-    environment:
-      POSTGRES_DB: blog_db
-      POSTGRES_USER: blog_user
-      POSTGRES_PASSWORD: blog_password
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-
-volumes:
-  postgres_data:
-```
-
-### Lancement avec Docker
-
-```bash
-# Construire et lancer
-docker-compose up --build
-
-# En arrière-plan
-docker-compose up -d
-
-# Migrations dans le conteneur
-docker-compose exec web python manage.py migrate
-docker-compose exec web python manage.py createsuperuser
-```
-
 ## 🔧 Maintenance
-
-### Sauvegarde de la base de données
-
-```bash
-# Sauvegarde
-pg_dump -U blog_user -h localhost blog_db > backup_$(date +%Y%m%d).sql
-
-# Restauration
-psql -U blog_user -h localhost blog_db < backup_20231215.sql
-```
-
-### Nettoyage des fichiers media
-
-```bash
-# Supprimer les fichiers orphelins
-python manage.py shell
->>> from blog.models import Article
->>> # Script de nettoyage des images non utilisées
-```
 
 ### Logs
 
@@ -443,10 +471,6 @@ Les logs sont stockés dans `logs/django.log`. Pour les surveiller :
 ```bash
 # Surveiller les logs en temps réel
 tail -f logs/django.log
-
-# Rotation des logs (recommandé en production)
-logrotate -f /path/to/logrotate.conf
-```
 
 ## 🚨 Dépannage
 
@@ -485,56 +509,6 @@ tail -n 50 logs/django.log
 python manage.py check --deploy
 ```
 
-## 📈 Performance
-
-### Optimisations recommandées
-
-1. **Cache Redis** (production) :
-```python
-CACHES = {
-    'default': {
-        'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
-    }
-}
-```
-
-2. **Compression des statiques** :
-```bash
-pip install django-compressor
-```
-
-3. **CDN pour les médias** (production) :
-```python
-# Configuration AWS S3
-AWS_ACCESS_KEY_ID = 'your-access-key'
-AWS_SECRET_ACCESS_KEY = 'your-secret-key'
-AWS_STORAGE_BUCKET_NAME = 'your-bucket-name'
-```
-
-## 🔒 Sécurité
-
-### Checklist de sécurité production
-
-- [ ] `DEBUG = False`
-- [ ] Clé secrète complexe et unique
-- [ ] HTTPS configuré
-- [ ] Base de données sécurisée
-- [ ] Mots de passe forts
-- [ ] Sauvegardes régulières
-- [ ] Logs de sécurité activés
-- [ ] Mises à jour régulières
-
-### Configuration HTTPS
-
-```python
-# Dans settings.py pour la production
-SECURE_SSL_REDIRECT = True
-SECURE_HSTS_SECONDS = 31536000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-```
-
 ## 📞 Support
 
 ### Ressources utiles
@@ -567,36 +541,4 @@ mon_site_web/
 └── manage.py             # Script de gestion Django
 ```
 
-## 📝 Licence
-
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
-
----
-
-## 🚀 Démarrage rapide
-
-```bash
-# 1. Cloner et setup
-git clone <repo>
-cd mon_site_web
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-
-# 2. Configuration
-cp .env.example .env
-# Éditer .env avec vos paramètres
-
-# 3. Base de données
-python manage.py migrate
-python manage.py createsuperuser
-
-# 4. Lancement
-python manage.py runserver
-```
-
 **🎉 Votre blog est prêt à l'adresse : http://127.0.0.1:8000/**
-
----
-
-*Développé avec ❤️ pour la communauté académique*
